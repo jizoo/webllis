@@ -5,6 +5,7 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore bundler config.
+/bin
 /.bundle
 
 # Ignore the default SQLite database.
@@ -14,3 +15,15 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+# Ignore .DS_Store
+.DS_Store
+
+# Ignore .vagrant
+/.vagrant
+
+# ignore .ruby-version
+.ruby-version
+
+# Ignore database config
+/config/database.yml
