@@ -27,3 +27,6 @@
 
 # Ignore database config
 /config/database.yml
+
+# Ignore asset pipline cache files
+/public/assets/*
