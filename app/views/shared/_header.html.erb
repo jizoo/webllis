@@ -3,7 +3,14 @@
       <%= link_to "webllis", root_path, id: "logo" %>
       <ul class="nav navbar-nav pull-right">
         <li><%= link_to "ユーザ登録", '#' %></li>
-        <li><%= link_to "ログイン", '#' %></li>
+        <li><%=
+          if current_user
+            link_to 'ログアウト', :session, method: :delete
+          else
+            link_to 'ログイン', :login
+          end
+          %>
+        </li>
       </ul>
   </div>
 </header>

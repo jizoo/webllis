@@ -1,11 +1,22 @@
 @import "bootstrap";
 @import "shared/errors";
 
-/* universal */
+// universal
 
 body {
   padding-top: 70px;
 }
+
+// typography
+
+h1 {
+  font-size: 4.2rem;
+  letter-spacing: -2px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+// header
 
 #logo {
   float: left;
@@ -22,7 +33,7 @@ body {
   }
 }
 
-/* footer */
+// footer
 
 footer {
   margin-top: 45px;

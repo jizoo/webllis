@@ -1,6 +1,5 @@
-class StaticPagesController < ApplicationController
+class StaticPagesController < User::Base
   def home
-
   end
 
   def about
