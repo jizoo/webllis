@@ -1,10 +1,10 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Authenticator do
   describe '#authenticate' do
     example '正しいパスワードならtrueを返す' do
       m = build(:user)
-      expect(Authenticator.new(m).authenticate('pw')).to be_truthy
+      expect(Authenticator.new(m).authenticate('password')).to be_truthy
     end
 
     example '誤ったパスワードならfalseを返す' do

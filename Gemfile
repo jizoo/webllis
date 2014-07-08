@@ -12,6 +12,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'therubyracer',  platforms: :ruby
 gem 'bcrypt', '~> 3.1.7'
 gem 'bootstrap-sass'
+gem 'email_validator'
 
 group :development do
   gem 'rails-erd'

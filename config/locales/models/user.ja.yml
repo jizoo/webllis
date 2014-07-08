@@ -1,0 +1,22 @@
+ja:
+  activerecord:
+    attributes:
+      user:
+        name: ユーザ名
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード（確認）
+    errors:
+      models:
+        user:
+          attributes:
+            name:
+              too_short: を3文字以上で入力してください。
+              too_long: を50文字以内で入力してください。
+            email:
+              taken: が他のユーザと重複しています。
+            password:
+              too_short: を6文字以上で入力してください。
+              too_long: を20文字以内で入力してください。
+            password_confirmation:
+              confirmation: と%{attribute}が一致しません。

@@ -18,7 +18,7 @@ class SessionsController < Base
       flash[:info] = 'ログインしました。'
       redirect_to :root
     else
-      flash.now[:warning] = 'メールアドレスまたはパスワードが正しくありません。'
+      flash.now[:danger] = 'メールアドレスまたはパスワードが正しくありません。'
       render action: 'new'
     end
   end
