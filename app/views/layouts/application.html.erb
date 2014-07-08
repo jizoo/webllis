@@ -9,8 +9,9 @@
 <body>
   <%= render 'shared/header' %>
   <div class="container">
-    <%= content_tag(:span, flash.notice, class: 'notice') if flash.notice %>
-    <%= content_tag(:span, flash.alert, class: 'alert') if flash.alert %>
+    <% flash.each do |key, value| %>
+      <%= content_tag(:div, value, class: "alert alert-#{key}") %>
+    <% end %>
     <%= yield %>
     <%= render 'shared/footer' %>
   </div>

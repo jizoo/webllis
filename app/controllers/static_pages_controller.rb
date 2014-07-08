@@ -1,4 +1,4 @@
-class StaticPagesController < User::Base
+class StaticPagesController < Base
   def home
   end
 

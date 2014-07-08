@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   get 'about' => 'static_pages#about', as: :about
   get 'contact' => 'static_pages#contact', as: :contact
   get 'login' => 'sessions#new', as: :login
-  post 'session' => 'sessions#create', as: :session
-  delete 'session' => 'sessions#destroy'
+  resource :session, only: [ :create, :destroy ]
+  resources :users
+  get 'signup' => 'users#new', as: :signup
   get '*anything' => 'errors#routing_error'
 end
