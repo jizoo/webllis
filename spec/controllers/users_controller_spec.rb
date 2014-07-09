@@ -9,6 +9,11 @@ describe UsersController do
       expect(response).to redirect_to(root_url)
     end
 
+    example 'ログインする' do
+      post :create, user: params_hash
+      expect(session[:user_id]).to be_truthy
+    end
+
     example '例外ActionController::ParameterMissingが発生' do
       bypass_rescue
       expect { post :create }.
