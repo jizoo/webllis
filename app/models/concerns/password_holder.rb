@@ -3,8 +3,7 @@ module PasswordHolder
 
   included do
     attr_accessor :password_confirmation
-    validates :password, presence: true, length: 6..20,
-    confirmation: true
+    validates :password, length: 6..20, confirmation: true
   end
 
   def password=(raw_password)

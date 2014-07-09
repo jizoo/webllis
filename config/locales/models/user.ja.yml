@@ -13,6 +13,7 @@ ja:
             name:
               too_short: を3文字以上で入力してください。
               too_long: を50文字以内で入力してください。
+              taken: が他のユーザと重複しています。
             email:
               taken: が他のユーザと重複しています。
             password:

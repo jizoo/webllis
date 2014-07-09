@@ -10,7 +10,8 @@ module NameHolder
       self.name = normalize_as_name(name)
     end
 
-    validates :name, presence: true, length: 3..50,
+    validates :name, length: 3..50,
+      uniqueness: { case_sensitive: false, allow_blank: true },
       format: { with: NAME_REGEXP, allow_blank: true }
   end
 end
