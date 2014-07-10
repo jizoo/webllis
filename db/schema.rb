@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140706235646) do
+ActiveRecord::Schema.define(version: 20140709155616) do
 
   create_table "users", force: true do |t|
     t.string   "name",                            null: false
@@ -21,8 +21,10 @@ ActiveRecord::Schema.define(version: 20140706235646) do
     t.boolean  "suspended",       default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "remember_token"
   end
 
   add_index "users", ["email_for_index"], name: "index_users_on_email_for_index", unique: true, using: :btree
+  add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
 
 end

@@ -1,6 +1,6 @@
 class SessionsController < Base
   def new
-    if current_user
+    if logged_in?
       redirect_to :root
     else
       @form = LoginForm.new
@@ -14,7 +14,7 @@ class SessionsController < Base
       user = User.find_by(email_for_index: @form.email.downcase)
     end
     if Authenticator.new(user).authenticate(@form.password)
-      session[:user_id] = user.id
+      login user
       flash[:info] = 'ログインしました。'
       redirect_to :root
     else
@@ -24,7 +24,7 @@ class SessionsController < Base
   end
 
   def destroy
-    session.delete(:user_id)
+    logout
     flash[:info] = 'ログアウトしました。'
     redirect_to :root
   end

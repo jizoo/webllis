@@ -11,7 +11,7 @@ describe UsersController do
 
     example 'ログインする' do
       post :create, user: params_hash
-      expect(session[:user_id]).to be_truthy
+      expect(cookies[:remember_token]).to be_truthy
     end
 
     example '例外ActionController::ParameterMissingが発生' do
