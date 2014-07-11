@@ -1,0 +1,29 @@
+<%= provide(:title, 'ユーザ管理') %>
+<h1>ユーザ管理</h1>
+
+<div class="row">
+  <div class="col-md-12">
+    <%= link_to 'ユーザの新規登録', :new_admin_user, class: "btn btn-default" %>
+    <table class="table table-striped">
+      <tr>
+        <th>ユーザ名</th>
+        <th>メールアドレス</th>
+        <th>停止フラグ</th>
+        <th>アクション</th>
+      </tr>
+      <% @users.each do |u| %>
+        <tr>
+          <td><%= u.name %></td>
+          <td><%= u.email %></td>
+          <td><%= u.suspended %></td>
+          <td>
+            <%= link_to '編集', [ :edit, :admin, u ] %> |
+            <%= link_to '削除', [ :admin, u ], method: :delete,
+              data: { confirm: '本当に削除しますか？' } %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+    <%= paginate @users %>
+  </div>
+</div>

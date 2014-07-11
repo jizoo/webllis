@@ -1,6 +1,8 @@
-User.create!(
-  name: 'jizoo',
-  email: 'jizoo@example.com',
-  password: 'password',
-  password_confirmation: 'password'
-)
+100.times do |n|
+  User.create!(
+    name: "example#{n+1}",
+    email: "example#{n+1}@example.com",
+    password: 'password',
+    password_confirmation: 'password',
+  )
+end
