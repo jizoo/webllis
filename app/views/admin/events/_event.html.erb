@@ -1,0 +1,11 @@
+<tr>
+  <% unless @user %>
+  <td>
+    <%= link_to(event.user.name, [ :admin, event.user ]) %>
+  </td>
+  <% end %>
+  <td><%= event.description %></td>
+  <td class="date">
+    <%= event.occurred_at.strftime('%Y/%m/%d %H:%M:%S') %>
+  </td>
+</tr>

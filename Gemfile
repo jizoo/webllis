@@ -13,9 +13,9 @@ gem 'therubyracer',  platforms: :ruby
 gem 'bcrypt', '~> 3.1.7'
 gem 'bootstrap-sass'
 gem 'email_validator'
-gem 'foreigner'
 gem 'kaminari'
 gem 'kaminari-bootstrap'
+gem 'foreigner'
 
 group :development do
   gem 'rails-erd'

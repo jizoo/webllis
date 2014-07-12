@@ -14,9 +14,16 @@ class SessionsController < Base
       user = User.find_by(email_for_index: @form.email.downcase)
     end
     if Authenticator.new(user).authenticate(@form.password)
-      login user
-      flash[:info] = 'ログインしました。'
-      redirect_to :root
+      if user.suspended?
+        user.events.create!(type: 'rejected')
+        flash.now[:warning] = 'アカウントが停止されています。'
+        render action: 'new'
+      else
+        login user
+        user.events.create!(type: 'logged_in')
+        flash[:info] = 'ログインしました。'
+        redirect_to :root
+      end
     else
       flash.now[:danger] = 'メールアドレスまたはパスワードが正しくありません。'
       render action: 'new'

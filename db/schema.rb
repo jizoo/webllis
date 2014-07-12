@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140710135434) do
+ActiveRecord::Schema.define(version: 20140712062354) do
 
   create_table "administrators", force: true do |t|
     t.string   "email",                           null: false
@@ -26,6 +26,15 @@ ActiveRecord::Schema.define(version: 20140710135434) do
   add_index "administrators", ["email_for_index"], name: "index_administrators_on_email_for_index", unique: true, using: :btree
   add_index "administrators", ["remember_token"], name: "index_administrators_on_remember_token", using: :btree
 
+  create_table "events", force: true do |t|
+    t.integer  "user_id",    null: false
+    t.string   "type",       null: false
+    t.datetime "created_at", null: false
+  end
+
+  add_index "events", ["created_at"], name: "index_events_on_created_at", using: :btree
+  add_index "events", ["user_id", "created_at"], name: "index_events_on_user_id_and_created_at", using: :btree
+
   create_table "users", force: true do |t|
     t.string   "name",                            null: false
     t.string   "email",                           null: false
@@ -39,5 +48,7 @@ ActiveRecord::Schema.define(version: 20140710135434) do
 
   add_index "users", ["email_for_index"], name: "index_users_on_email_for_index", unique: true, using: :btree
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
+
+  add_foreign_key "events", "users", name: "events_user_id_fk"
 
 end

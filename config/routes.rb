@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     get 'login' => 'sessions#new', as: :login
     resource :session, only: [ :create, :destroy ]
     resources :users
+    resources :events, only: [ :index ]
   end
 
   root 'static_pages#home'

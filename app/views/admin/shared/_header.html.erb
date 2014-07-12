@@ -7,8 +7,9 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_administrator.email %> <span class="caret"></span></a>
         <ul class="dropdown-menu" roll="nemu">
           <li><%= link_to 'ダッシュボード', :admin_root %></li>
+          <li class="divider"></li>
           <li><%= link_to 'ユーザ管理', :admin_users %></li>
-          <li><%= link_to 'ログイン・ログアウト記録', '#' %></li>
+          <li><%= link_to 'ログイン・ログアウト記録', :admin_events %></li>
           <li class="divider"></li>
           <li><%= link_to 'ログアウト', :admin_session, method: :delete %></li>
         </ul>

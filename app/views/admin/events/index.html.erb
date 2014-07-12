@@ -1,0 +1,17 @@
+<%= provide(:title, 'ログイン・ログアウト記録') %>
+<h1>ユーザのログイン・ログアウト記録</h1>
+
+<div class="row">
+  <div class="col-md-12">
+    <%= link_to 'ユーザ一覧', :admin_users, class: "btn btn-default" %>
+    <table class="table table-striped">
+      <tr>
+        <th>ユーザ名</th>
+        <th>種別</th>
+        <th>日時</th>
+      </tr>
+      <%= render partial: 'event', collection: @events %>
+    </table>
+    <%= paginate @events %>
+  </div>
+</div>
