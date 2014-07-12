@@ -1,7 +1,17 @@
 require 'rails_helper'
 
+describe Admin::UsersController, 'ログイン前' do
+  it_behaves_like 'a protected admin controller'
+end
+
 describe Admin::UsersController do
   let(:params_hash) { attributes_for(:user) }
+  let(:administrator) { create(:administrator) }
+
+  before do
+    login(administrator)
+    session[:last_access_time] = 1.second.ago
+  end
 
   describe '#create' do
     example 'ユーザ一覧ページにリダイレクト' do

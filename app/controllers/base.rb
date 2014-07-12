@@ -1,4 +1,6 @@
 class Base < ApplicationController
+  before_action :check_account
+
   private
   def login(user)
     remember_token = User.new_remember_token
@@ -27,5 +29,13 @@ class Base < ApplicationController
   def logout
     self.current_user = nil
     cookies.delete(:remember_token)
+  end
+
+  def check_account
+    if current_user && !current_user.active?
+      cookies.delete(:remember_token)
+      flash[:warning] = 'アカウントが無効になりました。'
+      redirect_to :root
+    end
   end
 end
