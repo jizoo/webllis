@@ -7,7 +7,8 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_user.name %> <span class="caret"></span></a>
         <ul class="dropdown-menu" roll="nemu">
           <li><%= link_to 'マイページ', current_user %></li>
-          <li><%= link_to '設定', [ :edit, current_user ] %></li>
+          <li><%= link_to 'プロフィール設定', [ :edit, current_user ] %></li>
+          <li><%= link_to 'パスワード設定', [ :edit_password ] %></li>
           <li class="divider"></li>
           <li><%= link_to 'ログアウト', :session, method: :delete %></li>
         </ul>
