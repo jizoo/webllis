@@ -1,4 +1,4 @@
-<%= provide(:title, 'ログイン・ログアウト記録') %>
+<% provide(:title, 'ログイン・ログアウト記録') %>
 <h1>ユーザのログイン・ログアウト記録</h1>
 
 <div class="row">
@@ -6,13 +6,19 @@
     <%= link_to 'ユーザ一覧', :admin_users, class: "btn btn-default" %>
     <table class="table table-striped">
       <tr>
-      <% unless @user %>
-        <th>ユーザ名</th>
-      <% end %>
+        <% unless @user %><th>ユーザ名</th><% end %>
         <th>種別</th>
         <th>日時</th>
       </tr>
-      <%= render partial: 'event', collection: @events %>
+      <% @events.each do |event| %>
+        <%= EventPresenter.new(event, self).table_row %>
+      <% end %>
+      <% if @events.empty? %>
+        <tr>
+          <%= content_tag(:td, '記録がありません',
+            colspan: @user ? 2 : 3, style: 'text-align: center') %>
+        </tr>
+      <% end %>
     </table>
     <%= paginate @events %>
   </div>
