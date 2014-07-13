@@ -4,8 +4,7 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <%= form_for @user do |f| %>
-      <%= render 'shared/error_messages' %>
-      <%= render 'form', f: f %>
+      <%= render 'shared/user_form', f: f %>
       <%= f.submit '保存', class: "btn btn-primary" %>
       <%= link_to 'キャンセル', current_user, class: "btn btn-default" %>
       <%= link_to '退会する', current_user, method: :delete,

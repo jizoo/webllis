@@ -1,0 +1,9 @@
+<%= render 'shared/error_messages' %>
+<%= markup do |u|
+  p = UserFormPresenter.new(f, self)
+  u << p.text_field_block(:name, 'ユーザ名')
+  u << p.text_field_block(:email, 'メールアドレス')
+  u << p.password_field_block(:password, 'パスワード')
+  u << p.password_field_block(:password_confirmation, 'パスワード（確認）')
+  u << p.check_boxes if params[:controller] == 'admin/users' && params[:id]
+end %>

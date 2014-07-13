@@ -1,0 +1,5 @@
+<%= markup do |u|
+  p = UserFormPresenter.new(f, self)
+  u << p.text_field_block(:email, 'メールアドレス')
+  u << p.password_field_block(:password, 'パスワード')
+end %>

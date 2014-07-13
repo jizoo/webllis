@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include HtmlBuilder
+
   def full_title(page_title)
     base_title = "Webllis"
     if page_title.empty?

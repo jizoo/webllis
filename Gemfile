@@ -16,6 +16,7 @@ gem 'email_validator'
 gem 'kaminari'
 gem 'kaminari-bootstrap'
 gem 'foreigner'
+gem 'nokogiri'
 
 group :development do
   gem 'rails-erd'

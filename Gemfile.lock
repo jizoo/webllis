@@ -280,6 +280,7 @@ DEPENDENCIES
   kaminari
   kaminari-bootstrap
   mysql2
+  nokogiri
   pry-byebug
   pry-rails
   quiet_assets

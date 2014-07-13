@@ -4,17 +4,8 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
     <%= form_for @form, url: :admin_session do |f| %>
-      <div class="form-group">
-        <%= f.label :email, 'メールアドレス' %>
-        <%= f.text_field :email, class: "form-control" %>
-      </div>
-      <div class="form-group">
-        <%= f.label :password, 'パスワード' %>
-        <%= f.password_field :password, class: "form-control" %>
-      </div>
-      <div>
-        <%= f.submit 'ログイン', class: "btn btn-default" %>
-      </div>
+      <%= render 'shared/login_form', f: f %>
+      <%= f.submit 'ログイン', class: "btn btn-default" %>
     <% end %>
   </div>
 </div>
