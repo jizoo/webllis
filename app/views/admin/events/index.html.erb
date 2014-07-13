@@ -6,7 +6,9 @@
     <%= link_to 'ユーザ一覧', :admin_users, class: "btn btn-default" %>
     <table class="table table-striped">
       <tr>
+      <% unless @user %>
         <th>ユーザ名</th>
+      <% end %>
         <th>種別</th>
         <th>日時</th>
       </tr>
