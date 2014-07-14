@@ -1,4 +1,6 @@
 class SessionsController < Base
+  skip_before_action :authorize
+
   def new
     if logged_in?
       redirect_to :root

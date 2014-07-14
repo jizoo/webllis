@@ -1,5 +1,5 @@
 class UsersController < Base
-  before_action :authorize, except: [:new, :create]
+  skip_before_action :authorize, only: [:new, :create]
 
   def index
   end
@@ -48,12 +48,5 @@ class UsersController < Base
   def user_params
     params.require(:user).permit(:name, :email, :password,
       :password_confirmation)
-  end
-
-  def authorize
-    unless current_user
-      flash[:warning] = 'ログインしてください。'
-      redirect_to :login
-    end
   end
 end

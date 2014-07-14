@@ -1,4 +1,5 @@
 class Base < ApplicationController
+  before_action :authorize
   before_action :check_account
 
   private
@@ -29,6 +30,13 @@ class Base < ApplicationController
   def logout
     self.current_user = nil
     cookies.delete(:remember_token)
+  end
+
+  def authorize
+    unless current_user
+      flash[:warning] = 'ログインしてください。'
+      redirect_to :login
+    end
   end
 
   def check_account
