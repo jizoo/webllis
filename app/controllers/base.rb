@@ -34,9 +34,19 @@ class Base < ApplicationController
 
   def authorize
     unless current_user
+      store_location
       flash[:warning] = 'ログインしてください。'
       redirect_to :login
     end
+  end
+
+  def redirect_back_or(default)
+    redirect_to(session[:return_to] || default)
+    session.delete(:return_to)
+  end
+
+  def store_location
+    session[:return_to] = request.url
   end
 
   def check_account

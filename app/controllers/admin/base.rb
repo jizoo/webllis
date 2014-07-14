@@ -35,9 +35,19 @@ class Admin::Base < ApplicationController
 
   def authorize
     unless current_administrator
+      store_location
       flash[:warning] = '管理者としてログインしてください。'
       redirect_to :admin_login
     end
+  end
+
+  def redirect_back_or(default)
+    redirect_to(session[:return_to] || default)
+    session.delete(:return_to)
+  end
+
+  def store_location
+    session[:return_to] = request.url
   end
 
   def check_account

@@ -19,7 +19,7 @@ class Admin::SessionsController < Admin::Base
       login administrator
       session[:last_access_time] = Time.current
       flash[:info] = 'ログインしました。'
-      redirect_to :admin_root
+      redirect_back_or :admin_root
     else
       flash.now[:danger] = 'メールアドレスまたはパスワードが正しくありません。'
       render action: 'new'

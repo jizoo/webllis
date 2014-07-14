@@ -24,7 +24,7 @@ class SessionsController < Base
         login user
         user.events.create!(type: 'logged_in')
         flash[:info] = 'ログインしました。'
-        redirect_to :root
+        redirect_back_or :root
       end
     else
       flash.now[:danger] = 'メールアドレスまたはパスワードが正しくありません。'
