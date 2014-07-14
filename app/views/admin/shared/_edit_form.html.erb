@@ -1,8 +1,8 @@
 <%= render 'shared/error_messages', object: f.object %>
 <%= markup do |u|
-  p = FormPresenter.new(f, self)
+  p = UserFormPresenter.new(f, self)
   u << p.text_field_block(:name, 'ユーザ名')
   u << p.text_field_block(:email, 'メールアドレス')
   u << p.password_field_block(:password, 'パスワード')
-
+  u << p.check_boxes
 end %>

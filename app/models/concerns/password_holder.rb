@@ -2,8 +2,8 @@ module PasswordHolder
   extend ActiveSupport::Concern
 
   included do
-    attr_accessor :password_confirmation
-    validates :password, length: 6..20, confirmation: true
+    attr_accessor :password_confirmation, :new_password
+    validates :password, length: 6..20, confirmation: true, if: :password
   end
 
   def password=(raw_password)
