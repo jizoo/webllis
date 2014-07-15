@@ -1,0 +1,11 @@
+<% provide(:title, 'ユーザ一覧') %>
+<h1>ユーザ一覧</h1>
+
+<div class="row">
+  <div class="col-md-12">
+    <ul class="users">
+      <%= render @users %>
+    </ul>
+    <%= paginate @users %>
+  </div>
+</div>

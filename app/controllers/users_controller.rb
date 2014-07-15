@@ -2,10 +2,11 @@ class UsersController < Base
   skip_before_action :authorize, only: [:new, :create]
 
   def index
+    @users = User.order(created_at: :desc).page(params[:page])
   end
 
   def show
-    @user = current_user
+    @user = User.find(params[:id])
   end
 
   def new

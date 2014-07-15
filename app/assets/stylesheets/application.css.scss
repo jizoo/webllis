@@ -61,6 +61,7 @@ footer {
 }
 
 // forms
+
 #error_explanation {
   color: #f00;
   ul {
@@ -72,4 +73,20 @@ footer {
 
 .field_with_errors {
   @extend .has-error;
+}
+
+// users index
+
+.users {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  li {
+    overflow: auto;
+    padding: 10px 0;
+    border-top: 1px solid $gray-lighter;
+    &:last-child {
+      border-bottom: 1px solid $gray-lighter;
+    }
+  }
 }
