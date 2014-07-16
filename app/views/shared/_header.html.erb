@@ -3,6 +3,8 @@
     <%= link_to "webllis", root_path, id: "logo" %>
     <ul class="nav navbar-nav navbar-right">
     <% if logged_in? %>
+      <li><%= link_to '投稿する', :new_post %></li>
+      <li><%= link_to '投稿一覧', :posts %></li>
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_user.name %> <span class="caret"></span></a>
         <ul class="dropdown-menu" roll="nemu">

@@ -1,0 +1,6 @@
+ja:
+  activerecord:
+    attributes:
+      post:
+        url: URL
+        title: タイトル

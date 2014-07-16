@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   resource :session, only: [ :create, :destroy ]
   resources :users
   resource :password, only: [ :show, :edit, :update ]
+  resources :posts
 
   get '*anything' => 'errors#routing_error'
 end

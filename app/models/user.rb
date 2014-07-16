@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   include PasswordHolder
 
   has_many :events, dependent: :destroy
+  has_many :posts, dependent: :destroy
   before_create :create_remember_token
 
   def User.new_remember_token
@@ -16,6 +17,10 @@ class User < ActiveRecord::Base
 
   def active?
     !suspended?
+  end
+
+  def feed
+    Post.where('user_id = ?', id)
   end
 
   private

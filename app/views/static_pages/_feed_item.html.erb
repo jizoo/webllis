@@ -1,0 +1,12 @@
+<li class="media <%= feed_item.id %>">
+  <%= link_to image_tag(feed_item.image, alt: 'post', class: 'media-object'),
+    feed_item, class: 'pull-left' %>
+  <div class="media-body">
+    <h4 class="media-heading"><%= link_to feed_item.title, feed_item %></h4>
+    <p><%= feed_item.description %></p>
+  <span class="user">
+    <%= link_to gravatar_for(feed_item.user), feed_item.user %>
+    <%= link_to feed_item.user.name, feed_item.user %>
+  </span>
+  </div>
+</li>
