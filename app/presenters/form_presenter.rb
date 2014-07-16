@@ -11,16 +11,16 @@ class FormPresenter
   end
 
   def text_field_block(name, label_text)
-    markup(:div, class: 'form-group') do |u|
-      u << label(name, label_text, class: 'control-label')
-      u << text_field(name, class: 'form-control')
+    markup(:div, class: 'form-group') do |m|
+      m << label(name, label_text, class: 'control-label')
+      m << text_field(name, class: 'form-control')
     end
   end
 
   def password_field_block(name, label_text)
-    markup(:div, class: 'form-group') do |u|
-      u << label(name, label_text, class: 'control-label')
-      u << password_field(name, class: 'form-control')
+    markup(:div, class: 'form-group') do |m|
+      m << label(name, label_text, class: 'control-label')
+      m << password_field(name, class: 'form-control')
     end
   end
 end

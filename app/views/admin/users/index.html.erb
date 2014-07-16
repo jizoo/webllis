@@ -11,15 +11,15 @@
         <th>停止フラグ</th>
         <th>アクション</th>
       </tr>
-      <% @users.each do |u| %>
-        <% p = UserPresenter.new(u, self) %>
+      <% @users.each do |m| %>
+        <% p = UserPresenter.new(m, self) %>
         <tr>
-          <td><%= u.name %></td>
-          <td><%= u.email %></td>
+          <td><%= m.name %></td>
+          <td><%= m.email %></td>
           <td><%= p.suspended_mark %></td>
           <td>
-            <%= link_to '編集', [ :edit, :admin, u ] %> |
-            <%= link_to '削除', [ :admin, u ], method: :delete,
+            <%= link_to '編集', [ :edit, :admin, m ] %> |
+            <%= link_to '削除', [ :admin, m ], method: :delete,
               data: { confirm: '本当に削除しますか？' } %>
           </td>
         </tr>

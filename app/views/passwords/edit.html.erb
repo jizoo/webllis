@@ -6,11 +6,11 @@
   <%= form_for @change_password_form, url: :password,
          method: :patch do |f| %>
     <%= render 'shared/error_messages', object: f.object %>
-    <%= markup do |u|
+    <%= markup do |m|
       p = FormPresenter.new(f, self)
-      u << p.password_field_block(:current_password, '現在のパスワード')
-      u << p.password_field_block(:new_password, '新しいパスワード')
-      u << p.password_field_block(:new_password_confirmation, '新しいパスワード（確認）')
+      m << p.password_field_block(:current_password, '現在のパスワード')
+      m << p.password_field_block(:new_password, '新しいパスワード')
+      m << p.password_field_block(:new_password_confirmation, '新しいパスワード（確認）')
     end %>
     <%= f.submit '保存', class: "btn btn-primary" %>
     <%= link_to 'キャンセル', current_user, class: "btn btn-default" %>
