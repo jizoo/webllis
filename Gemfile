@@ -17,6 +17,8 @@ gem 'kaminari'
 gem 'kaminari-bootstrap'
 gem 'foreigner'
 gem 'nokogiri'
+gem 'carrierwave'
+gem 'mini_magick'
 
 group :development do
   gem 'rails-erd'

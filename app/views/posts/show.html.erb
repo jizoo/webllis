@@ -6,7 +6,7 @@
   <h3>Posts</h3>
     <ul class="media-list">
       <li class="media">
-        <%= link_to image_tag(@post.image, alt: 'post', class: 'media-object'),
+        <%= link_to image_tag(@post.image.url, alt: 'post', class: 'media-object'),
           @post.url, class: 'pull-left', target: '_blank' %>
         <div class="media-body">
           <h4 class="media-heading"><%= link_to @post.title, @post.url, target: '_blank' %></h4>

@@ -30,3 +30,6 @@
 
 # Ignore asset pipline cache files
 /public/assets/*
+
+# Ignore upload files
+/public/uploads

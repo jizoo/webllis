@@ -4,4 +4,5 @@ class Post < ActiveRecord::Base
   validates :url, presence: true
   validates :title, presence: true
   validates :description, length: { maximum: 140 }
+  mount_uploader :image, ImageUploader
 end

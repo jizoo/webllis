@@ -43,6 +43,7 @@ class PostsController < Base
   end
 
   def post_params
-    params.require(:post).permit(:url, :title, :description)
+    params.require(:post).permit(:url, :title, :image,
+    :image_cache, :remove_image, :description)
   end
 end

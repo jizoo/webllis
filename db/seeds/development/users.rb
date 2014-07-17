@@ -12,7 +12,7 @@ image_colors = %w(2ecc71 3498db 9b59b6 f1c40f e74c3c)
       url: "http://example#{p+1}.com",
       title: "タイトル#{p+1}",
       description: 'この文章はダミーです。',
-      image: "http://placehold.it/300x200/#{image_colors.sample}/ffffff",
+      remote_image_url: "http://placehold.it/300x200/#{image_colors.sample}/ffffff",
     )
   end
 end
