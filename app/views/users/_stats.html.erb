@@ -1,0 +1,29 @@
+<% @user ||= current_user %>
+<div>
+  <%= link_to [ :following, @user ], class: 'btn btn-link' do %>
+    フォロー
+    <strong id="following">
+      <%= @user.followed_users.count %>
+    </strong>
+  <% end %>
+  <% if @followed_users.any? %>
+    <div>
+      <% @followed_users.each do |followed_user| %>
+        <%= link_to gravatar_for(followed_user, size: 20), followed_user %>
+      <% end %>
+    </div>
+  <% end %>
+  <%= link_to [ :followers, @user ], class: 'btn btn-link' do %>
+  フォロワー
+    <strong id="followers">
+      <%= @user.followers.count %>
+    </strong>
+  <% end %>
+  <% if @followers.any? %>
+    <div>
+      <% @followers.each do |follower| %>
+        <%= link_to gravatar_for(follower, size: 20), follower %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

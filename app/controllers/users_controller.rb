@@ -7,6 +7,8 @@ class UsersController < Base
 
   def show
     @user = User.find(params[:id])
+    @followed_users = current_user.followed_users.limit(5)
+    @followers = current_user.followers.limit(5)
   end
 
   def new
@@ -43,6 +45,20 @@ class UsersController < Base
     current_user.destroy
     flash[:success] = 'アカウントを削除しました。'
     redirect_to :root
+  end
+
+  def following
+    @title = 'フォロー'
+    @user = User.find(params[:id])
+    @users = @user.followed_users.page(params[:page])
+    render 'show_follow'
+  end
+
+  def followers
+    @title = 'フォロワー'
+    @user = User.find(params[:id])
+    @users = @user.followers.page(params[:page])
+    render 'show_follow'
   end
 
   private

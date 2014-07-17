@@ -16,9 +16,14 @@ Rails.application.routes.draw do
   get 'login' => 'sessions#new', as: :login
   get 'signup' => 'users#new', as: :signup
   resource :session, only: [ :create, :destroy ]
-  resources :users
+  resources :users do
+    member do
+      get :following, :followers
+    end
+  end
   resource :password, only: [ :show, :edit, :update ]
   resources :posts
+  resources :relationships, only: [ :create, :destroy ]
 
   get '*anything' => 'errors#routing_error'
 end
