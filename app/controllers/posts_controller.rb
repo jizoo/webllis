@@ -1,6 +1,6 @@
 class PostsController < Base
   def index
-    @posts = current_user.feed.page(params[:page])
+    @posts = current_user.posts.page(params[:page])
   end
 
   def show
