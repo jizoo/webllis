@@ -4,6 +4,9 @@
   <div class="row">
     <div class="col-md-12">
       <h3>フィード</h3>
+      <% if search_form.title %>
+        検索ワード：<%= search_form.title %>
+      <% end %>
       <%= render 'feed' %>
     </div>
   </div>

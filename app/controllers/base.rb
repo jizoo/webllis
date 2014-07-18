@@ -62,4 +62,10 @@ class Base < ApplicationController
       redirect_to :root
     end
   end
+
+  def search_form
+    SearchForm.new(params[:search])
+  end
+
+  helper_method :search_form
 end

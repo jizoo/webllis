@@ -1,6 +1,7 @@
 <header class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <%= link_to "webllis", root_path, id: "logo" %>
+    <%= render 'shared/search_form' %>
     <ul class="nav navbar-nav navbar-right">
     <% if logged_in? %>
       <li><%= link_to '投稿する', :new_post %></li>

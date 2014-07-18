@@ -3,7 +3,11 @@ class StaticPagesController < Base
 
   def home
     if logged_in?
-      @feed_items = current_user.feed.page(params[:page])
+      if search_form.title.present?
+        @feed_items = search_form.search.page(params[:page])
+      else
+        @feed_items = current_user.feed.page(params[:page])
+      end
     end
   end
 
