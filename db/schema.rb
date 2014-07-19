@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140717042959) do
+ActiveRecord::Schema.define(version: 20140719034025) do
 
   create_table "administrators", force: true do |t|
     t.string   "email",                           null: false
@@ -34,6 +34,17 @@ ActiveRecord::Schema.define(version: 20140717042959) do
 
   add_index "events", ["created_at"], name: "index_events_on_created_at", using: :btree
   add_index "events", ["user_id", "created_at"], name: "index_events_on_user_id_and_created_at", using: :btree
+
+  create_table "favorites", force: true do |t|
+    t.integer  "user_id",    null: false
+    t.integer  "post_id",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "favorites", ["post_id"], name: "index_favorites_on_post_id", using: :btree
+  add_index "favorites", ["user_id", "post_id"], name: "index_favorites_on_user_id_and_post_id", unique: true, using: :btree
+  add_index "favorites", ["user_id"], name: "index_favorites_on_user_id", using: :btree
 
   create_table "posts", force: true do |t|
     t.integer  "user_id",     null: false

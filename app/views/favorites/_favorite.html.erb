@@ -1,0 +1,12 @@
+<li class="media">
+  <%= link_to image_tag(favorite.image.url, alt: 'favorite', class: 'media-object'),
+    favorite, class: 'pull-left' %>
+  <div class="media-body">
+    <h4 class="media-heading"><%= link_to favorite.title, favorite %></h4>
+    <p><%= favorite.description %></p>
+    <span class="user">
+      <%= link_to gravatar_for(favorite.user), favorite.user %>
+      <%= link_to favorite.user.name, favorite.user %>
+    </span>
+  </div>
+</li>

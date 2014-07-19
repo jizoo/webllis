@@ -11,6 +11,7 @@
         <div class="media-body">
           <h4 class="media-heading"><%= link_to @post.title, @post.url, target: '_blank' %></h4>
           <p><%= @post.description %></p>
+          <%= render 'favorite_form' %>
         </div>
       </li>
     </ul>

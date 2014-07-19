@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   resource :password, only: [ :show, :edit, :update ]
   resources :posts
   resources :relationships, only: [ :create, :destroy ]
+  resources :favorites, only: [ :index, :create, :destroy ]
 
   get '*anything' => 'errors#routing_error'
 end
