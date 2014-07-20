@@ -1,6 +1,4 @@
 <% if @feed_items.any? %>
-  <ul class="media-list">
-    <%= render partial: 'feed_item', collection: @feed_items %>
-  </ul>
+  <%= render partial: 'feed_item', collection: @feed_items %>
   <%= paginate @feed_items %>
 <% end %>

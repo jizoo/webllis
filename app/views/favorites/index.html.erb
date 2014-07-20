@@ -1,12 +1,9 @@
 <% provide(:title, 'お気に入りの投稿一覧') %>
-<h1>お気に入りの投稿一覧</h1>
-
-<div class="row">
-  <div class="col-md-12">
-  <h3>お気に入りの投稿 <span class="badge"><%= current_user.favorite_posts.count %></span></h3>
-    <ul class="media-list">
-      <%= render partial: 'favorite', collection: @favorites %>
-    </ul>
-    <%= paginate @favorites %>
-  </div>
+<div class="col-lg-12 page-header">
+  <h1>お気に入りの投稿一覧</h1>
+  <h3>お気に入りの投稿 <span class="badge">
+    <%= current_user.favorite_posts.count %></span></h3>
 </div>
+
+<%= render partial: 'favorite', collection: @favorites %>
+<%= paginate @favorites %>

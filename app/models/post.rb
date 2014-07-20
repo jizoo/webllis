@@ -6,7 +6,7 @@ class Post < ActiveRecord::Base
   default_scope -> { order(created_at: :desc)}
   validates :url, presence: true
   validates :title, presence: true
-  validates :description, length: { maximum: 140 }
+  validates :description, length: { maximum: 4000 }
   mount_uploader :image, ImageUploader
 
   def self.from_users_followed_by(user)

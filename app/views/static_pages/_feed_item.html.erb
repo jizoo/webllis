@@ -1,12 +1,16 @@
-<li class="media <%= feed_item.id %>">
-  <%= link_to image_tag(feed_item.image.url, alt: 'post', class: 'media-object'),
-    feed_item, class: 'pull-left' %>
-  <div class="media-body">
-    <h4 class="media-heading"><%= link_to feed_item.title, feed_item %></h4>
-    <p><%= feed_item.description %></p>
-  <span class="user">
-    <%= link_to gravatar_for(feed_item.user), feed_item.user %>
-    <%= link_to feed_item.user.name, feed_item.user %>
-  </span>
+<div class="row">
+  <div class="col-lg-7 col-md-7">
+      <%= link_to image_tag(feed_item.image.url, alt: 'post', class: 'img-responsive'), feed_item %>
   </div>
-</li>
+  <div class="col-lg-5 col-md-5">
+    <h3><%= link_to(feed_item.title, feed_item) %></h3>
+    <p><%= truncate(feed_item.description, length: 200) %>
+      <%= link_to('続きを読む', feed_item) %></p>
+    <span><%= feed_item.created_at.strftime('%Y/%m/%d') %></span>
+    <span class="pull-right">
+      <%= link_to gravatar_for(feed_item.user, size: 15), feed_item.user %>
+      <%= link_to feed_item.user.name, feed_item.user %>
+    </span>
+  </div>
+</div>
+<hr>
