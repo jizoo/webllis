@@ -1,5 +1,5 @@
 <%= form_for SearchForm.new(params[:search]), as: 'search', url: :root,
-    html: { method: :get, class: 'search' } do |f| %>
+    html: { method: :get, class: 'search navbar-form navbar-left' } do |f| %>
   <%= f.search_field :title  %>
   <%= f.submit('検索', class: 'btn btn-default btn-xs') %>
 <% end %>
