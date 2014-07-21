@@ -34,4 +34,11 @@ class PostFormPresenter < FormPresenter
       end
     end
   end
+
+  def tag_field_block(name, label_text)
+    markup(:div, class: 'form-group') do |m|
+      m << label(name, label_text, class: 'control-label')
+      m << text_field(name, class: 'form-control')
+    end
+  end
 end

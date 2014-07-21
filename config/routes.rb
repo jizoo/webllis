@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   resources :posts
   resources :relationships, only: [ :create, :destroy ]
   resources :favorites, only: [ :index, :create, :destroy ]
+  get 'tags/:tag' => 'static_pages#home', as: :tag
 
   get '*anything' => 'errors#routing_error'
 end

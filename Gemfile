@@ -19,6 +19,7 @@ gem 'foreigner'
 gem 'nokogiri'
 gem 'carrierwave'
 gem 'mini_magick'
+gem 'acts-as-taggable-on'
 
 group :development do
   gem 'rails-erd'

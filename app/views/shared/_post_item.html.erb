@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-lg-7 col-md-7">
+    <%= link_to image_tag(item.image.url, alt: 'post', class: 'img-responsive'), item %>
+  </div>
+  <div class="col-lg-5 col-md-5">
+    <h3><%= link_to(item.title, item) %></h3>
+    <p><%= truncate(item.description, length: 200) %>
+      <%= link_to('続きを読む', item) %></p>
+    <span><%= item.created_at.strftime('%Y/%m/%d') %></span>
+    <span><%= raw item.tag_list.map { |t| link_to t, tag_path(t) }.join(', ') %></span>
+    <span class="pull-right">
+    <% if params[:controller] == 'posts' %>
+      <%= link_to '詳細', item %>
+      <%= link_to '編集', [ :edit, item ] %>
+      <%= link_to '削除', item, method: :delete,
+        data: { confirm: '本当に削除しますか？' } %>
+    <% else %>
+      <%= link_to gravatar_for(item.user, size: 15), item.user %>
+      <%= link_to item.user.name, item.user %>
+    <% end %>
+    </span>
+  </div>
+</div>
+<hr>

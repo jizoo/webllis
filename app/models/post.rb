@@ -8,6 +8,7 @@ class Post < ActiveRecord::Base
   validates :title, presence: true
   validates :description, length: { maximum: 4000 }
   mount_uploader :image, ImageUploader
+  acts_as_taggable
 
   def self.from_users_followed_by(user)
     followed_user_ids = "SELECT followed_id FROM relationships

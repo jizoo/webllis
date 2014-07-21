@@ -7,6 +7,9 @@ class StaticPagesController < Base
         @feed_items = search_form.search.page(params[:page])
       else
         @feed_items = current_user.feed.page(params[:page])
+        if params[:tag]
+          @feed_items = current_user.feed.page(params[:page]).tagged_with(params[:tag])
+        end
       end
     end
   end

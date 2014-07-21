@@ -2,6 +2,8 @@
   <h1 class="page-header">
     <% if search_form.title %>
       検索ワード：<%= search_form.title %>
+    <% elsif params[:tag] %>
+      タグ：<%= params[:tag] %>
     <% else %>
       トップページ
     <% end %>
@@ -9,5 +11,9 @@
 </div>
 
 <% if logged_in? %>
-  <%= render 'feed' %>
+  <% @feed_items.each do |feed_item| %>
+    <%= render partial: 'shared/post_item', locals: { item: feed_item } %>
+  <% end %>
+  <%= paginate @feed_items %>
+  <%= render 'shared/tag_cloud' %>
 <% end %>

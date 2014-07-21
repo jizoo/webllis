@@ -5,5 +5,8 @@
     <%= current_user.favorite_posts.count %></span></h3>
 </div>
 
-<%= render partial: 'favorite', collection: @favorites %>
+<% @favorites.each do |favorite| %>
+  <%= render partial: 'shared/post_item', locals: { item: favorite } %>
+<% end %>
 <%= paginate @favorites %>
+<%= render 'shared/tag_cloud' %>
