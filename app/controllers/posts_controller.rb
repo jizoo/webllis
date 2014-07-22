@@ -5,6 +5,8 @@ class PostsController < Base
 
   def show
     @post = Post.find(params[:id])
+    @comments = @post.comments.page(params[:page])
+    @comment = @post.comments.build
   end
 
   def new

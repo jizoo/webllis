@@ -2,6 +2,7 @@ class Post < ActiveRecord::Base
   belongs_to :user
   has_many :favorites, dependent: :destroy
   has_many :favorited_users, through: :favorites, source: :post
+  has_many :comments, dependent: :destroy
 
   default_scope -> { order(created_at: :desc)}
   validates :url, presence: true

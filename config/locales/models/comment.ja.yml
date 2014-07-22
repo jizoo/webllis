@@ -1,0 +1,11 @@
+ja:
+  activerecord:
+    attributes:
+      comment:
+        content: コメント
+    errors:
+      models:
+        comment:
+          attributes:
+            content:
+              too_long: を1000文字以内で入力してください。

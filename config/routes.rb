@@ -22,7 +22,9 @@ Rails.application.routes.draw do
     end
   end
   resource :password, only: [ :show, :edit, :update ]
-  resources :posts
+  resources :posts do
+    resources :comments, only: [ :create, :destroy ]
+  end
   resources :relationships, only: [ :create, :destroy ]
   resources :favorites, only: [ :index, :create, :destroy ]
   get 'tags/:tag' => 'static_pages#home', as: :tag

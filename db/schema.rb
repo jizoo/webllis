@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140720094337) do
+ActiveRecord::Schema.define(version: 20140722000728) do
 
   create_table "administrators", force: true do |t|
     t.string   "email",                           null: false
@@ -25,6 +25,17 @@ ActiveRecord::Schema.define(version: 20140720094337) do
 
   add_index "administrators", ["email_for_index"], name: "index_administrators_on_email_for_index", unique: true, using: :btree
   add_index "administrators", ["remember_token"], name: "index_administrators_on_remember_token", using: :btree
+
+  create_table "comments", force: true do |t|
+    t.integer  "post_id",    null: false
+    t.integer  "user_id",    null: false
+    t.string   "content",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "comments", ["post_id"], name: "comments_post_id_fk", using: :btree
+  add_index "comments", ["user_id"], name: "comments_user_id_fk", using: :btree
 
   create_table "events", force: true do |t|
     t.integer  "user_id",    null: false
@@ -103,6 +114,9 @@ ActiveRecord::Schema.define(version: 20140720094337) do
 
   add_index "users", ["email_for_index"], name: "index_users_on_email_for_index", unique: true, using: :btree
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
+
+  add_foreign_key "comments", "posts", name: "comments_post_id_fk"
+  add_foreign_key "comments", "users", name: "comments_user_id_fk"
 
   add_foreign_key "events", "users", name: "events_user_id_fk"
 

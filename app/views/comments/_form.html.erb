@@ -1,0 +1,7 @@
+<%= render 'shared/error_messages', object: f.object %>
+<div class="form-group">
+  <%= gravatar_for current_user, size: 25 %>
+  <%= f.label :content, 'コメントを投稿する' %>
+  <%= f.text_area :content, placeholder: 'コメントを入力してください。',
+    rows: '7', class: 'form-control' %>
+</div>

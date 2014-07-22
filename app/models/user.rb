@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   has_many :followers, through: :reverse_relationships, source: :follower
   has_many :favorites, dependent: :destroy
   has_many :favorite_posts, through: :favorites, source: :post
+  has_many :comments, dependent: :destroy
 
   before_create :create_remember_token
 
