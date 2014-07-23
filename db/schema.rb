@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140722000728) do
+ActiveRecord::Schema.define(version: 20140723011406) do
 
   create_table "administrators", force: true do |t|
     t.string   "email",                           null: false
@@ -102,17 +102,20 @@ ActiveRecord::Schema.define(version: 20140722000728) do
   add_index "tags", ["name"], name: "index_tags_on_name", unique: true, using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "name",                            null: false
-    t.string   "email",                           null: false
-    t.string   "email_for_index",                 null: false
-    t.string   "hashed_password",                 null: false
-    t.boolean  "suspended",       default: false, null: false
+    t.string   "name",                                   null: false
+    t.string   "email",                                  null: false
+    t.string   "email_for_index",                        null: false
+    t.string   "hashed_password",                        null: false
+    t.boolean  "suspended",              default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "remember_token"
+    t.string   "password_reset_token"
+    t.datetime "password_reset_sent_at"
   end
 
   add_index "users", ["email_for_index"], name: "index_users_on_email_for_index", unique: true, using: :btree
+  add_index "users", ["password_reset_token"], name: "index_users_on_password_reset_token", using: :btree
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
 
   add_foreign_key "comments", "posts", name: "comments_post_id_fk"

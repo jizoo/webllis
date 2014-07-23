@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   resources :relationships, only: [ :create, :destroy ]
   resources :favorites, only: [ :index, :create, :destroy ]
   get 'tags/:tag' => 'static_pages#home', as: :tag
+  resources :password_resets, only: [ :new, :edit, :create, :update ]
 
   get '*anything' => 'errors#routing_error'
 end
