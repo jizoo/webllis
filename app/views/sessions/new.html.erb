@@ -3,6 +3,9 @@
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
+    <h3>Twitterでログイン</h3>
+    <%= link_to 'Twitterでログイン', '/auth/twitter', class: 'btn btn-default' %>
+    <h3>メールアドレスとパスワードでログイン</h3>
     <%= form_for @form, url: :session do |f| %>
       <%= render 'shared/login_form', f: f %>
       <div class="checkbox">

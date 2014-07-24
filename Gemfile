@@ -20,6 +20,8 @@ gem 'nokogiri'
 gem 'carrierwave'
 gem 'mini_magick'
 gem 'acts-as-taggable-on'
+gem 'omniauth'
+gem 'omniauth-twitter'
 
 group :development do
   gem 'rails-erd'

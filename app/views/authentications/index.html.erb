@@ -1,0 +1,16 @@
+<% provide(:title, 'ユーザ認証') %>
+<h1>ユーザ認証</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <h3>外部サービス</h3>
+      <%  if @authentications.present? %>
+        <% @authentications.each do |authentication| %>
+          <%= link_to 'Twitterの紐付けを解除', authentication, method: :delete,
+            data: { confirm: '本当にTwitterの紐付けを解除しますか？' }, class: 'btn btn-default' %>
+        <% end %>
+      <% else %>
+        <%= link_to 'Twitter認証', '/auth/twitter', class: 'btn btn-primary' %>
+      <% end %>
+  </div>
+</div>

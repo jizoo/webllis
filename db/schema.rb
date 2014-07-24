@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140723011406) do
+ActiveRecord::Schema.define(version: 20140724013439) do
 
   create_table "administrators", force: true do |t|
     t.string   "email",                           null: false
@@ -25,6 +25,17 @@ ActiveRecord::Schema.define(version: 20140723011406) do
 
   add_index "administrators", ["email_for_index"], name: "index_administrators_on_email_for_index", unique: true, using: :btree
   add_index "administrators", ["remember_token"], name: "index_administrators_on_remember_token", using: :btree
+
+  create_table "authentications", force: true do |t|
+    t.integer  "user_id"
+    t.string   "provider",   null: false
+    t.string   "uid",        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "authentications", ["uid", "provider"], name: "index_authentications_on_uid_and_provider", unique: true, using: :btree
+  add_index "authentications", ["user_id"], name: "index_authentications_on_user_id", using: :btree
 
   create_table "comments", force: true do |t|
     t.integer  "post_id",    null: false
@@ -117,6 +128,8 @@ ActiveRecord::Schema.define(version: 20140723011406) do
   add_index "users", ["email_for_index"], name: "index_users_on_email_for_index", unique: true, using: :btree
   add_index "users", ["password_reset_token"], name: "index_users_on_password_reset_token", using: :btree
   add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
+
+  add_foreign_key "authentications", "users", name: "authentications_user_id_fk"
 
   add_foreign_key "comments", "posts", name: "comments_post_id_fk"
   add_foreign_key "comments", "users", name: "comments_user_id_fk"

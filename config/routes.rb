@@ -29,6 +29,8 @@ Rails.application.routes.draw do
   resources :favorites, only: [ :index, :create, :destroy ]
   get 'tags/:tag' => 'static_pages#home', as: :tag
   resources :password_resets, only: [ :new, :edit, :create, :update ]
+  get '/auth/:provider/callback' => 'authentications#create'
+  resources :authentications, only: [ :index, :create, :destroy ]
 
   get '*anything' => 'errors#routing_error'
 end
