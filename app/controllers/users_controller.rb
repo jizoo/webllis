@@ -13,6 +13,7 @@ class UsersController < Base
 
   def new
     @user = User.new
+    @user.apply_omniauth(session[:omniauth]) if session[:omniauth]
   end
 
   def edit
@@ -21,6 +22,8 @@ class UsersController < Base
 
   def create
     @user = User.new(user_params)
+    @user.apply_omniauth(session[:omniauth]) if session[:omniauth]
+    session[:omniauth] = nil unless @user.new_record?
     if @user.save
       login @user
       flash[:success] = '登録完了しました。'

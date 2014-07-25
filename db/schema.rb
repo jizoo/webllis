@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140724013439) do
+ActiveRecord::Schema.define(version: 20140725101337) do
 
   create_table "administrators", force: true do |t|
     t.string   "email",                           null: false
@@ -116,7 +116,7 @@ ActiveRecord::Schema.define(version: 20140724013439) do
     t.string   "name",                                   null: false
     t.string   "email",                                  null: false
     t.string   "email_for_index",                        null: false
-    t.string   "hashed_password",                        null: false
+    t.string   "hashed_password"
     t.boolean  "suspended",              default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"

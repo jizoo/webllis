@@ -25,7 +25,8 @@ class AuthenticationsController < Base
         flash[:success] = 'ログインしました。'
         redirect_back_or :root
       else
-        # Twitterでサインアップをここで扱う。
+        session[:omniauth] = omniauth.except('extra')
+        redirect_to :signup
       end
     end
   end

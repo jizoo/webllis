@@ -3,6 +3,8 @@
   p = FormPresenter.new(f, self)
   m << p.text_field_block(:name, 'ユーザ名')
   m << p.text_field_block(:email, 'メールアドレス')
-  m << p.password_field_block(:password, 'パスワード')
-  m << p.password_field_block(:password_confirmation, 'パスワード（確認）')
+  if @user.password_required?
+    m << p.password_field_block(:password, 'パスワード')
+    m << p.password_field_block(:password_confirmation, 'パスワード（確認）')
+  end
 end %>

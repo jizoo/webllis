@@ -64,6 +64,10 @@ class User < ActiveRecord::Base
     favorites.find_by(post_id: other_post.id).destroy
   end
 
+  def apply_omniauth(omniauth)
+    authentications.build(provider: omniauth['provider'], uid: omniauth['uid'])
+  end
+
   private
   def create_remember_token
     self.remember_token = User.encrypt(User.new_remember_token)
