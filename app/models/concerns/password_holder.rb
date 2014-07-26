@@ -20,6 +20,6 @@ module PasswordHolder
   end
 
   def password_required?
-    !password.nil?
+    !password.nil? || !hashed_password.nil?
   end
 end
