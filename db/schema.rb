@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140725101337) do
+ActiveRecord::Schema.define(version: 20140727235203) do
 
   create_table "administrators", force: true do |t|
     t.string   "email",                           null: false
@@ -32,6 +32,8 @@ ActiveRecord::Schema.define(version: 20140725101337) do
     t.string   "uid",        null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "nickname",   null: false
+    t.string   "image",      null: false
   end
 
   add_index "authentications", ["uid", "provider"], name: "index_authentications_on_uid_and_provider", unique: true, using: :btree
@@ -123,6 +125,7 @@ ActiveRecord::Schema.define(version: 20140725101337) do
     t.string   "remember_token"
     t.string   "password_reset_token"
     t.datetime "password_reset_sent_at"
+    t.string   "icon_image",                             null: false
   end
 
   add_index "users", ["email_for_index"], name: "index_users_on_email_for_index", unique: true, using: :btree

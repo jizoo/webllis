@@ -22,7 +22,11 @@ class UsersController < Base
 
   def create
     @user = User.new(user_params)
-    @user.apply_omniauth(session[:omniauth]) if session[:omniauth]
+    if session[:omniauth]
+      @user.apply_omniauth(session[:omniauth])
+    else
+      @user.icon_image = gravatar_url(@user)
+    end
     session[:omniauth] = nil unless @user.new_record?
     if @user.save
       login @user
@@ -67,6 +71,6 @@ class UsersController < Base
   private
   def user_params
     params.require(:user).permit(:name, :email, :password,
-      :password_confirmation)
+      :password_confirmation, :icon_image)
   end
 end

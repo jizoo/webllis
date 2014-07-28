@@ -1,6 +1,6 @@
 <% provide(:title, @user.name) %>
 <h1>
-  <%= gravatar_for @user %>
+  <%= image_tag @user.icon_image, class: 'icon-image' %>
   <%= @user.name %>
 </h1>
 

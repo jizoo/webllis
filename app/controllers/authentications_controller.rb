@@ -14,12 +14,13 @@ class AuthenticationsController < Base
       flash[:success] = 'ログインしました。'
       redirect_back_or :root
     elsif current_user
-      current_user.authentications.create(provider: omniauth['provider'], uid: omniauth['uid'])
+      current_user.apply_omniauth(omniauth)
+      current_user.apply_omniauth(omniauth).save
       flash[:success] = '認証が成功しました。'
       redirect_to :authentications
     else
       user = User.new
-      user.authentications.build(provider: omniauth['provider'], uid: omniauth['uid'])
+      user.apply_omniauth(omniauth)
       if user.save
         login(:user, user)
         flash[:success] = 'ログインしました。'

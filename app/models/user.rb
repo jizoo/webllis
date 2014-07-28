@@ -65,7 +65,17 @@ class User < ActiveRecord::Base
   end
 
   def apply_omniauth(omniauth)
-    authentications.build(provider: omniauth['provider'], uid: omniauth['uid'])
+    provider = omniauth['provider']
+    uid = omniauth['uid']
+    nickname = omniauth['info']['nickname']
+    image_url = omniauth['info']['image']
+
+    self.name = nickname if name.blank?
+    self.icon_image = image_url if new_record?
+    authentications.build(provider: provider, uid: uid) do |user|
+      user.nickname = nickname
+      user.image = image_url
+    end
   end
 
   private

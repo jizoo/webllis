@@ -1,0 +1,23 @@
+<div class="form-group">
+  <%= f.label 'アイコン', class: 'control-label' %>
+  <div>
+    <label for="user_gravatar_icon" class="radio-inline">
+      <%= f.radio_button :icon_image, gravatar_url(@user),
+        id: 'user_gravatar_icon', class: 'icon-radio' %>
+      <div>
+        <div>Gravatar</div>
+        <%= image_tag gravatar_url(@user), class: 'icon-image' %>
+      </div>
+    </label>
+  <% @user.authentications.each do |user| %>
+    <label for="user_<%= user.provider %>_icon" class="radio-inline">
+      <%= f.radio_button :icon_image, user.image,
+        id: "user_#{user.provider}_icon", class: 'icon-radio' %>
+      <div>
+        <div><%= user.provider.capitalize %></div>
+        <%= image_tag user.image, class: 'icon-image' %>
+      </div>
+    </label>
+  <% end %>
+  </div>
+</div>
