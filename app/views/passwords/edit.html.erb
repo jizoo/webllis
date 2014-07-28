@@ -8,7 +8,7 @@
     <%= render 'shared/error_messages', object: f.object %>
     <%= markup do |m|
       p = FormPresenter.new(f, self)
-    if current_user.password_required?
+    if current_user.hashed_password.present?
       m << p.password_field_block(:current_password, '現在のパスワード')
     end
       m << p.password_field_block(:new_password, '新しいパスワード')

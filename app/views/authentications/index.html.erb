@@ -6,7 +6,7 @@
     <h3>外部サービス</h3>
       <%  if @authentications.present? %>
         <% @authentications.each do |authentication| %>
-            <%= link_to_if current_user.password_required?, 'Twitterの紐付けを解除', authentication, method: :delete,
+            <%= link_to_if current_user.hashed_password.present?, 'Twitterの紐付けを解除', authentication, method: :delete,
               data: { confirm: '本当にTwitterの紐付けを解除しますか？' }, class: 'btn btn-default' %>
         <% end %>
       <% else %>
