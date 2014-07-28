@@ -1,7 +1,7 @@
 <% provide(:title, @title) %>
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-      <h1><%= gravatar_for @user %><%= @user.name %></h1>
+      <h1><%= image_tag @user.icon_image, alt: 'icon', class: 'icon-large' %><%= @user.name %></h1>
       <span><%= link_to "マイページ", @user %></span>
       <span><b>投稿:</b> <%= @user.posts.count %></span>
   </div>

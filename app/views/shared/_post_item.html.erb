@@ -15,7 +15,7 @@
       <%= link_to '削除', item, method: :delete,
         data: { confirm: '本当に削除しますか？' } %>
     <% else %>
-      <%= link_to gravatar_for(item.user, size: 15), item.user %>
+      <%= link_to image_tag(item.user.icon_image, alt: 'icon', class: 'icon-tiny'), item.user %>
       <%= link_to item.user.name, item.user %>
     <% end %>
     </span>

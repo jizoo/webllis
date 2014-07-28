@@ -1,4 +1,4 @@
 <li>
-  <%= gravatar_for user, size: 52 %>
+  <%= image_tag user.icon_image, alt: 'icon', class: 'icon-large' %>
   <%= link_to user.name, user %>
 </li>
