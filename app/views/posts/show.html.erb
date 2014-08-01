@@ -12,21 +12,23 @@
     <p><%= @post.description %></p>
     <span><%= @post.created_at.strftime('%Y/%m/%d') %></span>
     <span><%= raw @post.tag_list.map { |t| link_to t, tag_path(t) }.join(', ') %></span>
-    <%= render 'posts/favorite_form' %>
+    <%= render 'posts/favorite_form' if current_user %>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-lg-12">
-    <h3>コメント <span class="badge">
-      <%= @post.comments.count %></span></h3>
-    <% if @comments.present? %>
-      <%= render @comments %>
-      <%= paginate @comments %>
-    <% end %>
-    <%= form_for [ @post, @comment ] do |f| %>
-      <%= render 'comments/form', f: f %>
-      <%= f.submit 'コメントする', class: 'btn btn-primary' %>
-    <% end %>
+<% if current_user %>
+  <div class="row">
+    <div class="col-lg-12">
+      <h3>コメント <span class="badge">
+        <%= @post.comments.count %></span></h3>
+      <% if @comments.present? %>
+        <%= render @comments %>
+        <%= paginate @comments %>
+      <% end %>
+      <%= form_for [ @post, @comment ] do |f| %>
+        <%= render 'comments/form', f: f %>
+        <%= f.submit 'コメントする', class: 'btn btn-primary' %>
+      <% end %>
+    </div>
   </div>
-</div>
+<% end %>

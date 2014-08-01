@@ -1,12 +1,17 @@
 class PostsController < Base
+  skip_before_action :authorize, only: :show
+
   def index
     @posts = current_user.posts.page(params[:page])
   end
 
   def show
     @post = Post.find(params[:id])
-    @comments = @post.comments.page(params[:page])
-    @comment = @post.comments.build
+    if logged_in?
+      @comments = @post.comments.page(params[:page])
+      @comment = @post.comments.build
+    end
+    authorize unless @post.user.editor?
   end
 
   def new

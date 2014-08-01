@@ -4,5 +4,9 @@
   m << p.text_field_block(:name, 'ユーザ名')
   m << p.text_field_block(:email, 'メールアドレス')
   m << p.password_field_block(:password, 'パスワード')
-  m << p.check_boxes
+  m << p.password_field_block(:password_confirmation,
+    'パスワード（確認）') if @user.new_record?
+  m << p.check_boxes(:suspended,
+    'アカウント停止') if @user.persisted?
+  m << p.check_boxes(:editor, '編集者権限')
 end %>

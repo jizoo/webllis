@@ -13,10 +13,10 @@ class UserFormPresenter < FormPresenter
     end
   end
 
-  def check_boxes
+  def check_boxes(name, label_text)
     markup(:div, class: 'checkbox') do |m|
-      m << check_box(:suspended)
-      m << label(:suspended, 'アカウント停止')
+      m << check_box(name)
+      m << label(name, label_text)
     end
   end
 end

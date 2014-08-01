@@ -13,4 +13,11 @@ tags << []
       image: open("#{Rails.root}/db/fixtures/images/thumbnail.gif")
     )
   end
+  @editor.posts.create!(
+      url: "http://example#{p+1}.com",
+      title: "タイトル#{p+1}",
+      tag_list: tags.sample(2),
+      description: "#{dummy_text*20}",
+      image: open("#{Rails.root}/db/fixtures/images/thumbnail.gif")
+    )
 end

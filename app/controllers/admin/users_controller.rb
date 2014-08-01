@@ -18,8 +18,8 @@ class Admin::UsersController < Admin::Base
 
   def create
     @user = User.new(user_params)
+    @user.icon_image = gravatar_url(@user)
     if @user.save
-      login @user
       flash[:success] = 'アカウントを新規登録しました。'
       redirect_to :admin_users
     else
@@ -48,6 +48,6 @@ class Admin::UsersController < Admin::Base
   private
   def user_params
     params.require(:user).permit(:name, :email, :password,
-      :password_confirmation, :suspended)
+      :password_confirmation, :suspended, :editor)
   end
 end

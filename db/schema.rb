@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140727235203) do
+ActiveRecord::Schema.define(version: 20140730144024) do
 
   create_table "administrators", force: true do |t|
     t.string   "email",                           null: false
@@ -126,6 +126,7 @@ ActiveRecord::Schema.define(version: 20140727235203) do
     t.string   "password_reset_token"
     t.datetime "password_reset_sent_at"
     t.string   "icon_image",                             null: false
+    t.boolean  "editor",                 default: false
   end
 
   add_index "users", ["email_for_index"], name: "index_users_on_email_for_index", unique: true, using: :btree

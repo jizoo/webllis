@@ -10,10 +10,8 @@
   </h1>
 </div>
 
-<% if logged_in? %>
-  <% @feed_items.each do |feed_item| %>
-    <%= render partial: 'shared/post_item', locals: { item: feed_item } %>
-  <% end %>
-  <%= paginate @feed_items %>
-  <%= render 'shared/tag_cloud' %>
+<% @feed_items.each do |feed_item| %>
+  <%= render partial: 'shared/post_item', locals: { item: feed_item } %>
 <% end %>
+<%= paginate @feed_items %>
+<%= render 'shared/tag_cloud' %>

@@ -3,14 +3,19 @@ class StaticPagesController < Base
 
   def home
     if logged_in?
-      if search_form.title.present?
-        @feed_items = search_form.search.page(params[:page])
-      else
-        @feed_items = current_user.feed.page(params[:page])
-        if params[:tag]
-          @feed_items = current_user.feed.page(params[:page]).tagged_with(params[:tag])
-        end
+      @feed_items = current_user.feed.page(params[:page])
+      if params[:tag]
+        @feed_items = current_user.feed.page(params[:page]).tagged_with(params[:tag])
       end
+    else
+      editor = User.find_by(editor: true)
+      @feed_items = editor.posts.page(params[:page])
+      if params[:tag]
+        @feed_items = editor.posts.page(params[:page]).tagged_with(params[:tag])
+      end
+    end
+    if search_form.title.present?
+      @feed_items = search_form.search.page(params[:page])
     end
   end
 
