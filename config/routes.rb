@@ -15,6 +15,9 @@ Rails.application.routes.draw do
       resources :events, only: [ :index ]
     end
     resources :events, only: [ :index ]
+    resources :allowed_sources, only: [ :index, :create ] do
+      delete :delete, on: :collection
+    end
   end
 
   root 'static_pages#home'

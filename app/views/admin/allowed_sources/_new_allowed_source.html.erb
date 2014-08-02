@@ -1,0 +1,11 @@
+<%= form_for [ :admin, @new_allowed_source ], html: { class: 'form-inline' } do |f| %>
+<div class="form-group">
+  <%= f.label(:octet1, '新規許可IPアドレス', class: 'control-label') %>
+  <%= f.text_field(:octet1, size: 3, class: 'form-control') %>
+  <%= f.text_field(:octet2, size: 3, class: 'form-control') %>
+  <%= f.text_field(:octet3, size: 3, class: 'form-control') %>
+  <%= f.text_field(:last_octet, size: 3, class: 'form-control') %>
+  <%= f.submit '追加', class: 'btn btn-primary' %>
+</div>
+<% end %>
+
