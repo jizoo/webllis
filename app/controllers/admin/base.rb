@@ -1,4 +1,5 @@
 class Admin::Base < ApplicationController
+  before_action :check_source_ip_address
   before_action :authorize
   before_action :check_account
   before_action :check_timeout
@@ -31,6 +32,10 @@ class Admin::Base < ApplicationController
   def logout
     self.current_administrator = nil
     cookies.delete(:remember_token)
+  end
+
+  def check_source_ip_address
+    raise IpAddressRejected unless AllowedSource.include?('admin', request.ip)
   end
 
   def authorize

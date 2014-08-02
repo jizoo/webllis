@@ -1,8 +1,13 @@
 class Editor::Base < Base
+  before_action :check_source_ip_address
   before_action :check_timeout
   before_action :require_editor_user
 
   private
+  def check_source_ip_address
+    raise IpAddressRejected unless AllowedSource.include?('editor', request.ip)
+  end
+
   def require_editor_user
     if current_user && !current_user.editor?
       flash[:warning] = '編集者としてログインしてください。'
