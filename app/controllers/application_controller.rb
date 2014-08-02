@@ -12,8 +12,8 @@ class ApplicationController < ActionController::Base
 
   private
   def set_layout
-    if params[:controller].match(/\Aadmin\//)
-      'admin'
+    if params[:controller].match(%r{\A(editor|admin|)/})
+      Regexp.last_match[1]
     else
       'application'
     end

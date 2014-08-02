@@ -1,0 +1,9 @@
+<%= render 'shared/error_messages', object: f.object %>
+<%= markup do |m|
+  p = PostFormPresenter.new(f, self)
+  m << p.url_field_block(:url, 'URL')
+  m << p.text_field_block(:title, 'タイトル')
+  m << p.tag_field_block(:tag_list, 'タグ（カンマ区切り）')
+  m << p.text_area_block(:description, '説明', rows: 10)
+  m << p.image_field_block(:image, '画像')
+end %>

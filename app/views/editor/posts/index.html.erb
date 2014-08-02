@@ -1,0 +1,31 @@
+<% provide(:title, '投稿一覧') %>
+<div class="col-lg-12 page-header">
+  <h1>投稿一覧</h1>
+  <h3>投稿 <span class="badge">
+    <%= current_user.posts.count %></span></h3>
+</div>
+
+<% @posts.each do |post| %>
+  <div class="row">
+    <div class="col-lg-7 col-md-7">
+      <%= link_to image_tag(post.image.url, alt: 'post', class: 'img-responsive'), [ :editor, post ] %>
+    </div>
+    <div class="col-lg-5 col-md-5">
+      <h3><%= link_to post.title, [ :editor, post ] %></h3>
+      <p><%= truncate(post.description, length: 200) %>
+        <%= link_to '続きを読む', [ :editor, post ] %></p>
+      <span><%= post.created_at.strftime('%Y/%m/%d') %></span>
+      <span><%= raw post.tag_list.map { |t| link_to t, tag_path(t) }.join(', ') %></span>
+      <span class="pull-right">
+        <%= link_to '詳細', [ :editor, post ] %>
+        <%= link_to '編集', [ :edit, :editor, post ] %>
+        <%= link_to '削除', [ :editor, post ], method: :delete,
+          data: { confirm: '本当に削除しますか？' } %>
+      </span>
+    </div>
+  </div>
+  <hr>
+<% end %>
+
+<%= paginate @posts %>
+<%= render 'shared/tag_cloud' %>

@@ -1,0 +1,11 @@
+<% provide(:title, 'ログイン') %>
+<h1>ログイン</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for @form, url: :editor_session do |f| %>
+      <%= render 'shared/login_form', f: f %>
+      <%= f.submit 'ログイン', class: 'btn btn-default' %>
+    <% end %>
+  </div>
+</div>

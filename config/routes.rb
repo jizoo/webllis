@@ -1,5 +1,12 @@
 Rails.application.routes.draw do
 
+  namespace :editor do
+    root 'posts#index'
+    get 'login' => 'sessions#new', as: :login
+    resource :session, only: [ :create, :destroy ]
+    resources :posts
+  end
+
   namespace :admin do
     root 'static_pages#home'
     get 'login' => 'sessions#new', as: :login

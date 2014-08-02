@@ -46,7 +46,11 @@ class Base < ApplicationController
     unless current_user
       store_location
       flash[:warning] = 'ログインしてください。'
-      redirect_to :login
+      if params[:controller].match(%r{\A(editor)/})
+        redirect_to :"#{Regexp.last_match[1]}_login"
+      else
+        redirect_to :login
+      end
     end
   end
 
