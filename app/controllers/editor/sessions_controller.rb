@@ -21,7 +21,7 @@ class Editor::SessionsController < Editor::Base
         user.events.create!(type: 'logged_in')
         session[:last_access_time] = Time.current
         flash[:info] = '編集者としてログインしました。'
-        redirect_back_or :editor_root
+        redirect_to :editor_root
       elsif user.suspended?
         user.events.create!(type: 'rejected')
         flash.now[:warning] = 'アカウントが停止されています。'

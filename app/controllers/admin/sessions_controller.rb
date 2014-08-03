@@ -20,7 +20,7 @@ class Admin::SessionsController < Admin::Base
         login user
         session[:last_access_time] = Time.current
         flash[:info] = '管理者としてログインしました。'
-        redirect_back_or :admin_root
+        redirect_to :admin_root
       elsif user.suspended?
         user.events.create!(type: 'rejected')
         flash.now[:warning] = 'アカウントが停止されています。'
