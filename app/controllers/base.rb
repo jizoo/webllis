@@ -79,7 +79,7 @@ class Base < ApplicationController
 
   def gravatar_url(user)
     gravatar_id = Digest::MD5::hexdigest(user.email.downcase)
-    gravatar_url = "https://secure.gravatar.com/avatar/#{gravatar_id}?s=50"
+    "https://secure.gravatar.com/avatar/#{gravatar_id}?s=50"
   end
 
   helper_method :gravatar_url
