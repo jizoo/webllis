@@ -79,6 +79,20 @@ footer {
   @extend .has-error;
 }
 
+label.required:after {
+  content: '*';
+  padding-left: 3px;
+  color: #f00;
+}
+
+.notes {
+  text-align: right;
+  span {
+    padding: 2px;
+    color: #f00;
+  }
+}
+
 // users index
 
 .users {
