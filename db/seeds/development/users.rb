@@ -2,7 +2,7 @@
   name: 'jizoo',
   email: 'jizoo2200@gmail.com',
   password: 'foobar',
-  icon_image: 'https://secure.gravatar.com/avatar?s=50',
+  icon_image: "https://secure.gravatar.com/avatar/#{Digest::MD5::hexdigest('jizoo2200@gmail.com')}/?s=50",
   editor: true
 )
 
@@ -19,6 +19,6 @@ User.create!(
     name: "example#{n+1}",
     email: "example#{n+1}@example.com",
     password: 'password',
-    icon_image: "https://secure.gravatar.com/avatar?s=50"
+    icon_image: 'https://secure.gravatar.com/avatar?s=50'
   )
 end
