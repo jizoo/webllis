@@ -9,4 +9,5 @@
   m << p.check_boxes(:suspended,
     'アカウント停止') if @user.persisted?
   m << p.check_boxes(:editor, '編集者権限')
+  m << p.check_boxes(:admin, '管理者権限')
 end %>

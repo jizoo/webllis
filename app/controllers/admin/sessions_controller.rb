@@ -5,21 +5,30 @@ class Admin::SessionsController < Admin::Base
     if logged_in?
       redirect_to :admin_root
     else
-      @form = Admin::LoginForm.new
+      @form = LoginForm.new
       render action: 'new'
     end
   end
 
   def create
-    @form = Admin::LoginForm.new(params[:admin_login_form])
+    @form = LoginForm.new(params[:login_form])
     if @form.email.present?
-      administrator = Administrator.find_by(email_for_index: @form.email.downcase)
+      user = User.find_by(email_for_index: @form.email.downcase)
     end
-    if Admin::Authenticator.new(administrator).authenticate(@form.password)
-      login administrator
-      session[:last_access_time] = Time.current
-      flash[:info] = 'ログインしました。'
-      redirect_back_or :admin_root
+    if Authenticator.new(user).authenticate(@form.password)
+      if user.admin?
+        login user
+        session[:last_access_time] = Time.current
+        flash[:info] = '管理者としてログインしました。'
+        redirect_back_or :admin_root
+      elsif user.suspended?
+        user.events.create!(type: 'rejected')
+        flash.now[:warning] = 'アカウントが停止されています。'
+        render action: 'new'
+      else
+        flash.now[:warning] = '管理者権限が与えられていません。'
+        render action: 'new'
+      end
     else
       flash.now[:danger] = 'メールアドレスまたはパスワードが正しくありません。'
       render action: 'new'
