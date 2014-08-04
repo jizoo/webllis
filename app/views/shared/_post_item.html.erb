@@ -1,6 +1,10 @@
 <div class="row">
   <div class="col-lg-7 col-md-7">
-    <%= link_to image_tag(item.image.url, alt: 'post', class: 'img-responsive'), item %>
+    <%  if item.image? %>
+      <%= link_to image_tag(item.image.url, alt: 'post', class: 'img-responsive'), item %>
+    <% else %>
+      <%= link_to image_tag('no_thumbnail.gif', alt: 'post', class: 'img-responsive'), item %>
+    <% end %>
   </div>
   <div class="col-lg-5 col-md-5">
     <h3><%= link_to(item.title, item) %></h3>
