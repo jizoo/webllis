@@ -14,8 +14,16 @@
   <div class="col-lg-5 col-md-5">
     <h3><%= link_to @post.title, @post.url, target: '_blank' %></h4>
     <p><%= @post.description %></p>
-    <span><%= @post.created_at.strftime('%Y/%m/%d') %></span>
-    <span><%= raw @post.tag_list.map { |t| link_to t, tag_path(t) }.join(', ') %></span>
+    <dl>
+      <dt>日付：</dt>
+      <dd><%= @post.created_at.strftime('%Y/%m/%d') %></dd>
+      <dt>タグ：</dt>
+      <dd><%= raw @post.tag_list.map { |t| link_to t, tag_path(t) }.join(', ') %></dd>
+      <dt>投稿者：</dt>
+      </dd><%= link_to image_tag(@post.user.icon_image, alt: 'icon', class: 'icon-tiny'), @post.user %>
+        <%= link_to @post.user.name, @post.user %></dd>
+    </dl>
+
     <%= render 'posts/favorite_form' if current_user %>
   </div>
 </div>
