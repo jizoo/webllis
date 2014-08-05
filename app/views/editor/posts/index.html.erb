@@ -5,27 +5,43 @@
     <%= current_user.posts.count %></span></h3>
 </div>
 
-<% @posts.each do |post| %>
-  <div class="row">
-    <div class="col-lg-7 col-md-7">
-      <%= link_to image_tag(post.image.url, alt: 'post', class: 'img-responsive'), [ :editor, post ] %>
-    </div>
-    <div class="col-lg-5 col-md-5">
-      <h3><%= link_to post.title, [ :editor, post ] %></h3>
-      <p><%= truncate(post.description, length: 200) %>
-        <%= link_to '続きを読む', [ :editor, post ] %></p>
-      <span><%= post.created_at.strftime('%Y/%m/%d') %></span>
-      <span><%= raw post.tag_list.map { |t| link_to t, tag_path(t) }.join(', ') %></span>
-      <span class="pull-right">
-        <%= link_to '詳細', [ :editor, post ] %>
-        <%= link_to '編集', [ :edit, :editor, post ] %>
-        <%= link_to '削除', [ :editor, post ], method: :delete,
-          data: { confirm: '本当に削除しますか？' } %>
-      </span>
-    </div>
+<div class="row">
+  <div class="col-lg-12 col-md-12">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="col-sm-1">削除</th>
+          <th class="col-sm-1">URL</th>
+          <th class="col-sm-1">タイトル</th>
+          <th class="col-sm-1">タグ</th>
+          <th class="col-sm-4">説明</th>
+          <th class="col-sm-2">画像</th>
+          <th class="col-sm-1">作成日</th>
+          <th class="col-sm-1">アクション</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @posts.each do |post| %>
+          <tr>
+            <td><%= check_box_tag '#' %></td>
+            <td><%= link_to post.url, post.url %></td>
+            <td><%= post.title %></td>
+            <td><%= raw post.tag_list.map { |t| link_to t, tag_path(t) }.join(', ') %></td>
+            <td><%= truncate(post.description, length: 80) %></td>
+            <td><%= image_tag(post.image.url, alt: 'post', class: 'img-responsive') %></td>
+            <td><%= post.created_at.strftime('%Y/%m/%d') %></td>
+            <td>
+              <%= link_to '詳細', [ :editor, post ] %></br>
+              <%= link_to '編集', [ :edit, :editor, post ] %></br>
+              <%= link_to '削除', [ :editor, post ], method: :delete,
+                data: { confirm: '本当に削除しますか？' } %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
-  <hr>
-<% end %>
+</div>
 
 <%= paginate @posts %>
 <%= render 'shared/tag_cloud' %>
