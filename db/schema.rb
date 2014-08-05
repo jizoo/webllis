@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140802235542) do
+ActiveRecord::Schema.define(version: 20140805102757) do
 
   create_table "administrators", force: true do |t|
     t.string   "email",                           null: false
@@ -93,7 +93,9 @@ ActiveRecord::Schema.define(version: 20140802235542) do
     t.datetime "updated_at"
   end
 
+  add_index "posts", ["description"], name: "index_posts_on_description", using: :btree
   add_index "posts", ["title"], name: "index_posts_on_title", using: :btree
+  add_index "posts", ["url"], name: "index_posts_on_url", using: :btree
   add_index "posts", ["user_id", "created_at"], name: "index_posts_on_user_id_and_created_at", using: :btree
 
   create_table "relationships", force: true do |t|

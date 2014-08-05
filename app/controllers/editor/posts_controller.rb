@@ -1,6 +1,7 @@
 class Editor::PostsController < Editor::Base
   def index
-    @posts = current_user.posts.page(params[:page])
+    @search_form = Editor::SearchForm.new(params[:search])
+    @posts = @search_form.search.where(user: current_user.id).page(params[:page])
   end
 
   def show
