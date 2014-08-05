@@ -22,6 +22,17 @@ class StaticPagesController < Base
     end
   end
 
+  def editor_feed
+    editors = User.where(editor: true)
+    @feed_items = Post.where(user: editors.ids).page(params[:page])
+    if params[:tag]
+      @feed_items = Post.where(user: editors.ids).page(params[:page]).tagged_with(params[:tag])
+    end
+    if search_form.title.present?
+      @feed_items = search_form.search.where(user: editors.ids).page(params[:page])
+    end
+  end
+
   def about
   end
 

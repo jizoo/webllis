@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   root 'static_pages#home'
   get 'about' => 'static_pages#about', as: :about
   get 'contact' => 'static_pages#contact', as: :contact
+  get 'editor_feed' => 'static_pages#editor_feed', as: :editor_feed
   get 'login' => 'sessions#new', as: :login
   get 'signup' => 'users#new', as: :signup
   resource :session, only: [ :create, :destroy ]
