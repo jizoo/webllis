@@ -4,7 +4,9 @@ Rails.application.routes.draw do
     root 'posts#index'
     get 'login' => 'sessions#new', as: :login
     resource :session, only: [ :create, :destroy ]
-    resources :posts
+    resources :posts do
+      delete :delete, on: :collection
+    end
   end
 
   namespace :admin do

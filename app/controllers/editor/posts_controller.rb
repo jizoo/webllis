@@ -42,6 +42,15 @@ class Editor::PostsController < Editor::Base
     redirect_to :editor_posts
   end
 
+  # DELETE
+  def delete
+    if Editor::PostsDeleter.new.delete(params[:form])
+      flash[:success] = '投稿を削除しました。'
+    end
+    redirect_to action: 'index'
+  end
+
+  private
   def post_params
     params.require(:post).permit(:url, :title, :tag_list,
     :image, :image_cache, :remove_image, :description)
