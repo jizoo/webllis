@@ -7,15 +7,18 @@ class StaticPagesController < Base
       if params[:tag]
         @feed_items = current_user.feed.page(params[:page]).tagged_with(params[:tag])
       end
-    else
-      editor = User.find_by(editor: true)
-      @feed_items = editor.posts.page(params[:page])
-      if params[:tag]
-        @feed_items = editor.posts.page(params[:page]).tagged_with(params[:tag])
+      if search_form.title.present?
+        @feed_items = search_form.search.page(params[:page])
       end
-    end
-    if search_form.title.present?
-      @feed_items = search_form.search.page(params[:page])
+    else
+      editors = User.where(editor: true)
+      @feed_items = Post.where(user: editors.ids).page(params[:page])
+      if params[:tag]
+        @feed_items = Post.where(user: editors.ids).page(params[:page]).tagged_with(params[:tag])
+      end
+      if search_form.title.present?
+        @feed_items = search_form.search.where(user: editors.ids).page(params[:page])
+      end
     end
   end
 
