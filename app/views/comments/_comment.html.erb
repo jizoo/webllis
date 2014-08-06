@@ -4,7 +4,7 @@
 <p>
   <%= comment.content %>
 <% if current_user.id == comment.user.id %>
-  <%= link_to '削除', [ @post, comment ], method: :delete,
+  <%= link_to '削除', [ :post_comment, id: comment, post_id: @post ], method: :delete,
     data: { confirm: '本当に削除しますか？' }, title: comment.content %>
 <% end %>
 </p>

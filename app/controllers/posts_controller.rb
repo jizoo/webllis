@@ -9,7 +9,7 @@ class PostsController < Base
     @post = Post.find(params[:id])
     if logged_in?
       @comments = @post.comments.page(params[:page])
-      @comment = @post.comments.build
+      @comment = @post.outbound_comments.build
     end
     authorize unless @post.user.editor?
   end

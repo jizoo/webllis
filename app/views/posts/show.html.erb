@@ -34,10 +34,12 @@
       <h3>コメント <span class="badge">
         <%= @post.comments.count %></span></h3>
       <% if @comments.present? %>
-        <%= render @comments %>
+        <% @comments.each do |comment| %>
+          <%= render partial: 'comments/comment', locals: { comment: comment }  %>
+        <% end %>
         <%= paginate @comments %>
       <% end %>
-      <%= form_for [ @post, @comment ] do |f| %>
+      <%= form_for [ @post, @comment ], url: [ :confirm_post_comments, post_id: @post ] do |f| %>
         <%= render 'comments/form', f: f %>
         <%= f.submit 'コメントする', class: 'btn btn-primary' %>
       <% end %>

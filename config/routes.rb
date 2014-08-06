@@ -36,7 +36,9 @@ Rails.application.routes.draw do
   end
   resource :password, only: [ :show, :edit, :update ]
   resources :posts do
-    resources :comments, only: [ :create, :destroy ]
+    resources :comments, only: [ :create, :destroy ] do
+      post :confirm, on: :collection
+    end
   end
   resources :relationships, only: [ :create, :destroy ]
   resources :favorites, only: [ :index, :create, :destroy ]
