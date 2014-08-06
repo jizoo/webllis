@@ -10,10 +10,10 @@ class FormPresenter
     @view_context = view_context
   end
 
-  def text_field_block(name, label_text)
-    markup(:div, class: 'form-group') do |m|
-      m << label(name, label_text, class: 'control-label')
-      m << text_field(name, class: 'form-control')
+  def notes
+    markup(:div, class: 'notes') do |m|
+      m.span '*'
+      m.text '印の付いた項目は入力必須です。'
     end
   end
 
@@ -22,5 +22,23 @@ class FormPresenter
       m << label(name, label_text, class: 'control-label')
       m << password_field(name, class: 'form-control')
     end
+  end
+
+  def text_field_block(name, label_text, options = {})
+    markup(:div, class: 'form-group') do |m|
+      m << decorated_label(name, label_text, options.merge(class: 'control-label'))
+      m << text_field(name, options.merge(class: 'form-control'))
+    end
+  end
+
+  def text_area_block(name, label_text, options = {})
+    markup(:div, class: 'form-group') do |m|
+      m << decorated_label(name, label_text, options.merge(class: 'control-label'))
+      m << text_area(name, options.merge(class: 'form-control'))
+    end
+  end
+
+  def decorated_label(name, label_text, options = {})
+    label(name, label_text, class: options[:required] ? 'required' : nil)
   end
 end

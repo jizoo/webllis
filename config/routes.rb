@@ -24,7 +24,7 @@ Rails.application.routes.draw do
 
   root 'static_pages#home'
   get 'about' => 'static_pages#about', as: :about
-  get 'contact' => 'static_pages#contact', as: :contact
+  get 'contact' => 'contacts#new', as: :contact
   get 'editor_feed' => 'static_pages#editor_feed', as: :editor_feed
   get 'login' => 'sessions#new', as: :login
   get 'signup' => 'users#new', as: :signup
@@ -44,6 +44,9 @@ Rails.application.routes.draw do
   resources :password_resets, only: [ :new, :edit, :create, :update ]
   get '/auth/:provider/callback' => 'authentications#create'
   resources :authentications, only: [ :index, :create, :destroy ]
+  resource :contacts, only: [ :new, :create ] do
+    post :confirm, on: :collection
+  end
 
   get '*anything' => 'errors#routing_error'
 end

@@ -1,0 +1,11 @@
+<%= render 'shared/error_messages', object: f.object %>
+<%= markup do |m|
+  p = FormPresenter.new(f, self)
+  m << p.notes
+  p.with_options(required: true) do |q|
+    m << q.text_field_block(:name, '名前', required: false)
+    m << q.text_field_block(:email, 'メールアドレス')
+    m << q.text_field_block(:subject, '件名')
+    m << q.text_area_block(:body, '本文', rows: 10)
+  end
+end %>
