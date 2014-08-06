@@ -1,4 +1,6 @@
 class CommentsController < Base
+  before_action :reject_non_xhr, only: [ :count ]
+
   # POST
   def confirm
     @post = Post.find(params[:post_id])
@@ -37,6 +39,12 @@ class CommentsController < Base
     @comment.destroy
     flash[:success] = 'コメントを削除しました。'
     redirect_to @post
+  end
+
+  #GET
+  def count
+    current_user_post_id = current_user.posts.pluck(:id)
+    render text: OutboundComment.unprocessed.where(post_id: current_user_post_id).count
   end
 
   private

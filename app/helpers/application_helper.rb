@@ -9,4 +9,17 @@ module ApplicationHelper
       "#{base_title} | #{page_title}"
     end
   end
+
+  def number_of_unprocessed_comments
+    markup do |m|
+      m << '新規コメント'
+      current_user_post_id = current_user.posts.pluck(:id)
+      if (c = OutboundComment.unprocessed.where(post_id: current_user_post_id).count) > 0
+        anchor_text = "(#{c})"
+      else
+        anchor_text = ''
+      end
+      m.span(anchor_text, id: 'number-of-unprocessed-comments')
+    end
+  end
 end

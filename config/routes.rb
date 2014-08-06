@@ -40,6 +40,9 @@ Rails.application.routes.draw do
       post :confirm, on: :collection
     end
   end
+  resources :comments, only: [] do
+    get :count, on: :collection
+  end
   resources :relationships, only: [ :create, :destroy ]
   resources :favorites, only: [ :index, :create, :destroy ]
   get 'tags/:tag' => 'static_pages#home', as: :tag
