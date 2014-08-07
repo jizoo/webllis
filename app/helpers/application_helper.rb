@@ -22,4 +22,8 @@ module ApplicationHelper
       m.span(anchor_text, id: 'number-of-unprocessed-comments')
     end
   end
+
+  def formatted_content(content)
+    ERB::Util.html_escape(content).gsub(/\n/, '<br />').html_safe
+  end
 end
