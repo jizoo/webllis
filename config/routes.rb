@@ -40,8 +40,9 @@ Rails.application.routes.draw do
       post :confirm, on: :collection
     end
   end
-  resources :comments, only: [] do
-    get :count, on: :collection
+  resources :comments, only: [ :index, :destroy ] do
+    get :discarded, :count, on: :collection
+    patch :trash, :recover, on: :member
   end
   resources :relationships, only: [ :create, :destroy ]
   resources :favorites, only: [ :index, :create, :destroy ]

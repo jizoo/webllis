@@ -1,6 +1,16 @@
 class CommentsController < Base
   before_action :reject_non_xhr, only: [ :count ]
 
+  def index
+    @comments = Comment.where(discarded: false).page(params[:page])
+  end
+
+  # GET
+  def discarded
+    @comments = Comment.where(discarded: true).page(params[:page])
+    render action: 'index'
+  end
+
   # POST
   def confirm
     @post = Post.find(params[:post_id])
@@ -34,11 +44,29 @@ class CommentsController < Base
   end
 
   def destroy
-    @post = Post.find(params[:post_id])
-    @comment = @post.comments.find(params[:id])
+    if params[:post_id]
+      @post = Post.find(params[:post_id])
+      @comment = @post.comments.find(params[:id])
+    else
+      @comment = Comment.find(params[:id])
+    end
     @comment.destroy
     flash[:success] = 'コメントを削除しました。'
-    redirect_to @post
+    redirect_to @post || :back
+  end
+
+  def trash
+    comment = Comment.find(params[:id])
+    comment.update_column(:discarded, true)
+    flash[:success] = 'コメントをゴミ箱に移動しました。'
+    redirect_to :back
+  end
+
+  def recover
+    comment = Comment.find(params[:id])
+    comment.update_column(:discarded, false)
+    flash[:success] = 'コメントを元に戻しました。'
+    redirect_to :back
   end
 
   #GET

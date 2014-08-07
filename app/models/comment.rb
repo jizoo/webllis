@@ -12,4 +12,6 @@ class Comment < ActiveRecord::Base
       self.root = parent.root || parent
     end
   end
+
+  default_scope { order(created_at: :desc) }
 end

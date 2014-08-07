@@ -1,0 +1,2 @@
+class InboundComment < Comment
+end
