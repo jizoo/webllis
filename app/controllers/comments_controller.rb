@@ -2,7 +2,7 @@ class CommentsController < Base
   before_action :reject_non_xhr, only: [ :count ]
 
   def index
-    @comments = Comment.where(discarded: false).page(params[:page])
+    @comments = Comment.where(discarded: false).order(created_at: :desc).page(params[:page])
   end
 
   # GET

@@ -34,7 +34,7 @@
       <h3>コメント <span class="badge"><%= @post.comments.count %></span></h3>
       <% if @comments.present? %>
         <% @comments.each do |comment| %>
-          <%= render partial: 'comments/comment', locals: { comment: comment.root || comment }  %>
+          <%= render partial: 'comments/comment', locals: { comment: comment }  %>
         <% end %>
         <%= paginate @comments %>
       <% end %>

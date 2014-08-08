@@ -9,6 +9,4 @@ class Comment < ActiveRecord::Base
 
   before_create { self.root = parent.root || parent if parent }
   before_validation { self.root = parent.root || parent if parent }
-
-  default_scope { order(created_at: :desc) }
 end
