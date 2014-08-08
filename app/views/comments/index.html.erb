@@ -36,7 +36,7 @@ end
               <%= link_to '復元', recover_comment_path(m), method: :patch %> |
               <%= link_to '削除', comment_path(m), method: :delete %>
             <% else %>
-              <%= link_to '返信', '#' %> |
+              <%= link_to '返信', new_post_comment_reply_path(post_id: m.post_id, comment_id: m) %> |
               <%= link_to 'ゴミ箱', trash_comment_path(m), method: :patch %>
             <% end %>
           </td>
