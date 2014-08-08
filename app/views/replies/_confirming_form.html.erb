@@ -1,0 +1,5 @@
+<%= markup do |m|
+  p = ConfirmingFormPresenter.new(f, self)
+  m.div '以下の内容で返信します。よろしいですか？'
+  m << p.text_area_block(:content, '内容')
+end %>

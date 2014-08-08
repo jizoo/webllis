@@ -14,5 +14,12 @@ class Comment < ActiveRecord::Base
     end
   end
 
+  before_validation do
+    if parent
+      self.root = parent.root || parent
+      self.user = parent.user
+    end
+  end
+
   default_scope { order(created_at: :desc) }
 end

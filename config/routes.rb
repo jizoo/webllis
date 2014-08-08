@@ -38,6 +38,9 @@ Rails.application.routes.draw do
   resources :posts do
     resources :comments, only: [ :create, :destroy ] do
       post :confirm, on: :collection
+      resource :reply, only: [ :new, :create ] do
+        post :confirm
+      end
     end
   end
   resources :comments, only: [ :index, :destroy ] do

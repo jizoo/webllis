@@ -1,0 +1,5 @@
+<%= render 'shared/error_messages', object: f.object %>
+<%= markup do |m|
+  p = FormPresenter.new(f, self)
+  m << p.text_area_block(:content, 'コメントを返信する', rows: 7, placeholder: 'コメントの返信を入力してください。')
+end %>
