@@ -1,3 +1,3 @@
 class OutboundComment < Comment
-  scope :unprocessed, -> { where(status: 'new', deleted: false) }
+  scope :unprocessed, -> { where(status: 'new', discarded: false) }
 end
