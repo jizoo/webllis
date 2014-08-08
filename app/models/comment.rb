@@ -7,19 +7,8 @@ class Comment < ActiveRecord::Base
 
   validates :content, presence: true, length: { maximum: 800 }
 
-  before_create do
-    if parent
-      self.user = parent.user
-      self.root = parent.root || parent
-    end
-  end
-
-  before_validation do
-    if parent
-      self.root = parent.root || parent
-      self.user = parent.user
-    end
-  end
+  before_create { self.root = parent.root || parent if parent }
+  before_validation { self.root = parent.root || parent if parent }
 
   default_scope { order(created_at: :desc) }
 end
