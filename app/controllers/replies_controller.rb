@@ -20,7 +20,8 @@ class RepliesController < Base
   def create
     @reply = InboundComment.new(inbound_comment_params)
     if params[:commit]
-      @reply.user = current_user
+      @reply.creator = current_user
+      @reply.reader = @comment.creator
       @reply.post = @post
       @reply.parent = @comment
       if @reply.save

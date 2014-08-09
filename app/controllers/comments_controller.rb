@@ -2,12 +2,12 @@ class CommentsController < Base
   before_action :reject_non_xhr, only: [ :count ]
 
   def index
-    @comments = Comment.where(discarded: false).order(created_at: :desc).page(params[:page])
+    @comments = Comment.comments_for_user(current_user).order(created_at: :desc).page(params[:page])
   end
 
   # GET
-  def discarded
-    @comments = Comment.where(discarded: true).page(params[:page])
+  def trashed
+    @comments = Comment.trashed_comments_for_user(current_user).page(params[:page])
     render action: 'index'
   end
 
@@ -28,7 +28,8 @@ class CommentsController < Base
     @post = Post.find(params[:post_id])
     @comment = @post.outbound_comments.build(outbound_comment_params)
     if params[:commit]
-      @comment.user_id = current_user.id
+      @comment.creator = current_user
+      @comment.reader = @post.user
       if @comment.save
         flash[:success] = 'コメントを投稿しました。'
         redirect_to @post
@@ -57,22 +58,23 @@ class CommentsController < Base
 
   def trash
     comment = Comment.find(params[:id])
-    comment.update_column(:discarded, true)
+    comment.update_column(:creator_trashed, true) if comment.creator == current_user
+    comment.update_column(:reader_trashed, true) if comment.reader == current_user
     flash[:success] = 'コメントをゴミ箱に移動しました。'
     redirect_to :back
   end
 
   def recover
     comment = Comment.find(params[:id])
-    comment.update_column(:discarded, false)
+    comment.update_column(:creator_trashed, false) if comment.creator == current_user
+    comment.update_column(:reader_trashed, false) if comment.reader == current_user
     flash[:success] = 'コメントを元に戻しました。'
     redirect_to :back
   end
 
   #GET
   def count
-    current_user_post_id = current_user.posts.pluck(:id)
-    render text: OutboundComment.unprocessed.where(post_id: current_user_post_id).count
+    render text: Comment.unprocessed.where(reader: current_user).count
   end
 
   private

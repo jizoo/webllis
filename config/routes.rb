@@ -44,7 +44,7 @@ Rails.application.routes.draw do
     end
   end
   resources :comments, only: [ :index, :destroy ] do
-    get :discarded, :count, on: :collection
+    get :trashed, :count, on: :collection
     patch :trash, :recover, on: :member
   end
   resources :relationships, only: [ :create, :destroy ]

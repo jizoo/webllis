@@ -12,8 +12,8 @@ class CommentPresenter < ModelPresenter
     end
   end
 
-  def sender
-    view_context.link_to(object.user.name, object.user, target: '_blank')
+  def creator_link
+    view_context.link_to(object.creator.name, object.creator, target: '_blank')
   end
 
   def truncated_content

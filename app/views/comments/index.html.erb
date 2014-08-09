@@ -1,7 +1,7 @@
 <%
 @title = case params[:action]
   when 'index'; 'コメント一覧'
-  when 'discarded'; 'ゴミ箱'
+  when 'trashed'; 'ゴミ箱'
   else; raise
 end
 %>
@@ -27,12 +27,13 @@ end
         <% p = CommentPresenter.new(m, self) %>
         <tr>
           <td><%= p.type %></td>
-          <td><%= p.sender %></td>
+          <td><%= p.creator_link %></td>
           <td><%= p.truncated_content %></td>
           <td><%= p.commented_post %></td>
           <td><%= p.created_at %></td>
           <td>
-            <% if m.discarded %>
+            <% if (m.reader_trashed && m.reader == current_user) ||
+              (m.creator_trashed && m.creator == current_user) %>
               <%= link_to '復元', recover_comment_path(m), method: :patch %> |
               <%= link_to '削除', comment_path(m), method: :delete %>
             <% else %>

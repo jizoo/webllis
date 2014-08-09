@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140806045424) do
+ActiveRecord::Schema.define(version: 20140809002421) do
 
   create_table "administrators", force: true do |t|
     t.string   "email",                           null: false
@@ -53,28 +53,29 @@ ActiveRecord::Schema.define(version: 20140806045424) do
   add_index "authentications", ["user_id"], name: "index_authentications_on_user_id", using: :btree
 
   create_table "comments", force: true do |t|
-    t.integer  "post_id",                    null: false
-    t.integer  "user_id",                    null: false
-    t.string   "content",                    null: false
+    t.integer  "post_id",                         null: false
+    t.string   "content",                         null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "root_id"
     t.integer  "parent_id"
-    t.string   "type",                       null: false
-    t.string   "status",     default: "new", null: false
-    t.text     "remarks"
-    t.boolean  "discarded",  default: false, null: false
-    t.boolean  "deleted",    default: false, null: false
+    t.string   "type",                            null: false
+    t.integer  "creator_id",                      null: false
+    t.integer  "reader_id",                       null: false
+    t.boolean  "creator_trashed", default: false
+    t.boolean  "reader_trashed",  default: false
+    t.boolean  "read",            default: false
   end
 
+  add_index "comments", ["creator_id", "creator_trashed", "created_at"], name: "index_comments_on_s_t_c", using: :btree
+  add_index "comments", ["creator_id"], name: "index_comments_on_creator_id", using: :btree
   add_index "comments", ["parent_id"], name: "comments_parent_id_fk", using: :btree
   add_index "comments", ["post_id"], name: "comments_post_id_fk", using: :btree
-  add_index "comments", ["root_id", "deleted", "created_at"], name: "index_comments_on_root_id_and_deleted_and_created_at", using: :btree
-  add_index "comments", ["type", "user_id"], name: "index_comments_on_type_and_user_id", using: :btree
-  add_index "comments", ["user_id", "deleted", "created_at"], name: "index_comments_on_user_id_and_deleted_and_created_at", using: :btree
-  add_index "comments", ["user_id", "deleted", "status", "created_at"], name: "index_comments_on_u_d_s_c", using: :btree
-  add_index "comments", ["user_id", "discarded", "created_at"], name: "index_comments_on_user_id_and_discarded_and_created_at", using: :btree
-  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
+  add_index "comments", ["reader_id", "read"], name: "index_comments_on_reader_id_and_read", using: :btree
+  add_index "comments", ["reader_id", "reader_trashed", "created_at"], name: "index_comments_on_r_t_c", using: :btree
+  add_index "comments", ["reader_id"], name: "index_comments_on_reader_id", using: :btree
+  add_index "comments", ["root_id", "created_at"], name: "index_comments_on_root_id_and_deleted_and_created_at", using: :btree
+  add_index "comments", ["type"], name: "index_comments_on_type_and_user_id", using: :btree
 
   create_table "events", force: true do |t|
     t.integer  "user_id",    null: false
@@ -167,7 +168,8 @@ ActiveRecord::Schema.define(version: 20140806045424) do
   add_foreign_key "comments", "comments", name: "comments_parent_id_fk", column: "parent_id"
   add_foreign_key "comments", "comments", name: "comments_root_id_fk", column: "root_id"
   add_foreign_key "comments", "posts", name: "comments_post_id_fk"
-  add_foreign_key "comments", "users", name: "comments_user_id_fk"
+  add_foreign_key "comments", "users", name: "comments_creator_id_fk", column: "creator_id"
+  add_foreign_key "comments", "users", name: "comments_reader_id_fk", column: "reader_id"
 
   add_foreign_key "events", "users", name: "events_user_id_fk"
 
