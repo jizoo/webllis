@@ -35,7 +35,8 @@ end
             <% if (m.reader_trashed && m.reader == current_user) ||
               (m.creator_trashed && m.creator == current_user) %>
               <%= link_to '復元', recover_comment_path(m), method: :patch %> |
-              <%= link_to '削除', comment_path(m), method: :delete %>
+              <%= link_to '削除', comment_path(m), method: :delete,
+                data: { confirm: '本当に削除しますか？' } %>
             <% else %>
               <%= link_to '返信', new_post_comment_reply_path(post_id: m.post_id, comment_id: m) %> |
               <%= link_to 'ゴミ箱', trash_comment_path(m), method: :patch %>

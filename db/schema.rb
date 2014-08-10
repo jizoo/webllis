@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140809002421) do
+ActiveRecord::Schema.define(version: 20140810003801) do
 
   create_table "administrators", force: true do |t|
     t.string   "email",                           null: false
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 20140809002421) do
     t.boolean  "creator_trashed", default: false
     t.boolean  "reader_trashed",  default: false
     t.boolean  "read",            default: false
+    t.boolean  "deleted",         default: false
   end
 
   add_index "comments", ["creator_id", "creator_trashed", "created_at"], name: "index_comments_on_s_t_c", using: :btree

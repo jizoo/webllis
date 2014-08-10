@@ -21,7 +21,11 @@ class Comment < ActiveRecord::Base
     creator = arel_table[:creator_id].eq(user.id)
     reader_not_trashed = arel_table[:reader_trashed].eq(false)
     creator_not_trashed = arel_table[:creator_trashed].eq(false)
-    where(arel_table.grouping(reader.and(reader_not_trashed)).or(creator.and(creator_not_trashed)))
+    not_deleted = arel_table[:deleted].eq(false)
+    where(arel_table.grouping(
+      (reader.and(reader_not_trashed)).or(creator.and(creator_not_trashed))
+      .and(not_deleted))
+    )
   end
 
   def self.trashed_comments_for_user(user)
@@ -29,6 +33,10 @@ class Comment < ActiveRecord::Base
     creator = arel_table[:creator_id].eq(user.id)
     reader_trashed = arel_table[:reader_trashed].eq(true)
     creator_trashed = arel_table[:creator_trashed].eq(true)
-    where(arel_table.grouping(reader.and(reader_trashed)).or(creator.and(creator_trashed)))
+    not_deleted = arel_table[:deleted].eq(false)
+    where(arel_table.grouping(
+      (reader.and(reader_trashed)).or(creator.and(creator_trashed))
+      .and(not_deleted))
+    )
   end
 end

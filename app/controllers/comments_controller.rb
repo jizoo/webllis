@@ -52,7 +52,11 @@ class CommentsController < Base
     else
       @comment = Comment.find(params[:id])
     end
-    @comment.destroy
+    if @comment.creator == current_user
+      @comment.destroy
+    else
+      @comment.update_column(:deleted, true)
+    end
     flash[:success] = 'コメントを削除しました。'
     redirect_to @post || :back
   end
