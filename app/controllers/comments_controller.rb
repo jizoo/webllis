@@ -2,7 +2,9 @@ class CommentsController < Base
   before_action :reject_non_xhr, only: [ :count ]
 
   def index
-    @comments = Comment.comments_for_user(current_user).order(created_at: :desc).page(params[:page])
+    comments = Comment.comments_for_user(current_user)
+    @comments = comments.order(created_at: :desc).page(params[:page])
+    comments.update_all(read: true)
   end
 
   # GET
