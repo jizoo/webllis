@@ -11,20 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140810003801) do
-
-  create_table "administrators", force: true do |t|
-    t.string   "email",                           null: false
-    t.string   "email_for_index",                 null: false
-    t.string   "hashed_password",                 null: false
-    t.boolean  "suspended",       default: false, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "remember_token"
-  end
-
-  add_index "administrators", ["email_for_index"], name: "index_administrators_on_email_for_index", unique: true, using: :btree
-  add_index "administrators", ["remember_token"], name: "index_administrators_on_remember_token", using: :btree
+ActiveRecord::Schema.define(version: 20140810112958) do
 
   create_table "allowed_sources", force: true do |t|
     t.string   "namespace",                  null: false
@@ -66,6 +53,7 @@ ActiveRecord::Schema.define(version: 20140810003801) do
     t.boolean  "reader_trashed",  default: false
     t.boolean  "read",            default: false
     t.boolean  "deleted",         default: false
+    t.datetime "read_at"
   end
 
   add_index "comments", ["creator_id", "creator_trashed", "created_at"], name: "index_comments_on_s_t_c", using: :btree
