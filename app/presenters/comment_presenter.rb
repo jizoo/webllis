@@ -2,10 +2,10 @@ class CommentPresenter < ModelPresenter
   delegate :content, to: :object
 
   def type
-    case object
-    when OutboundComment
+    case object.type
+    when 'sent'
       'コメント'
-    when InboundComment
+    when 'replied'
       '返信'
     else
       raise

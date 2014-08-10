@@ -14,7 +14,7 @@ class CommentsController < Base
   # POST
   def confirm
     @post = Post.find(params[:post_id])
-    @comment = @post.outbound_comments.build(outbound_comment_params)
+    @comment = @post.comments.build(comment_params)
     if @comment.valid?
       render action: 'confirm'
     else
@@ -26,10 +26,11 @@ class CommentsController < Base
 
   def create
     @post = Post.find(params[:post_id])
-    @comment = @post.outbound_comments.build(outbound_comment_params)
+    @comment = @post.comments.build(comment_params)
     if params[:commit]
       @comment.creator = current_user
       @comment.reader = @post.user
+      @comment.type = 'sent'
       if @comment.save
         flash[:success] = 'コメントを投稿しました。'
         redirect_to @post
@@ -78,7 +79,7 @@ class CommentsController < Base
   end
 
   private
-  def outbound_comment_params
-    params.require(:outbound_comment).permit(:content)
+  def comment_params
+    params.require(:comment).permit(:content)
   end
 end

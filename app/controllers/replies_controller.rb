@@ -3,12 +3,12 @@ class RepliesController < Base
   before_action :prepare_comment
 
   def new
-    @reply = InboundComment.new
+    @reply = Comment.new
   end
 
   # POST
   def confirm
-    @reply = InboundComment.new(inbound_comment_params)
+    @reply = Comment.new(comment_params)
     if @reply.valid?
       render action: 'confirm'
     else
@@ -18,12 +18,13 @@ class RepliesController < Base
   end
 
   def create
-    @reply = InboundComment.new(inbound_comment_params)
+    @reply = Comment.new(comment_params)
     if params[:commit]
       @reply.creator = current_user
       @reply.reader = @comment.creator
       @reply.post = @post
       @reply.parent = @comment
+      @reply.type = 'replied'
       if @reply.save
         flash[:success] = 'コメントに返信しました。'
         redirect_to @post
@@ -45,7 +46,7 @@ class RepliesController < Base
     @comment = Comment.find(params[:comment_id])
   end
 
-  def inbound_comment_params
-    params.require(:inbound_comment).permit(:content)
+  def comment_params
+    params.require(:comment).permit(:content)
   end
 end

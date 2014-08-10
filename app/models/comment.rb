@@ -1,4 +1,6 @@
 class Comment < ActiveRecord::Base
+  self.inheritance_column = nil
+
   belongs_to :post
   belongs_to :creator, class_name: 'User', foreign_key: 'creator_id'
   belongs_to :reader, class_name: 'User', foreign_key: 'reader_id'

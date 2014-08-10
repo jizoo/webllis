@@ -3,14 +3,16 @@ posts = @editor.posts
 
 s = 2.years.ago
 23.times do |n|
-  m = OutboundComment.create!(
+  m = Comment.create!(
+    type: 'sent',
     creator: @editor,
     reader: users.sample,
     post: posts.sample,
     content: "これはコメントです。\n" * 8,
     created_at: s.advance(months: n)
   )
-  r = InboundComment.create!(
+  r = Comment.create!(
+    type: 'replied',
     creator: m.reader,
     reader: m.creator,
     post: m.post,
@@ -20,7 +22,8 @@ s = 2.years.ago
     created_at: s.advance(months: n, hours: 1)
   )
   if n % 6 == 0
-    m2 = OutboundComment.create!(
+    m2 = Comment.create!(
+      type: 'sent',
       creator: r.reader,
       reader: r.creator,
       post: r.post,
@@ -29,7 +32,8 @@ s = 2.years.ago
       content: "これは返信への返信です。",
       created_at: s.advance(months: n, hours: 2)
     )
-    InboundComment.create!(
+    Comment.create!(
+      type: 'replied',
       creator: m2.reader,
       reader: m2.creator,
       post: r.post,
@@ -43,7 +47,8 @@ end
 
 s = 24.hours.ago
 8.times do |n|
-  OutboundComment.create!(
+  Comment.create!(
+    type: 'sent',
     creator: users.sample,
     reader: users.sample,
     post: posts.sample,

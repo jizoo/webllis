@@ -1,2 +1,0 @@
-class InboundComment < Comment
-end

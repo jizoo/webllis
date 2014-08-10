@@ -8,8 +8,8 @@ class PostsController < Base
   def show
     @post = Post.find(params[:id])
     if logged_in?
-      @comments = @post.outbound_comments.page(params[:page])
-      @comment = @post.outbound_comments.build
+      @comments = @post.comments.where(type: 'sent').page(params[:page])
+      @comment = @post.comments.build
     end
     authorize unless @post.user.editor?
   end
