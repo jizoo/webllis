@@ -9,7 +9,7 @@ class CommentsController < Base
 
   # GET
   def trashed
-    @comments = Comment.trashed_comments_for_user(current_user).page(params[:page])
+    @comments = Comment.trashed_comments_for_user(current_user).order(created_at: :desc).page(params[:page])
     render action: 'index'
   end
 
