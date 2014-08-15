@@ -18,7 +18,7 @@ describe Admin::StaticPagesController, 'ログイン後' do
       administrator.update_column(:suspended, true)
       get :home
       expect(cookies[:remember_token]).to be_nil
-      expect(response).to redirect_to(admin_root_url)
+      expect(response).to redirect_to(root_url)
     end
 
     example 'セッションタイムアウト' do
