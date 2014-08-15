@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :user do
-    sequence(:name)  { |n| "user#{n}" }
-    sequence(:email) { |n| "user#{n}@example.com" }
+    sequence(:name)  { |n| "person#{n}" }
+    sequence(:email) { |n| "person#{n}@example.com" }
     password 'password'
     password_confirmation 'password'
     suspended false
