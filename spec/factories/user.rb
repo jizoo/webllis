@@ -5,5 +5,10 @@ FactoryGirl.define do
     password 'password'
     password_confirmation 'password'
     suspended false
+    icon_image 'https://secure.gravatar.com/avatar?s=50'
+
+    factory :administrator do
+      admin true
+    end
   end
 end
