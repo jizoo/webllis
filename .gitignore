@@ -33,3 +33,6 @@
 
 # Ignore upload files
 /public/uploads
+
+# Ignore a coverage reports.
+/coverage
