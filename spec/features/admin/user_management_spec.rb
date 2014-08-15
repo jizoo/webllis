@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 feature '管理者によるユーザ管理' do
+  include FeaturesSpecHelper
   let(:administrator) { create(:administrator) }
   let!(:user) { create(:user) }
 
@@ -31,7 +32,7 @@ feature '管理者によるユーザ管理' do
 
   scenario '管理者がユーザのユーザ名、メールアドレス、アカウント停止を更新する' do
     first('div.container').click_link 'ユーザ管理'
-    click_link '編集'
+    page.all('tr')[1].click_link '編集'
 
     fill_in 'ユーザ名', with: 'test'
     fill_in 'メールアドレス', with: 'test@example.jp'
