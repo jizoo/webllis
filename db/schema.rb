@@ -53,7 +53,6 @@ ActiveRecord::Schema.define(version: 20140810112958) do
     t.boolean  "reader_trashed",  default: false
     t.boolean  "read",            default: false
     t.boolean  "deleted",         default: false
-    t.datetime "read_at"
   end
 
   add_index "comments", ["creator_id", "creator_trashed", "created_at"], name: "index_comments_on_s_t_c", using: :btree
