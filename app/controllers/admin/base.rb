@@ -1,12 +1,12 @@
 class Admin::Base < Base
-  # before_action :check_source_ip_address
+  before_action :check_source_ip_address
   before_action :check_timeout
   before_action :require_admin_user
 
   private
-  # def check_source_ip_address
-  #   raise IpAddressRejected unless AllowedSource.include?('admin', request.ip)
-  # end
+  def check_source_ip_address
+    raise IpAddressRejected unless AllowedSource.include?('admin', request.ip)
+  end
 
   def require_admin_user
     if current_user && !current_user.admin?
