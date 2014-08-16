@@ -1,5 +1,27 @@
 require 'rails_helper'
 
+describe Admin::StaticPagesController, 'ログイン前' do
+  let(:user) { create(:user) }
+
+  describe 'IPアドレスによるアクセス制限' do
+    before do
+      Rails.application.config.webllis[:restrict_ip_addresses] = true
+    end
+
+    example '許可' do
+      AllowedSource.create!(namespace: 'admin', ip_address: '0.0.0.0')
+      get :home
+      expect(response).to render_template('admin/static_pages/home')
+    end
+
+    example '拒否' do
+      AllowedSource.create!(namespace: 'admin', ip_address: '192.168.0.*')
+      get :home
+      expect(response).to render_template('errors/forbidden')
+    end
+  end
+end
+
 describe Admin::StaticPagesController, 'ログイン後' do
   let(:administrator) { create(:administrator) }
 
