@@ -1,4 +1,4 @@
-class AuthenticationsController < Base
+class AuthenticationsController < ApplicationController
   skip_before_action :authorize
 
   def index

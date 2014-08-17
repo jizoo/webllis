@@ -1,4 +1,4 @@
-class Editor::SessionsController < Editor::Base
+class Editor::SessionsController < Editor::ApplicationController
   skip_before_action :authorize
 
   def new

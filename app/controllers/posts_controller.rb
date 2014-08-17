@@ -1,4 +1,4 @@
-class PostsController < Base
+class PostsController < ApplicationController
   skip_before_action :authorize, only: :show
 
   def index

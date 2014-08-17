@@ -1,4 +1,4 @@
-class Admin::StaticPagesController < Admin::Base
+class Admin::StaticPagesController < Admin::ApplicationController
   skip_before_action :authorize
 
   def home

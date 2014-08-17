@@ -1,4 +1,4 @@
-class Admin::UsersController < Admin::Base
+class Admin::UsersController < Admin::ApplicationController
   def index
     @users = User.order(:name).page(params[:page])
   end

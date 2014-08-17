@@ -1,4 +1,4 @@
-class Admin::SessionsController < Admin::Base
+class Admin::SessionsController < Admin::ApplicationController
   skip_before_action :authorize
 
   def new

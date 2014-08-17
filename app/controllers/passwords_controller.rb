@@ -1,4 +1,4 @@
-class PasswordsController < Base
+class PasswordsController < ApplicationController
   def show
     redirect_to :edit_password
   end
