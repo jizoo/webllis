@@ -1,26 +1,17 @@
 require 'rails_helper'
 
-describe 'ユーザがログイン状態を終了するためにログアウトをする' do
-  context 'ログインユーザがトップページに遷移したとき' do
-    before do
-      login
-      visit root_path
-    end
+feature 'ユーザによるログアウト' do
+  let(:user) { create(:user) }
 
-    it '"ログアウト"リンクが表示されていること' do
-      expect(page).to have_link 'ログアウト'
-    end
+  before do
+    Capybara.app_host = 'http://www.example.com'
+    login(user)
+  end
 
-    context 'かつ"ログアウト"リンクをクリックしたとき' do
-      before { click_link 'ログアウト' }
-
-      it '"ログアウトしました"と表示されていること' do
-        expect(page).to have_content 'ログアウトしました'
-      end
-
-      it '"ログアウト"リンクが表示されていないこと' do
-        expect(page).to have_no_link 'ログアウト'
-      end
-    end
+  scenario 'ログアウトする' do
+    click_link 'ログアウト'
+    expect(page.current_path).to eq root_path
+    expect(page).to have_content 'ログアウトしました。'
+    expect(page).to have_no_link 'ログアウト'
   end
 end
