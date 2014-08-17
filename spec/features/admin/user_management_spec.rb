@@ -6,10 +6,7 @@ feature '管理者によるユーザ管理' do
 
   before do
     Capybara.app_host = 'http://www.example.com/admin'
-    visit login_path
-    fill_in 'メールアドレス', with: administrator.email
-    fill_in 'パスワード', with: administrator.password
-    click_button 'ログイン'
+    login(administrator)
   end
 
   scenario '管理者がユーザを追加する' do
