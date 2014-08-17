@@ -45,7 +45,7 @@ describe Admin::StaticPagesController, 'ログイン後' do
 
     example 'セッションタイムアウト' do
       session[:last_access_time] =
-        Admin::Base::TIMEOUT.ago.advance(seconds: -1)
+        Admin::ApplicationController::TIMEOUT.ago.advance(seconds: -1)
       get :home
       expect(cookies[:remember_token]).to be_nil
       expect(response).to redirect_to(admin_login_url)

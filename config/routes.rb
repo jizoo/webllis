@@ -57,5 +57,5 @@ Rails.application.routes.draw do
     post :confirm, on: :collection
   end
 
-  get '*anything' => 'errors#routing_error'
+  get '*anything' => 'errors#not_found'
 end

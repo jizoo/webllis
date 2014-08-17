@@ -1,4 +1,4 @@
-class FavoritesController < Base
+class FavoritesController < ApplicationController
   def index
     @favorites = current_user.favorite_posts.page(params[:page])
   end

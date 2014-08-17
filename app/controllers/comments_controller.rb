@@ -1,4 +1,4 @@
-class CommentsController < Base
+class CommentsController < ApplicationController
   before_action :reject_non_xhr, only: [ :count ]
 
   def index

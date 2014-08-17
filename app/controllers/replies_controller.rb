@@ -1,4 +1,4 @@
-class RepliesController < Base
+class RepliesController < ApplicationController
   before_action :prepare_post
   before_action :prepare_comment
 
