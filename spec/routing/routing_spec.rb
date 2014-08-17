@@ -22,10 +22,10 @@ describe 'ルーティング' do
     )
   end
 
-  example '存在しないパスならerrors/routing_errorへ' do
+  example '存在しないパスならerrors/not_foundへ' do
     expect(get: '/xyz').to route_to(
       controller: 'errors',
-      action: 'routing_error',
+      action: 'not_found',
       anything: 'xyz'
     )
   end
