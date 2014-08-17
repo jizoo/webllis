@@ -17,9 +17,9 @@ class Editor::SessionsController < Editor::ApplicationController
     end
     if Authenticator.new(user).authenticate(@form.password)
       if user.editor?
-        login user
-        user.events.create!(type: 'logged_in')
+        session[:user_id] = user.id
         session[:last_access_time] = Time.current
+        user.events.create!(type: 'logged_in')
         flash[:info] = '編集者としてログインしました。'
         redirect_to :editor_root
       elsif user.suspended?
@@ -37,7 +37,7 @@ class Editor::SessionsController < Editor::ApplicationController
   end
 
   def destroy
-    logout
+    session.delete(:user_id)
     flash[:info] = 'ログアウトしました。'
     redirect_to :editor_root
   end

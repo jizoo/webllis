@@ -13,7 +13,7 @@ describe UsersController, 'ログイン前' do
 
     example 'ログインする' do
       post :create, user: params_hash
-      expect(cookies[:remember_token]).to be_truthy
+      expect(session[:user_id]).to be_truthy
     end
 
     example '例外ActionController::ParameterMissingが発生' do
@@ -37,7 +37,7 @@ describe UsersController do
     example '停止フラグがセットされたら強制的にログアウト' do
       user.update_column(:suspended, true)
       get :index
-      expect(cookies[:remember_token]).to be_nil
+      expect(session[:user_id]).to be_nil
       expect(response).to redirect_to(root_url)
     end
   end

@@ -17,7 +17,7 @@ class Admin::SessionsController < Admin::ApplicationController
     end
     if Authenticator.new(user).authenticate(@form.password)
       if user.admin?
-        login user
+        session[:user_id] = user.id
         session[:last_access_time] = Time.current
         flash[:info] = '管理者としてログインしました。'
         redirect_to :admin_root
@@ -36,7 +36,7 @@ class Admin::SessionsController < Admin::ApplicationController
   end
 
   def destroy
-    logout
+    session.delete(:user_id)
     flash[:info] = 'ログアウトしました。'
     redirect_to :admin_root
   end

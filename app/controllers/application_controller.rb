@@ -31,24 +31,12 @@ class ApplicationController < ActionController::Base
     raise ActionController::BadRequest unless request.xhr?
   end
 
-  def login(user)
-    remember_token = User.new_remember_token
-    if params[:remember_me]
-      cookies.permanent[:remember_token] = remember_token
-    else
-      cookies[:remember_token] = remember_token
-    end
-    user.update_attribute(:remember_token, User.encrypt(remember_token))
-    self.current_user = user
-  end
-
   def current_user=(user)
     @current_user = user
   end
 
   def current_user
-    remember_token = User.encrypt(cookies[:remember_token])
-    @current_user ||= User.find_by(remember_token: remember_token)
+    @current_user ||= User.find_by(id: session[:user_id])
   end
 
   helper_method :current_user
@@ -64,11 +52,6 @@ class ApplicationController < ActionController::Base
   end
 
   helper_method :logged_in?
-
-  def logout
-    self.current_user = nil
-    cookies.delete(:remember_token)
-  end
 
   def authorize
     unless current_user
@@ -93,7 +76,7 @@ class ApplicationController < ActionController::Base
 
   def check_account
     if current_user && !current_user.active?
-      cookies.delete(:remember_token)
+      session.delete(:user_id)
       flash[:warning] = 'アカウントが無効になりました。'
       redirect_to :root
     end

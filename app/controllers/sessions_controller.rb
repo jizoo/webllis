@@ -21,7 +21,7 @@ class SessionsController < ApplicationController
         flash.now[:warning] = 'アカウントが停止されています。'
         render action: 'new'
       else
-        login user
+        session[:user_id] = user.id
         user.events.create!(type: 'logged_in')
         flash[:info] = 'ログインしました。'
         redirect_back_or :root
@@ -33,7 +33,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    logout
+    session.delete(:user_id)
     flash[:info] = 'ログアウトしました。'
     redirect_to :root
   end

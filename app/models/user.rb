@@ -15,16 +15,6 @@ class User < ActiveRecord::Base
   has_many :comments, dependent: :destroy
   has_many :authentications, dependent: :destroy
 
-  before_create :create_remember_token
-
-  def User.new_remember_token
-    SecureRandom.urlsafe_base64
-  end
-
-  def User.encrypt(token)
-    Digest::SHA1.hexdigest(token.to_s)
-  end
-
   def send_password_reset
     self.password_reset_token = User.encrypt(User.new_remember_token)
     self.password_reset_sent_at = Time.zone.now
@@ -76,10 +66,5 @@ class User < ActiveRecord::Base
       user.nickname = nickname
       user.image = image_url
     end
-  end
-
-  private
-  def create_remember_token
-    self.remember_token = User.encrypt(User.new_remember_token)
   end
 end

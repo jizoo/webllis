@@ -29,7 +29,7 @@ class UsersController < ApplicationController
     end
     session[:omniauth] = nil unless @user.new_record?
     if @user.save
-      login @user
+      session[:user_id] = @user.id
       flash[:success] = '登録完了しました。'
       redirect_to :root
     else

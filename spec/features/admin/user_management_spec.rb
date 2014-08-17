@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 feature '管理者によるユーザ管理' do
-  include FeaturesSpecHelper
   let(:administrator) { create(:administrator) }
   let!(:user) { create(:user) }
 
