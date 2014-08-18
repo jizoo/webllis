@@ -38,6 +38,13 @@ class FormPresenter
     end
   end
 
+  def check_boxes(name, label_text)
+    markup(:div, class: 'checkbox') do |m|
+      m << check_box(name)
+      m << label(name, label_text)
+    end
+  end
+
   def decorated_label(name, label_text, options = {})
     label(name, label_text, class: options[:required] ? 'required' : nil)
   end

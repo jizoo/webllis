@@ -6,6 +6,13 @@ feature 'ユーザによるログイン' do
 
   before { Capybara.app_host = 'http://www.example.com' }
 
+  scenario 'ログインページに「次回から自動でログインする」チェックボックスが表示される' do
+    visit login_path
+
+    expect(page).to have_title('ログイン')
+    expect(page).to have_content '次回から自動でログインする'
+  end
+
   scenario 'ログインする時、トップページに遷移する' do
     login(user)
 

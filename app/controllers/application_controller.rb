@@ -6,6 +6,12 @@ class ApplicationController < ActionController::Base
   before_action :authorize
   before_action :check_account
 
+  helper_method :current_user
+  helper_method :current_user?
+  helper_method :logged_in?
+  helper_method :search_form
+  helper_method :gravatar_url
+
   class Forbidden < ActionController::ActionControllerError; end
   class IpAddressRejected < ActionController::ActionControllerError; end
 
@@ -31,28 +37,19 @@ class ApplicationController < ActionController::Base
     raise ActionController::BadRequest unless request.xhr?
   end
 
-  def current_user=(user)
-    @current_user = user
-  end
-
   def current_user
-    user_id = cookies.signed[:user_id] || session[:user_id]
-    @current_user ||= User.find_by(id: user_id)
+    if user_id = cookies.signed[:user_id] || session[:user_id]
+      @current_user ||= User.find_by(id: user_id)
+    end
   end
-
-  helper_method :current_user
 
   def current_user?(user)
     user == current_user
   end
 
-  helper_method :current_user?
-
   def logged_in?
     !current_user.nil?
   end
-
-  helper_method :logged_in?
 
   def authorize
     unless current_user
@@ -87,12 +84,8 @@ class ApplicationController < ActionController::Base
     SearchForm.new(params[:search])
   end
 
-  helper_method :search_form
-
   def gravatar_url(user)
     gravatar_id = Digest::MD5::hexdigest(user.email.downcase)
     "https://secure.gravatar.com/avatar/#{gravatar_id}?s=50"
   end
-
-  helper_method :gravatar_url
 end

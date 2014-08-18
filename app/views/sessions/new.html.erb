@@ -8,10 +8,6 @@
     <h3>メールアドレスとパスワードでログイン</h3>
     <%= form_for @form, url: :session do |f| %>
       <%= render 'shared/login_form', f: f %>
-      <div class="checkbox">
-        <%= f.check_box :remember_me %>
-        <%= f.label :remember_me, '次回から自動でログインする' %>
-      </div>
       <%= f.submit 'ログイン', class: "btn btn-default" %>
     <% end %>
     <p><%= link_to 'パスワードを忘れた場合', :new_password_reset  %></p>
