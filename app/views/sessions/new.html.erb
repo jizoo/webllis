@@ -9,8 +9,8 @@
     <%= form_for @form, url: :session do |f| %>
       <%= render 'shared/login_form', f: f %>
       <div class="checkbox">
-        <%= check_box_tag :remember_me, 1, params[:remember_me] %>
-        <%= label_tag :remember_me, 'ログインしたままにする' %>
+        <%= f.check_box :remember_me %>
+        <%= f.label :remember_me, '次回から自動でログインする' %>
       </div>
       <%= f.submit 'ログイン', class: "btn btn-default" %>
     <% end %>

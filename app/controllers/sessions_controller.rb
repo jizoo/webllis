@@ -21,7 +21,12 @@ class SessionsController < ApplicationController
         flash.now[:warning] = 'アカウントが停止されています。'
         render action: 'new'
       else
-        session[:user_id] = user.id
+        if @form.remember_me?
+          cookies.permanent.signed[:user_id] = user.id
+        else
+          cookies.delete(:user_id)
+          session[:user_id] = user.id
+        end
         user.events.create!(type: 'logged_in')
         flash[:info] = 'ログインしました。'
         redirect_back_or :root
@@ -33,6 +38,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    cookies.delete(:user_id)
     session.delete(:user_id)
     flash[:info] = 'ログアウトしました。'
     redirect_to :root
