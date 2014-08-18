@@ -24,7 +24,8 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   config.include FactoryGirl::Syntax::Methods
-  config.include FeaturesSpecHelper, :type => :controller
+  config.include LoginHelper::Feature, type: :feature
+  config.include LoginHelper::Controller, type: :controller
 
   config.before(:suite) do
     FactoryGirl.reload

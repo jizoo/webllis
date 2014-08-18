@@ -2,4 +2,7 @@
   p = FormPresenter.new(f, self)
   m << p.text_field_block(:email, 'メールアドレス')
   m << p.password_field_block(:password, 'パスワード')
+  if params[:controller].match(/\Asessions\z/)
+    m << p.check_boxes(:remember_me, '次回から自動でログインする')
+  end
 end %>

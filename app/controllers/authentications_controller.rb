@@ -9,7 +9,7 @@ class AuthenticationsController < ApplicationController
     omniauth = request.env['omniauth.auth']
     authentication = Authentication.find_by(provider: omniauth[:provider], uid: omniauth[:uid])
     if authentication
-      login authentication.user
+      session[:user_id] = authentication.user.id
       authentication.user.events.create!(type: 'logged_in')
       flash[:success] = 'ログインしました。'
       redirect_back_or :root
@@ -22,7 +22,7 @@ class AuthenticationsController < ApplicationController
       user = User.new
       user.apply_omniauth(omniauth)
       if user.save
-        login(:user, user)
+        session[:user_id] = user.id
         flash[:success] = 'ログインしました。'
         redirect_back_or :root
       else

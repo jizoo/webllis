@@ -22,7 +22,7 @@ class Editor::ApplicationController < ApplicationController
       if session[:last_access_time] >= TIMEOUT.ago
         session[:last_access_time] = Time.current
       else
-        cookies.delete(:remember_token)
+        session.delete(:user_id)
         flash[:warning] = 'セッションがタイムアウトしました。'
         redirect_to :editor_login
       end

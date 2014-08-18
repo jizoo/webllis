@@ -6,6 +6,12 @@ class ApplicationController < ActionController::Base
   before_action :authorize
   before_action :check_account
 
+  helper_method :current_user
+  helper_method :current_user?
+  helper_method :logged_in?
+  helper_method :search_form
+  helper_method :gravatar_url
+
   class Forbidden < ActionController::ActionControllerError; end
   class IpAddressRejected < ActionController::ActionControllerError; end
 
@@ -31,43 +37,18 @@ class ApplicationController < ActionController::Base
     raise ActionController::BadRequest unless request.xhr?
   end
 
-  def login(user)
-    remember_token = User.new_remember_token
-    if params[:remember_me]
-      cookies.permanent[:remember_token] = remember_token
-    else
-      cookies[:remember_token] = remember_token
-    end
-    user.update_attribute(:remember_token, User.encrypt(remember_token))
-    self.current_user = user
-  end
-
-  def current_user=(user)
-    @current_user = user
-  end
-
   def current_user
-    remember_token = User.encrypt(cookies[:remember_token])
-    @current_user ||= User.find_by(remember_token: remember_token)
+    if user_id = cookies.signed[:user_id] || session[:user_id]
+      @current_user ||= User.find_by(id: user_id)
+    end
   end
-
-  helper_method :current_user
 
   def current_user?(user)
     user == current_user
   end
 
-  helper_method :current_user?
-
   def logged_in?
     !current_user.nil?
-  end
-
-  helper_method :logged_in?
-
-  def logout
-    self.current_user = nil
-    cookies.delete(:remember_token)
   end
 
   def authorize
@@ -93,7 +74,7 @@ class ApplicationController < ActionController::Base
 
   def check_account
     if current_user && !current_user.active?
-      cookies.delete(:remember_token)
+      session.delete(:user_id)
       flash[:warning] = 'アカウントが無効になりました。'
       redirect_to :root
     end
@@ -103,12 +84,8 @@ class ApplicationController < ActionController::Base
     SearchForm.new(params[:search])
   end
 
-  helper_method :search_form
-
   def gravatar_url(user)
     gravatar_id = Digest::MD5::hexdigest(user.email.downcase)
     "https://secure.gravatar.com/avatar/#{gravatar_id}?s=50"
   end
-
-  helper_method :gravatar_url
 end

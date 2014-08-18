@@ -71,11 +71,4 @@ RSpec.describe User do
       expect(user).not_to be_valid
     end
   end
-
-  describe '#remember_token' do
-    example 'remember_tokenが有効である' do
-      user = create(:user)
-      expect(user.remember_token).not_to be_nil
-    end
-  end
 end
