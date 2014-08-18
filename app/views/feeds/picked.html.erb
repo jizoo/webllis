@@ -1,9 +1,0 @@
-<div class="col-lg-12">
-  <h1 class="page-header">編集者の投稿</h1>
-</div>
-
-<% @feed_items.each do |feed_item| %>
-  <%= render partial: 'shared/post_item', locals: { item: feed_item } %>
-<% end %>
-<%= paginate @feed_items %>
-<%= render 'shared/tag_cloud' %>

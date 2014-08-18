@@ -38,10 +38,6 @@ class User < ActiveRecord::Base
     relationships.find_by(followed_id: other_user.id).destroy
   end
 
-  def feed
-    Post.from_users_followed_by(self)
-  end
-
   def favorite?(other_post)
     favorites.find_by(post_id: other_post.id)
   end

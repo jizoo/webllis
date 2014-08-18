@@ -1,11 +1,23 @@
+<%
+@title = case params[:action]
+  when 'index'; 'フィード'
+  when 'picked'; '編集者の投稿'
+  else; raise
+end
+%>
+
+<% unless params[:action] == 'index' %>
+  <% provide(:title, @title) %>
+<% end %>
+
 <div class="col-lg-12">
   <h1 class="page-header">
-    <% if search_form.title %>
-      検索ワード：<%= search_form.title %>
+    <% if params[:search] %>
+      検索ワード：<%= params[:search][:title] %>
     <% elsif params[:tag] %>
       タグ：<%= params[:tag] %>
     <% else %>
-      トップページ
+      <%= @title %>
     <% end %>
   </h1>
 </div>
