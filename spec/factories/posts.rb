@@ -5,6 +5,7 @@ FactoryGirl.define do
     sequence(:title) { |n| "Example Title#{n}" }
     sequence(:description) { |n| "Example Description#{n}" }
     sequence(:image) { |n| "http://example.com/image#{n}.jpg" }
+    created_at '2014-01-01'
 
     factory :invalid_post do
       title { nil }
