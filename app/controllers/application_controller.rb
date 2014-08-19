@@ -9,7 +9,6 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
   helper_method :current_user?
   helper_method :logged_in?
-  helper_method :search_form
   helper_method :gravatar_url
 
   class Forbidden < ActionController::ActionControllerError; end
@@ -78,10 +77,6 @@ class ApplicationController < ActionController::Base
       flash[:warning] = 'アカウントが無効になりました。'
       redirect_to :root
     end
-  end
-
-  def search_form
-    SearchForm.new(params[:search])
   end
 
   def gravatar_url(user)

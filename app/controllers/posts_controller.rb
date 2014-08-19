@@ -1,8 +1,35 @@
 class PostsController < ApplicationController
-  skip_before_action :authorize, only: :show
+  skip_before_action :authorize, only: [ :index, :show ]
 
   def index
+    @posts = SearchForm.new(params[:search])
+    if logged_in?
+      @posts = @posts.search.from_users_followed_by(current_user)
+    else
+      editors = User.where(editor: true)
+      @posts = @posts.search.where(user: editors.ids)
+    end
+    @posts = @posts.tagged_with(params[:tag]) if params[:tag].present?
+    @posts = @posts.page(params[:page])
+  end
+
+  # GET
+  def posted
     @posts = current_user.posts.page(params[:page])
+    render action: 'index'
+  end
+
+  # GET
+  def favorite
+    @posts = current_user.favorite_posts.page(params[:page])
+    render action: 'index'
+  end
+
+  # GET
+  def picked
+    editors = User.where(editor: true)
+    @posts = Post.where(user: editors.ids).page(params[:page])
+    render action: 'index'
   end
 
   def show
@@ -49,6 +76,7 @@ class PostsController < ApplicationController
     redirect_to :posts
   end
 
+  private
   def post_params
     params.require(:post).permit(:url, :title, :tag_list,
     :image, :image_cache, :remove_image, :description)

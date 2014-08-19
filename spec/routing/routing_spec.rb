@@ -17,8 +17,8 @@ describe 'ルーティング' do
 
   example 'トップページ' do
     expect(get: '/').to route_to(
-      controller: 'static_pages',
-      action: 'home'
+      controller: 'posts',
+      action: 'index'
     )
   end
 

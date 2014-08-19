@@ -22,12 +22,14 @@ Rails.application.routes.draw do
     end
   end
 
-  root 'static_pages#home'
+  root 'posts#index'
   get 'about' => 'static_pages#about', as: :about
   get 'contact' => 'contacts#new', as: :contact
-  get 'editor_feed' => 'static_pages#editor_feed', as: :editor_feed
   get 'login' => 'sessions#new', as: :login
   get 'signup' => 'users#new', as: :signup
+  resources :feeds, only: :index do
+    get :picked, on: :collection
+  end
   resource :session, only: [ :create, :destroy ]
   resources :users do
     member do
@@ -36,6 +38,7 @@ Rails.application.routes.draw do
   end
   resource :password, only: [ :show, :edit, :update ]
   resources :posts do
+    get :posted, :favorite, :picked, on: :collection
     resources :comments, only: [ :create, :destroy ] do
       post :confirm, on: :collection
       resource :reply, only: [ :new, :create ] do
@@ -49,7 +52,7 @@ Rails.application.routes.draw do
   end
   resources :relationships, only: [ :create, :destroy ]
   resources :favorites, only: [ :index, :create, :destroy ]
-  get 'tags/:tag' => 'static_pages#home', as: :tag
+  get 'tags/:tag' => 'feeds#index', as: :tag
   resources :password_resets, only: [ :new, :edit, :create, :update ]
   get '/auth/:provider/callback' => 'authentications#create'
   resources :authentications, only: [ :index, :create, :destroy ]
