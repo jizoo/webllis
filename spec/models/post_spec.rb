@@ -11,6 +11,21 @@ RSpec.describe Post do
       expect(post).not_to be_valid
     end
 
+    example '先頭が「ftp」のurlは無効' do
+      post = build(:post, url: 'ftp://')
+      expect(post).not_to be_valid
+    end
+
+    example '先頭の「http://」を省略したurlは無効' do
+      post = build(:post, url: 'example.com')
+      expect(post).not_to be_valid
+    end
+
+    example '先頭が「https」のurlは有効' do
+      post = build(:post, url: 'https://example.com')
+      expect(post).to be_valid
+    end
+
     example '空白のtitleは無効' do
       post = build(:post, title: '')
       expect(post).not_to be_valid

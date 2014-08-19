@@ -6,8 +6,8 @@ class Post < ActiveRecord::Base
 
   default_scope { order(created_at: :desc) }
 
-  validates :url, presence: true
-  validates :title, presence: true
+  validates :url, format: { with: URI::regexp(%w(http https)) }
+  validates :title, length: 3..50
   validates :description, length: { maximum: 1000 }
 
   mount_uploader :image, ImageUploader
