@@ -7,7 +7,7 @@ module NameHolder
     include StringNormalizer
 
     before_validation do
-      self.name = normalize_as_name(name)
+      self.name = normalize(name)
     end
 
     validates :name, length: 3..50,

@@ -1,10 +1,19 @@
 class Post < ActiveRecord::Base
+  include StringNormalizer
+
   belongs_to :user
   has_many :favorites, dependent: :destroy
   has_many :favorited_users, through: :favorites, source: :post
   has_many :comments, dependent: :destroy
 
   default_scope { order(created_at: :desc) }
+
+  before_validation do
+    self.url = normalize(url)
+    self.url = url.downcase.gsub(' ', '') if url
+    self.title = normalize(title)
+    self.description = normalize(description)
+  end
 
   validates :url, format: { with: URI::regexp(%w(http https)) }
   validates :title, length: 3..50
