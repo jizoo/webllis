@@ -4,10 +4,12 @@ class Post < ActiveRecord::Base
   has_many :favorited_users, through: :favorites, source: :post
   has_many :comments, dependent: :destroy
 
-  default_scope -> { order(created_at: :desc)}
+  default_scope { order(created_at: :desc) }
+
   validates :url, presence: true
   validates :title, presence: true
-  validates :description, length: { maximum: 4000 }
+  validates :description, length: { maximum: 1000 }
+
   mount_uploader :image, ImageUploader
   acts_as_taggable
 
