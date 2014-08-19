@@ -22,7 +22,7 @@ Rails.application.routes.draw do
     end
   end
 
-  root 'feeds#index'
+  root 'posts#index'
   get 'about' => 'static_pages#about', as: :about
   get 'contact' => 'contacts#new', as: :contact
   get 'login' => 'sessions#new', as: :login
@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   end
   resource :password, only: [ :show, :edit, :update ]
   resources :posts do
+    get :posted, :favorite, :picked, on: :collection
     resources :comments, only: [ :create, :destroy ] do
       post :confirm, on: :collection
       resource :reply, only: [ :new, :create ] do

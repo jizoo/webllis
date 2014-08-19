@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-lg-7 col-md-7">
+    <%  if post.image? %>
+      <%= link_to image_tag(post.image.url, alt: 'post', class: 'img-responsive'), post %>
+    <% else %>
+      <%= link_to image_tag('no_thumbnail.gif', alt: 'post', class: 'img-responsive'), post %>
+    <% end %>
+  </div>
+  <div class="col-lg-5 col-md-5">
+    <h3><%= link_to(post.title, post) %></h3>
+    <p><%= truncate(post.description, length: 200) %>
+      <%= link_to('続きを読む', post) %></p>
+    <span><%= post.created_at.strftime('%Y/%m/%d') %></span>
+    <span><%= raw post.tag_list.map { |t| link_to t, tag_path(t) }.join(', ') %></span>
+    <span class="pull-right">
+    <% if params[:action] == 'posted' %>
+      <%= link_to '詳細', post %>
+      <%= link_to '編集', [ :edit, post ] %>
+      <%= link_to '削除', post, method: :delete,
+        data: { confirm: '本当に削除しますか？' } %>
+    <% else %>
+      <%= link_to image_tag(post.user.icon_image, alt: 'icon', class: 'icon-tiny'), post.user %>
+      <%= link_to post.user.name, post.user %>
+    <% end %>
+    </span>
+  </div>
+</div>
+<hr>
