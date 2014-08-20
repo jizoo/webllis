@@ -22,7 +22,7 @@ feature '投稿一覧' do
       expect(page).to have_css('span', text: '2014/01/01')
       # TODO: タグの表示
       expect(page).to have_css('span a', text: 'person')
-      expect(page).to have_no_content('User Title')
+        expect(page).not_to have_css('h3 a', text: 'User Title')
     end
   end
 
@@ -43,6 +43,42 @@ feature '投稿一覧' do
       end
     end
 
+    context '検索ワードがUser Titleの場合' do
+      scenario '検索フォームから検索した投稿を表示' do
+        login(user)
+        find('#search_title').set('User Title')
+        click_button '検索'
+
+        expect(page).to have_title('Webllis | User Titleの検索結果')
+
+        expect(page).to have_css('h1', text: 'User Titleの検索結果')
+        expect(page).to have_css('h3 a', text: 'User Title')
+        expect(page).to have_css('p', text: 'Example Description')
+        expect(page).to have_css('span', text: '2014/01/01')
+        # TODO: タグの表示
+        expect(page).to have_css('span a', text: 'person')
+        expect(page).not_to have_css('h3 a', text: 'Editor Title')
+      end
+    end
+
+    context '検索ワードが空の場合' do
+      scenario '検索フォームから検索した投稿を表示' do
+        login(user)
+        find('#search_title').set('')
+        click_button '検索'
+
+        expect(page).to have_title('Webllis')
+
+        expect(page).to have_css('h1', text: '検索ワードが入力されていません。')
+        expect(page).not_to have_css('h3 a', text: 'User Title')
+        expect(page).not_to have_css('h3 a', text: 'Editor Title')
+      end
+    end
+
+    scenario 'タグで検索した投稿を表示' do
+      #TODO
+    end
+
     scenario 'ログインユーザの投稿が表示' do
       login(user)
       visit posted_posts_path
@@ -58,7 +94,7 @@ feature '投稿一覧' do
       expect(page).to have_css('a', text: '編集')
       expect(page).to have_css('a', text: '削除')
       expect(page).not_to have_css('span a', text: 'person')
-      expect(page).to have_no_content('Editor Title')
+      expect(page).not_to have_css('h3 a', text: 'Editor Title')
     end
 
     scenario 'お気に入りの投稿を表示' do
@@ -81,7 +117,7 @@ feature '投稿一覧' do
       expect(page).to have_css('span', text: '2014/01/01')
       # TODO: タグの表示
       expect(page).to have_css('span a', text: 'person')
-      expect(page).to have_no_content('User Title')
+      expect(page).not_to have_css('h3 a', text: 'User Title')
     end
   end
 end
