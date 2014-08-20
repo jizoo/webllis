@@ -22,7 +22,13 @@ module ApplicationHelper
     end
   end
 
-  def formatted_content(content)
-    ERB::Util.html_escape(content).gsub(/\n/, '<br />').html_safe
+  def link_to_creator(user)
+    link_to user do
+      image_tag(user.icon_image, alt: 'icon', class: 'icon-tiny') + ' ' + user.name
+    end
+  end
+
+  def formatted_content(text)
+    ERB::Util.html_escape(text).gsub(/\n/, '<br />').html_safe
   end
 end

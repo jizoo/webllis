@@ -1,8 +1,7 @@
 <ul>
   <li>
-    <%= link_to image_tag(comment.creator.icon_image, alt: 'icon', class: 'icon-tiny'), comment.creator %>
-    <%= link_to comment.creator.name, comment.creator %>
-    <%= comment.created_at.strftime('%Y/%m/%d') %>
+    <%= link_to_creator(comment.creator) %>
+    <%= comment_created_at(comment) %>
     <p>
       <%= formatted_content(comment.content) %>
       <%= link_to '返信', new_post_comment_reply_path(post_id: @post, comment_id: comment) %>
@@ -12,7 +11,7 @@
       <% end %>
     </p>
     <% comment.children.each do |child| %>
-      <%= render partial: 'comments/comment', locals: { comment: child }  %>
+      <%= render 'posts/comment_item', comment: child %>
     <% end %>
   </li>
 </ul>

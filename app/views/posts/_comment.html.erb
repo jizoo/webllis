@@ -1,0 +1,10 @@
+<div class="row">
+  <div class="col-lg-12">
+    <h3>コメント <span class="badge"><%= @post.comments.count %></span></h3>
+    <% @comments.each do |comment| %>
+    <%= render 'posts/comment_item', comment: comment %>
+    <% end %>
+    <%= paginate @comments %>
+    <%= render 'posts/comment_form' %>
+  </div>
+</div>
