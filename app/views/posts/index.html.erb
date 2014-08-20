@@ -1,6 +1,10 @@
 <%
+@title = '' if params[:tag].blank? && params[:search].blank?
+@title = "#{params[:tag]}に関する投稿" if params[:tag].present?
+@title = "#{params[:search][:title]}の検索結果" if params[:search].present? && params[:search][:title].present?
+@title = '検索ワードが入力されていません。' if params[:search].present? && params[:search][:title].blank?
 @title = case params[:action]
-  when 'index'; 'フィード'
+  when 'index'; @title
   when 'posted'; '自分の投稿一覧'
   when 'favorite'; 'お気に入りの投稿一覧'
   when 'picked'; '編集者の投稿一覧'
@@ -8,22 +12,17 @@
 end
 %>
 
-<% unless params[:action] == 'index' %>
-  <% provide(:title, @title) %>
-<% end %>
+<% provide(:title, @title) %>
 
 <div class="col-lg-12">
   <h1 class="page-header">
-    <% if params[:search] %>
-      検索ワード：<%= params[:search][:title] %>
-    <% elsif params[:tag] %>
-      タグ：<%= params[:tag] %>
-    <% else %>
-      <%= @title %>
-    <% end %>
+    <%= @title.present? ? @title : 'フィード' %>
   </h1>
 </div>
 
-<%= render @posts %>
-<%= paginate @posts %>
+<% unless params[:search].present? && params[:search][:title].blank? %>
+  <%= render @posts %>
+  <%= paginate @posts %>
+<% end %>
+
 <%= render 'shared/tag_cloud' %>

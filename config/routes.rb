@@ -52,7 +52,7 @@ Rails.application.routes.draw do
   end
   resources :relationships, only: [ :create, :destroy ]
   resources :favorites, only: [ :index, :create, :destroy ]
-  get 'tags/:tag' => 'feeds#index', as: :tag
+  get 'tags/:tag' => 'posts#index', as: :tag
   resources :password_resets, only: [ :new, :edit, :create, :update ]
   get '/auth/:provider/callback' => 'authentications#create'
   resources :authentications, only: [ :index, :create, :destroy ]

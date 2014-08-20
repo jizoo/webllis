@@ -5,7 +5,7 @@ module EmailHolder
     include StringNormalizer
 
     before_validation do
-      self.email = normalize_as_email(email)
+      self.email = normalize(email)
       self.email_for_index = email.downcase if email
     end
 

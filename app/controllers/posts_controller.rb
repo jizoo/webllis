@@ -35,8 +35,8 @@ class PostsController < ApplicationController
   def show
     @post = Post.find(params[:id])
     if logged_in?
-      @comments = @post.comments.where(type: 'sent').page(params[:page])
       @comment = @post.comments.build
+      @comments = @post.comments.where(type: 'sent').page(params[:page])
     end
     authorize unless @post.user.editor?
   end
@@ -49,7 +49,7 @@ class PostsController < ApplicationController
     @post = current_user.posts.build(post_params)
     if @post.save
       flash[:success] = '投稿完了しました。'
-      redirect_to :posts
+      redirect_to @post
     else
       render action: 'new'
     end
@@ -64,7 +64,7 @@ class PostsController < ApplicationController
     @post.assign_attributes(post_params)
     if @post.save
       flash[:success] = '投稿を更新しました。'
-      redirect_to :posts
+      redirect_to @post
     else
       render action: 'edit'
     end
@@ -72,13 +72,16 @@ class PostsController < ApplicationController
 
   def destroy
     @post = current_user.posts.find(params[:id])
-    @post.destroy
-    redirect_to :posts
+    @post.destroy!
+    redirect_to :root
   end
 
   private
+
   def post_params
-    params.require(:post).permit(:url, :title, :tag_list,
-    :image, :image_cache, :remove_image, :description)
+    params.require(:post).permit(
+      :url, :title, :tag_list, :image,
+      :image_cache, :remove_image, :description
+    )
   end
 end

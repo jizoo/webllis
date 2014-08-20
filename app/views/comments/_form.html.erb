@@ -1,7 +1,0 @@
-<%= render 'shared/error_messages', object: f.object %>
-<div class="form-group">
-  <%= image_tag current_user.icon_image, alt: 'icon', class: 'icon-midium' %>
-  <%= f.label :content, 'コメントを投稿する' %>
-  <%= f.text_area :content, placeholder: 'コメントを入力してください。',
-    rows: '7', class: 'form-control' %>
-</div>
