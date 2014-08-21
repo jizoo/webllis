@@ -71,4 +71,42 @@ RSpec.describe User do
       expect(user).not_to be_valid
     end
   end
+
+  describe '#add_favorite!' do
+    let!(:user) { create(:user) }
+    let!(:post) { create(:post) }
+
+    before do
+      user.add_favorite!(post)
+    end
+
+    example 'お気に入りに追加すると、userとpostの関係が作成される' do
+      expect(user.favorite_posts).to be_include(post)
+    end
+
+    example 'ユーザが削除されると、userとpostの関係は削除される' do
+      # TODO
+      # user.destroy
+      # expect(Favorite.where(user_id: user.id, post_id: post.id)).to be_empty
+    end
+
+    example '投稿が削除されると、userとpostの関係は削除される' do
+      post.destroy
+      expect(Favorite.where(user_id: user.id, post_id: post.id)).to be_empty
+    end
+  end
+
+  describe '#remove_favorite!' do
+    let(:user) { create(:user) }
+    let(:post) { create(:post) }
+
+    before do
+      Favorite.create!(user_id: user.id, post_id: post.id)
+      user.remove_favorite!(post)
+    end
+
+    example 'お気に入りを解除すると、userとpostの関係が解除される' do
+      expect(user.favorite_posts).not_to be_include(post)
+    end
+  end
 end

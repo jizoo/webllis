@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140817070324) do
+ActiveRecord::Schema.define(version: 20140821035249) do
 
   create_table "allowed_sources", force: true do |t|
     t.string   "namespace",                  null: false
@@ -159,6 +159,12 @@ ActiveRecord::Schema.define(version: 20140817070324) do
 
   add_foreign_key "events", "users", name: "events_user_id_fk"
 
+  add_foreign_key "favorites", "posts", name: "favorites_post_id_fk"
+  add_foreign_key "favorites", "users", name: "favorites_user_id_fk"
+
   add_foreign_key "posts", "users", name: "posts_user_id_fk"
+
+  add_foreign_key "relationships", "users", name: "relationships_followed_id_fk", column: "followed_id"
+  add_foreign_key "relationships", "users", name: "relationships_follower_id_fk", column: "follower_id"
 
 end
