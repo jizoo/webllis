@@ -10,7 +10,7 @@ class Comment < ActiveRecord::Base
 
   scope :unprocessed, -> { where(read: false, reader_trashed: false) }
 
-  validates :content, presence: true, length: { maximum: 800 }
+  validates :content, presence: true, length: { maximum: 400 }
 
   before_create { self.root = parent.root || parent if parent }
   before_validation { self.root = parent.root || parent if parent }
