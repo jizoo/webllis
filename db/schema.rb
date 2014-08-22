@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140821035249) do
+ActiveRecord::Schema.define(version: 20140822111715) do
 
   create_table "allowed_sources", force: true do |t|
     t.string   "namespace",                  null: false
@@ -40,15 +40,15 @@ ActiveRecord::Schema.define(version: 20140821035249) do
   add_index "authentications", ["user_id"], name: "index_authentications_on_user_id", using: :btree
 
   create_table "comments", force: true do |t|
-    t.integer  "post_id",                         null: false
-    t.string   "content",                         null: false
+    t.integer  "post_id",                          null: false
+    t.string   "content",                          null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "root_id"
     t.integer  "parent_id"
-    t.string   "type",                            null: false
-    t.integer  "creator_id",                      null: false
-    t.integer  "reader_id",                       null: false
+    t.string   "type",            default: "sent", null: false
+    t.integer  "creator_id",                       null: false
+    t.integer  "reader_id",                        null: false
     t.boolean  "creator_trashed", default: false
     t.boolean  "reader_trashed",  default: false
     t.boolean  "read",            default: false
