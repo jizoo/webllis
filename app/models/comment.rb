@@ -1,4 +1,6 @@
 class Comment < ActiveRecord::Base
+  include StringNormalizer
+
   self.inheritance_column = nil
 
   belongs_to :post
@@ -13,7 +15,10 @@ class Comment < ActiveRecord::Base
   validates :content, presence: true, length: { maximum: 400 }
 
   before_create { self.root = parent.root || parent if parent }
-  before_validation { self.root = parent.root || parent if parent }
+  before_validation do
+    self.root = parent.root || parent if parent
+    self.content = normalize(content)
+  end
 
 
   def self.comments_for_user(user)
