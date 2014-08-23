@@ -1,60 +1,49 @@
 class CommentsController < ApplicationController
   before_action :reject_non_xhr, only: [ :count ]
+  before_action :fetch_comment, only: [ :destroy, :trash, :recover ]
+  before_action :fetch_post, only: [ :confirm, :create, :destroy ]
+  before_action :set_title, only: [ :index, :trashed ]
 
   def index
-    comments = Comment.comments_for_user(current_user)
-    @comments = comments.order(created_at: :desc).page(params[:page])
-    comments.update_all(read: true)
+    @comments = Comment.unprocessed_by(current_user).page(params[:page])
+    @comments.update_all(read: true)
   end
 
   # GET
   def trashed
-    @comments = Comment.trashed_comments_for_user(current_user).order(created_at: :desc).page(params[:page])
+    @comments = Comment.trashed_by(current_user).page(params[:page])
     render action: 'index'
   end
 
   # POST
   def confirm
-    @post = Post.find(params[:post_id])
-    @comment = @post.comments.build(comment_params)
+    @comment = comments.build(comment_params)
     if @comment.valid?
       render action: 'confirm'
     else
-      @comments = @post.comments.page(params[:page])
+      @comments = comments.page(params[:page])
       flash.now[:danger] = '入力に誤りがあります。'
       render 'posts/show'
     end
   end
 
   def create
-    @post = Post.find(params[:post_id])
-    @comment = @post.comments.build(comment_params)
-    if params[:commit]
-      @comment.creator = current_user
-      @comment.reader = @post.user
-      @comment.type = 'sent'
-      if @comment.save
-        flash[:success] = 'コメントを投稿しました。'
-        redirect_to @post
-      else
-        @comments = @post.comments.page(params[:page])
-        flash.now[:danger] = '入力に誤りがあります。'
-        render 'posts/show'
-      end
+    @comment = comments.build(comment_params)
+    @comment.creator = current_user
+    @comment.reader = @post.user
+    if params[:commit] && @comment.save
+      flash[:success] = 'コメントを投稿しました。'
+      redirect_to @post
     else
-      @comments = @post.comments.page(params[:page])
+      @comments = comments.page(params[:page])
+      flash.now[:danger] = '入力に誤りがあります。'
       render 'posts/show'
     end
   end
 
   def destroy
-    if params[:post_id]
-      @post = Post.find(params[:post_id])
-      @comment = @post.comments.find(params[:id])
-    else
-      @comment = Comment.find(params[:id])
-    end
-    if @comment.creator == current_user
+    @comment = comments.find(params[:id]) if params[:post_id]
+    if current_user?(@comment.creator)
       @comment.destroy
     else
       @comment.update_column(:deleted, true)
@@ -63,28 +52,49 @@ class CommentsController < ApplicationController
     redirect_to @post || :back
   end
 
+  # PATCH
   def trash
-    comment = Comment.find(params[:id])
-    comment.update_column(:creator_trashed, true) if comment.creator == current_user
-    comment.update_column(:reader_trashed, true) if comment.reader == current_user
+    @comment.update_column(:creator_trashed, true) if @comment.trashable_by_creator?(current_user)
+    @comment.update_column(:reader_trashed, true) if @comment.trashable_by_reader?(current_user)
     flash[:success] = 'コメントをゴミ箱に移動しました。'
     redirect_to :back
   end
 
+  # PATCH
   def recover
-    comment = Comment.find(params[:id])
-    comment.update_column(:creator_trashed, false) if comment.creator == current_user
-    comment.update_column(:reader_trashed, false) if comment.reader == current_user
+    @comment.update_column(:creator_trashed, false) if @comment.recoverable_by_creator?(current_user)
+    @comment.update_column(:reader_trashed, false) if @comment.recoverable_by_reader?(current_user)
     flash[:success] = 'コメントを元に戻しました。'
     redirect_to :back
   end
 
-  #GET
+  # GET
   def count
-    render text: Comment.unprocessed.where(reader: current_user).count
+    render text: Comment.unread_by(current_user).count
   end
 
   private
+
+  def fetch_comment
+    @comment = Comment.find(params[:id])
+  end
+
+  def fetch_post
+    @post = Post.find(params[:post_id]) if params[:post_id].present?
+  end
+
+  def set_title
+    @title = case params[:action]
+      when 'index'; 'コメント一覧'
+      when 'trashed'; 'ゴミ箱'
+      else; raise
+    end
+  end
+
+  def comments
+    @post ? @post.comments : Comment
+  end
+
   def comment_params
     params.require(:comment).permit(:content)
   end

@@ -10,15 +10,15 @@ module ApplicationHelper
     end
   end
 
-  def number_of_unprocessed_comments
+  def number_of_unread_comments
     markup do |m|
       m << '新規コメント'
-      if (c = Comment.unprocessed.where(reader: current_user).count) > 0
+      if (c = Comment.unread_by(current_user).count) > 0
         anchor_text = "(#{c})"
       else
         anchor_text = ''
       end
-      m.span(anchor_text, id: 'number-of-unprocessed-comments')
+      m.span(anchor_text, id: 'number-of-unread-comments')
     end
   end
 

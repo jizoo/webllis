@@ -1,0 +1,16 @@
+<tr>
+  <td><%= comment_type(comment) %></td>
+  <td><%= link_to_creator(comment.creator) %></td>
+  <td><%= truncated_content(comment) %></td>
+  <td><%= link_to_commented_post(comment) %></td>
+  <td><%= comment_created_at(comment) %></td>
+  <td>
+    <% if params[:action] == 'index' %>
+      <%= link_to '返信', new_post_comment_reply_path(post_id: comment.post_id, comment_id: comment) %> |
+      <%= link_to 'ゴミ箱', trash_comment_path(comment), method: :patch %>
+    <% else %>
+      <%= link_to '復元', recover_comment_path(comment), method: :patch %> |
+      <%= link_to '削除', comment_path(comment), method: :delete, data: { confirm: '本当に削除しますか？' } %>
+    <% end %>
+  </td>
+</tr>

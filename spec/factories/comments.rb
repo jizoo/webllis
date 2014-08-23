@@ -3,7 +3,15 @@ FactoryGirl.define do
     post
     creator
     reader
-    content 'Content'
+    content "Content.\nContent."
     type 'sent'
+
+    factory :invalid_comment do
+      content { nil }
+    end
+
+    factory :reply do
+      type 'replies'
+    end
   end
 end
