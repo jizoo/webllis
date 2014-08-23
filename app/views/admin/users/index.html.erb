@@ -13,21 +13,7 @@
         <th>管理者権限</th>
         <th>アクション</th>
       </tr>
-      <% @users.each do |m| %>
-        <% p = UserPresenter.new(m, self) %>
-        <tr>
-          <td><%= m.name %></td>
-          <td><%= m.email %></td>
-          <td><%= p.check_mark(m.suspended) %></td>
-          <td><%= p.check_mark(m.editor) %></td>
-          <td><%= p.check_mark(m.admin) %></td>
-          <td>
-            <%= link_to '編集', [ :edit, :admin, m ] %> |
-            <%= link_to '削除', [ :admin, m ], method: :delete,
-              data: { confirm: '本当に削除しますか？' } %>
-          </td>
-        </tr>
-      <% end %>
+      <%= render @users %>
     </table>
     <%= paginate @users %>
   </div>

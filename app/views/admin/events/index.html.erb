@@ -16,7 +16,7 @@
         <th>日時</th>
       </tr>
       <% @events.each do |event| %>
-        <%= EventPresenter.new(event, self).table_row %>
+        <%= event_table_row(event) %>
       <% end %>
       <% if @events.empty? %>
         <tr>

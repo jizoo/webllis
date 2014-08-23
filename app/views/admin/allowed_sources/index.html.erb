@@ -15,14 +15,13 @@
         </tr>
       </thead>
         <% @allowed_sources.each_with_index do |s, index| %>
-          <% p = AllowedSourcePresenter.new(s, self) %>
           <%= f.fields_for :allowed_sources, s, index: index do |ff| %>
             <%= ff.hidden_field :id %>
             <tbody>
               <tr>
                 <td><%= ff.check_box :_destroy %></td>
-                <td><%= p.ip_address %></td>
-                <td><%= p.created_at %></td>
+                <td><%= ip_address(s) %></td>
+                <td><%= ip_address_created_at(s) %></td>
               </tr>
             </tbody>
           <% end %>
