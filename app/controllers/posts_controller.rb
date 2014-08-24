@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   skip_before_action :authorize, only: [ :index, :show ]
+  before_action :set_title, only: [ :index, :posted, :favorite, :picked ]
 
   def index
     @posts = SearchForm.new(params[:search])
@@ -77,6 +78,20 @@ class PostsController < ApplicationController
   end
 
   private
+
+  def set_title
+    @title = '' if params[:tag].blank? && params[:search].blank?
+    @title = "#{params[:tag]}に関する投稿" if params[:tag].present?
+    @title = "#{params[:search][:title]}の検索結果" if params[:search].present? && params[:search][:title].present?
+    @title = '検索ワードが入力されていません。' if params[:search].present? && params[:search][:title].blank?
+    @title = case params[:action]
+      when 'index'; @title
+      when 'posted'; '自分の投稿一覧'
+      when 'favorite'; 'お気に入りの投稿一覧'
+      when 'picked'; '編集者の投稿一覧'
+      else; raise
+    end
+  end
 
   def post_params
     params.require(:post).permit(

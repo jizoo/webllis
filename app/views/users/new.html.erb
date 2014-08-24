@@ -1,16 +1,12 @@
 <% provide(:title, 'ユーザ登録') %>
 <h1>ユーザ登録</h1>
 
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <h3>Twitterで新規登録</h3>
-  <% if @user.authentications.empty? %>
-    <%= link_to 'Twitterで新規登録', '/auth/twitter', class: 'btn btn-default' %>
-    <h3>メールアドレスで新規登録</h3>
-  <% end %>
-    <%= form_for @user do |f| %>
-      <%= render 'shared/user_form', f: f %>
-      <%= f.submit '登録', class: "btn btn-default" %>
-    <% end %>
-  </div>
-</div>
+<h3>Twitterで新規登録</h3>
+<% if @user.authentications.empty? %>
+  <%= link_to 'Twitterで新規登録', '/auth/twitter', class: 'btn btn-default' %>
+  <h3>メールアドレスで新規登録</h3>
+<% end %>
+<%= form_for @user do |f| %>
+  <%= render 'shared/user_form', f: f %>
+  <%= f.submit '登録', class: "btn btn-default" %>
+<% end %>

@@ -1,30 +1,25 @@
 <% provide(:title, 'ログイン・ログアウト記録') %>
-
 <% if @user %>
   <h1><%= @user.name %>のログイン・ログアウト記録</h1>
 <% else %>
   <h1>ユーザのログイン・ログアウト記録</h1>
 <% end %>
 
-<div class="row">
-  <div class="col-md-12">
-    <%= link_to 'ユーザ一覧', :admin_users, class: "btn btn-default" %>
-    <table class="table table-striped">
-      <tr>
-        <% unless @user %><th>ユーザ名</th><% end %>
-        <th>種別</th>
-        <th>日時</th>
-      </tr>
-      <% @events.each do |event| %>
-        <%= event_table_row(event) %>
-      <% end %>
-      <% if @events.empty? %>
-        <tr>
-          <%= content_tag(:td, '記録がありません',
-            colspan: @user ? 2 : 3, style: 'text-align: center') %>
-        </tr>
-      <% end %>
-    </table>
-    <%= paginate @events %>
-  </div>
-</div>
+<%= link_to 'ユーザ一覧', :admin_users, class: "btn btn-default" %>
+<table class="table table-striped">
+  <tr>
+    <% unless @user %><th>ユーザ名</th><% end %>
+    <th>種別</th>
+    <th>日時</th>
+  </tr>
+  <% @events.each do |event| %>
+    <%= event_table_row(event) %>
+  <% end %>
+  <% if @events.empty? %>
+    <tr>
+      <%= content_tag(:td, '記録がありません',
+        colspan: @user ? 2 : 3, style: 'text-align: center') %>
+    </tr>
+  <% end %>
+</table>
+<%= paginate @events %>
