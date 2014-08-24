@@ -1,12 +1,14 @@
 <% provide(:title, 'パスワード再設定' ) %>
-<h1>パスワード再設定</h1>
 
-<%= form_for @reset_password_form, url: :password_reset, method: :patch do |f| %>
-  <%= render 'shared/error_messages', object: f.object %>
-  <%= markup do |m|
-    p = FormPresenter.new(f, self)
-    m << p.password_field_block(:new_password, '新しいパスワード')
-    m << p.password_field_block(:new_password_confirmation, '新しいパスワード（確認）')
-  end %>
-  <%= f.submit '保存', class: 'btn btn-default' %>
+<%= render layout: 'layouts/form' do %>
+  <h1>パスワード再設定</h1>
+  <%= form_for @reset_password_form, url: :password_reset, method: :patch do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
+    <%= markup do |m|
+      p = FormPresenter.new(f, self)
+      m << p.password_field_block(:new_password, '新しいパスワード')
+      m << p.password_field_block(:new_password_confirmation, '新しいパスワード（確認）')
+    end %>
+    <%= f.submit '保存', class: 'btn btn-default' %>
+  <% end %>
 <% end %>
