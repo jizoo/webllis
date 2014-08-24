@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   skip_before_action :authorize, only: [:new, :create]
 
   def index
-    @users = User.order(created_at: :desc).page(params[:page])
+    @users = User.page(params[:page])
   end
 
   def show
@@ -13,7 +13,7 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-    @user.apply_omniauth(session[:omniauth]) if session[:omniauth]
+    @user.apply_oauth(session[:omniauth]) if session[:omniauth]
   end
 
   def edit
@@ -22,12 +22,9 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    if session[:omniauth]
-      @user.apply_omniauth(session[:omniauth])
-    else
-      @user.icon_image = gravatar_url(@user)
-    end
-    session[:omniauth] = nil unless @user.new_record?
+    @user.icon_image = gravatar_url(@user)
+    @user.apply_oauth(session[:omniauth]) if session[:omniauth]
+    session[:omniauth] = nil if @user.persisted?
     if @user.save
       session[:user_id] = @user.id
       flash[:success] = '登録完了しました。'
@@ -69,6 +66,7 @@ class UsersController < ApplicationController
   end
 
   private
+
   def user_params
     params.require(:user).permit(:name, :email, :password,
       :password_confirmation, :icon_image)

@@ -1,36 +1,17 @@
 class SessionsController < ApplicationController
   skip_before_action :authorize
+  before_action :strict_logged_in_user, only: [ :new, :create ]
 
   def new
-    if logged_in?
-      redirect_to :root
-    else
-      @form = LoginForm.new
-      render action: 'new'
-    end
+    @form = LoginForm.new
   end
 
   def create
     @form = LoginForm.new(params[:login_form])
-    if @form.email.present?
-      user = User.find_by(email_for_index: @form.email.downcase)
-    end
+    user = User.find_by(email_for_index: @form.email.downcase) if @form.email.present?
     if Authenticator.new(user).authenticate(@form.password)
-      if user.suspended?
-        user.events.create!(type: 'rejected')
-        flash.now[:warning] = 'アカウントが停止されています。'
-        render action: 'new'
-      else
-        if @form.remember_me?
-          cookies.permanent.signed[:user_id] = user.id
-        else
-          cookies.delete(:user_id)
-          session[:user_id] = user.id
-        end
-        user.events.create!(type: 'logged_in')
-        flash[:info] = 'ログインしました。'
-        redirect_back_or :root
-      end
+      login(user, @form)
+      redirect_back_or_root_after_login(user)
     else
       flash.now[:danger] = 'メールアドレスまたはパスワードが正しくありません。'
       render action: 'new'
@@ -38,9 +19,17 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    cookies.delete(:user_id)
-    session.delete(:user_id)
+    logout
     flash[:info] = 'ログアウトしました。'
     redirect_to :root
+  end
+
+  private
+
+  def strict_logged_in_user
+    if logged_in?
+      flash[:warning] = '既にログイン済です。'
+      redirect_to :root
+    end
   end
 end
