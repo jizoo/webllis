@@ -18,8 +18,6 @@ class Comment < ActiveRecord::Base
     self.content = normalize(content)
   end
 
-  default_scope { order(created_at: :desc) }
-
   class << self
     def unprocessed_by(user)
       reader = arel_table[:reader_id].eq(user.id)
@@ -30,7 +28,8 @@ class Comment < ActiveRecord::Base
       where(arel_table.grouping(
         (reader.and(reader_not_trashed)).or(creator.and(creator_not_trashed))
         .and(not_deleted))
-      )
+      ).
+      order(created_at: :desc)
     end
 
     def trashed_by(user)
@@ -42,7 +41,8 @@ class Comment < ActiveRecord::Base
       where(arel_table.grouping(
         (reader.and(reader_trashed)).or(creator.and(creator_trashed))
         .and(not_deleted))
-      )
+      ).
+      order(created_at: :desc)
     end
 
     def unread_by(user)
