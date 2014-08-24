@@ -1,41 +1,55 @@
 class AuthenticationsController < ApplicationController
-  skip_before_action :authorize
+  skip_before_action :authorize, only: :create
+  before_action :authentications, only: :index
 
   def index
-    @authentications = current_user.authentications if current_user
   end
 
   def create
-    omniauth = request.env['omniauth.auth']
-    authentication = Authentication.find_by(provider: omniauth[:provider], uid: omniauth[:uid])
-    if authentication
-      session[:user_id] = authentication.user.id
-      authentication.user.events.create!(type: 'logged_in')
-      flash[:success] = 'ログインしました。'
-      redirect_back_or :root
-    elsif current_user
-      current_user.apply_omniauth(omniauth)
-      current_user.apply_omniauth(omniauth).save
-      flash[:success] = '認証が成功しました。'
+    if logged_in?
+      apply_oauth_to(current_user)
       redirect_to :authentications
+    elsif authentication.present? || apply_oauth_to(user)
+      login(user)
+      redirect_back_or_root_after_login(user)
     else
-      user = User.new
-      user.apply_omniauth(omniauth)
-      if user.save
-        session[:user_id] = user.id
-        flash[:success] = 'ログインしました。'
-        redirect_back_or :root
-      else
-        session[:omniauth] = omniauth.except('extra')
-        redirect_to :signup
-      end
+      session[:omniauth] = oauth.except('extra')
+      redirect_to :signup
     end
   end
 
   def destroy
-    @authentication = current_user.authentications.find(params[:id])
+    @authentication = authentications.find(params[:id])
     @authentication.destroy
     flash[:success] = '認証が解除されました。'
     redirect_to :authentications
+  end
+
+  private
+
+  def authentications
+    @authentications = current_user.authentications
+  end
+
+  def user
+    if authentication.present?
+      authentication.user
+    else
+      User.new
+    end
+  end
+
+  def authentication
+    Authentication.find_by(provider: oauth[:provider], uid: oauth[:uid])
+  end
+
+  def apply_oauth_to(user)
+    user.apply_oauth(oauth)
+    user.save
+    flash[:success] = '認証が成功しました。' if logged_in?
+  end
+
+  def oauth
+    request.env['omniauth.auth']
   end
 end

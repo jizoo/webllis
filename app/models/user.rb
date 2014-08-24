@@ -15,6 +15,8 @@ class User < ActiveRecord::Base
   has_many :comments, dependent: :destroy
   has_many :authentications, dependent: :destroy
 
+  default_scope { order(created_at: :desc) }
+
   def send_password_reset
     self.password_reset_token = User.encrypt(User.new_remember_token)
     self.password_reset_sent_at = Time.zone.now
@@ -50,11 +52,11 @@ class User < ActiveRecord::Base
     favorites.find_by(post_id: other_post.id).destroy
   end
 
-  def apply_omniauth(omniauth)
-    provider = omniauth['provider']
-    uid = omniauth['uid']
-    nickname = omniauth['info']['nickname']
-    image_url = omniauth['info']['image']
+  def apply_oauth(oauth)
+    provider = oauth['provider']
+    uid = oauth['uid']
+    nickname = oauth['info']['nickname']
+    image_url = oauth['info']['image']
 
     self.name = nickname if name.blank?
     self.icon_image = image_url if new_record?

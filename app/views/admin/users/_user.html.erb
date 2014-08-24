@@ -1,0 +1,11 @@
+<tr>
+  <td><%= user.name %></td>
+  <td><%= user.email %></td>
+  <td><%= check_mark(user.suspended) %></td>
+  <td><%= check_mark(user.editor) %></td>
+  <td><%= check_mark(user.admin) %></td>
+  <td>
+    <%= link_to '編集', [ :edit, :admin, user ] %> |
+    <%= link_to '削除', [ :admin, user ], method: :delete, data: { confirm: '本当に削除しますか？' } %>
+  </td>
+</tr>

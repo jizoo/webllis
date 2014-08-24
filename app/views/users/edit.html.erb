@@ -1,15 +1,11 @@
 <% provide(:title, 'プロフィール設定') %>
 <h1>プロフィール設定</h1>
 
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <%= form_for @user do |f| %>
-      <%= render 'shared/user_form', f: f %>
-      <%= render 'icon_form', f: f %>
-      <%= f.submit '保存', class: "btn btn-primary" %>
-      <%= link_to 'キャンセル', current_user, class: "btn btn-default" %>
-      <%= link_to '退会する', current_user, method: :delete,
-        data: { confirm: '本当に退会しますか？' }, class: "btn btn-link pull-right" %>
-    <% end %>
-  </div>
-</div>
+<%= form_for @user do |f| %>
+  <%= render 'shared/user_form', f: f %>
+  <%= render 'icon_form', f: f %>
+  <%= f.submit '保存', class: "btn btn-primary" %>
+  <%= link_to 'キャンセル', current_user, class: "btn btn-default" %>
+  <%= link_to '退会する', current_user, method: :delete,
+    data: { confirm: '本当に退会しますか？' }, class: "btn btn-link pull-right" %>
+<% end %>

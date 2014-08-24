@@ -19,6 +19,7 @@ class ApplicationController < ActionController::Base
   rescue_from ApplicationController::IpAddressRejected, with: :rescue403
 
   private
+
   def set_layout
     if params[:controller].match(%r{\A(editor|admin)/})
       Regexp.last_match[1]
@@ -36,6 +37,27 @@ class ApplicationController < ActionController::Base
     raise ActionController::BadRequest unless request.xhr?
   end
 
+  def authorize
+    unless current_user
+      store_location
+      flash[:warning] = 'ログインしてください。'
+      if params[:controller].match(%r{\A(editor)/})
+        redirect_to :"#{Regexp.last_match[1]}_login"
+      else
+        redirect_to :login
+      end
+    end
+  end
+
+  def check_account
+    if current_user && !current_user.active?
+      current_user.events.create!(type: 'rejected')
+      session.delete(:user_id)
+      flash[:warning] = 'アカウントが無効になりました。'
+      redirect_to :root
+    end
+  end
+
   def current_user
     if user_id = cookies.signed[:user_id] || session[:user_id]
       @current_user ||= User.find_by(id: user_id)
@@ -50,16 +72,24 @@ class ApplicationController < ActionController::Base
     !current_user.nil?
   end
 
-  def authorize
-    unless current_user
-      store_location
-      flash[:warning] = 'ログインしてください。'
-      if params[:controller].match(%r{\A(editor)/})
-        redirect_to :"#{Regexp.last_match[1]}_login"
-      else
-        redirect_to :login
-      end
+  def login(user, object = nil)
+    if object.present? && object.remember_me?
+      cookies.permanent.signed[:user_id] = user.id
+    else
+      cookies.delete(:user_id)
+      session[:user_id] = user.id
     end
+  end
+
+  def redirect_back_or_root_after_login(user)
+    user.events.create!(type: 'logged_in')
+    flash[:info] = 'ログインしました。'
+    redirect_back_or :root
+  end
+
+  def logout
+    cookies.delete(:user_id)
+    session.delete(:user_id)
   end
 
   def redirect_back_or(default)
@@ -69,14 +99,6 @@ class ApplicationController < ActionController::Base
 
   def store_location
     session[:return_to] = request.url
-  end
-
-  def check_account
-    if current_user && !current_user.active?
-      session.delete(:user_id)
-      flash[:warning] = 'アカウントが無効になりました。'
-      redirect_to :root
-    end
   end
 
   def gravatar_url(user)

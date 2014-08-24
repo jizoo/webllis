@@ -1,23 +1,19 @@
 <% provide(:title, @title) %>
 <h1><%= @title %></h1>
 
-<div class="row">
-  <div class="col-lg-12 col-md-12">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>種類</th>
-          <th>作成者</th>
-          <th>コメント</th>
-          <th>コメント先</th>
-          <th>作成日時</th>
-          <th>アクション</th>
-        </tr>
-      </thead>
-      <tbody>
-        <%= render @comments %>
-      </tbody>
-    </table>
-    <%= paginate @comments %>
-  </div>
-</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>種類</th>
+      <th>作成者</th>
+      <th>コメント</th>
+      <th>コメント先</th>
+      <th>作成日時</th>
+      <th>アクション</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render @comments %>
+  </tbody>
+</table>
+<%= paginate @comments %>

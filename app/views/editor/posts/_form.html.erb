@@ -4,7 +4,7 @@
   m << p.notes
   m << p.url_field_block(:url, 'URL', required: true)
   m << p.text_field_block(:title, 'タイトル', required: true)
-  m << p.tag_field_block(:tag_list, 'タグ（カンマ区切り）')
+  m << p.text_field_block(:tag_list, 'タグ（カンマ区切り）')
   m << p.text_area_block(:description, '説明', rows: 10)
   m << p.image_field_block(:image, '画像')
 end %>
