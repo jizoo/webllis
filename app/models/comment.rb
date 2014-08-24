@@ -10,6 +10,8 @@ class Comment < ActiveRecord::Base
   belongs_to :parent, class_name: 'Comment', foreign_key: 'parent_id'
   has_many :children, class_name: 'Comment', foreign_key: 'parent_id'
 
+  scope :sent, -> { where(type: 'sent') }
+
   validates :content, presence: true, length: { maximum: 400 }
 
   before_create { self.root = parent.root || parent if parent }

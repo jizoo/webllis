@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
   skip_before_action :authorize, only: [ :index, :show ]
+  before_action :fetch_post, only: [ :edit, :update, :destroy ]
   before_action :set_title, only: [ :index, :posted, :favorite, :picked ]
 
   def index
@@ -7,8 +8,7 @@ class PostsController < ApplicationController
     if logged_in?
       @posts = @posts.search.from_users_followed_by(current_user)
     else
-      editors = User.where(editor: true)
-      @posts = @posts.search.where(user: editors.ids)
+      @posts = @posts.search.from_editors
     end
     @posts = @posts.tagged_with(params[:tag]) if params[:tag].present?
     @posts = @posts.page(params[:page])
@@ -16,7 +16,7 @@ class PostsController < ApplicationController
 
   # GET
   def posted
-    @posts = current_user.posts.page(params[:page])
+    @posts = posts.page(params[:page])
     render action: 'index'
   end
 
@@ -28,8 +28,7 @@ class PostsController < ApplicationController
 
   # GET
   def picked
-    editors = User.where(editor: true)
-    @posts = Post.where(user: editors.ids).page(params[:page])
+    @posts = Post.from_editors.page(params[:page])
     render action: 'index'
   end
 
@@ -37,17 +36,17 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
     if logged_in?
       @comment = @post.comments.build
-      @comments = @post.comments.where(type: 'sent').page(params[:page])
+      @comments = @post.comments.sent.page(params[:page])
     end
     authorize unless @post.user.editor?
   end
 
   def new
-    @post = current_user.posts.build
+    @post = posts.build
   end
 
   def create
-    @post = current_user.posts.build(post_params)
+    @post = posts.build(post_params)
     if @post.save
       flash[:success] = '投稿完了しました。'
       redirect_to @post
@@ -57,11 +56,9 @@ class PostsController < ApplicationController
   end
 
   def edit
-    @post = current_user.posts.find(params[:id])
   end
 
   def update
-    @post = current_user.posts.find(params[:id])
     @post.assign_attributes(post_params)
     if @post.save
       flash[:success] = '投稿を更新しました。'
@@ -72,7 +69,6 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post = current_user.posts.find(params[:id])
     @post.destroy!
     redirect_to :root
   end
@@ -80,7 +76,7 @@ class PostsController < ApplicationController
   private
 
   def set_title
-    @title = '' if params[:tag].blank? && params[:search].blank?
+    @title = nil if params[:tag].blank? && params[:search].blank?
     @title = "#{params[:tag]}に関する投稿" if params[:tag].present?
     @title = "#{params[:search][:title]}の検索結果" if params[:search].present? && params[:search][:title].present?
     @title = '検索ワードが入力されていません。' if params[:search].present? && params[:search][:title].blank?
@@ -91,6 +87,14 @@ class PostsController < ApplicationController
       when 'picked'; '編集者の投稿一覧'
       else; raise
     end
+  end
+
+  def fetch_post
+    @post = posts.find(params[:id])
+  end
+
+  def posts
+    current_user.posts
   end
 
   def post_params

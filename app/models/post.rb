@@ -7,6 +7,7 @@ class Post < ActiveRecord::Base
   has_many :comments, dependent: :destroy
 
   default_scope { order(created_at: :desc) }
+  scope :from_editors, -> { where(user: User.where(editor: true).ids) }
 
   before_validation do
     self.url = normalize(url)
