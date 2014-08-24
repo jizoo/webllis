@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   has_many :followers, through: :reverse_relationships, source: :follower
   has_many :favorites, dependent: :destroy
   has_many :favorite_posts, through: :favorites, source: :post
-  has_many :comments, dependent: :destroy
+  has_many :comments, dependent: :destroy, foreign_key: :creator_id
   has_many :authentications, dependent: :destroy
 
   default_scope { order(created_at: :desc) }
