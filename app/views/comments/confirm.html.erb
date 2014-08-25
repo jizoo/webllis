@@ -1,8 +1,10 @@
 <% provide(:title, 'コメント（確認）') %>
-<h1>コメント（確認）</h1>
 
-<%= form_for @comment, url: :post_comments do |f| %>
-  <%= render 'confirming_form', f: f %>
-  <%= f.submit '送信', class: 'btn btn-primary' %>
-  <%= f.submit '訂正', name: 'correct', class: 'btn btn-default'  %>
+<%= render layout: 'layouts/form' do %>
+  <h1>コメント（確認）</h1>
+  <%= form_for @comment, url: :post_comments do |f| %>
+    <%= render 'confirming_form', f: f %>
+    <%= f.submit '送信', class: 'btn btn-primary' %>
+    <%= f.submit '訂正', name: 'correct', class: 'btn btn-default'  %>
+  <% end %>
 <% end %>

@@ -1,8 +1,10 @@
 <% provide(:title, 'お問い合わせ') %>
-<h1>お問い合わせ</h1>
 
-<%= form_for @contact, url: :confirm_contacts do |f| %>
-  <%= render 'form', f: f %>
-  <%= f.submit '確認画面へ進む', class: 'btn btn-primary' %>
-  <%= link_to 'キャンセル', :root, class: 'btn btn-default' %>
+<%= render layout: 'layouts/form' do %>
+  <h1>お問い合わせ</h1>
+  <%= form_for @contact, url: :confirm_contacts do |f| %>
+    <%= render 'form', f: f %>
+    <%= f.submit '確認画面へ進む', class: 'btn btn-primary' %>
+    <%= link_to 'キャンセル', :root, class: 'btn btn-default' %>
+  <% end %>
 <% end %>

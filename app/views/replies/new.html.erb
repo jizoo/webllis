@@ -1,10 +1,12 @@
 <% provide(:title, 'コメントの返信') %>
-<h1>コメントの返信</h1>
 
-<%= render 'comment' %>
-<hr>
-<%= form_for @reply, url: confirm_post_comment_reply_path(@post, @comment) do |f| %>
-  <%= render 'form', f: f %>
-  <%= f.submit '確認画面へ進む', class: 'btn btn-primary' %>
-  <%= link_to 'キャンセル', @post, class: 'btn btn-default' %>
+<%= render layout: 'layouts/form' do %>
+  <h1>コメントの返信</h1>
+  <%= render 'comment' %>
+  <hr>
+  <%= form_for @reply, url: confirm_post_comment_reply_path(@post, @comment) do |f| %>
+    <%= render 'form', f: f %>
+    <%= f.submit '確認画面へ進む', class: 'btn btn-primary' %>
+    <%= link_to 'キャンセル', @post, class: 'btn btn-default' %>
+  <% end %>
 <% end %>

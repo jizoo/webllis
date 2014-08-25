@@ -10,6 +10,8 @@ class Comment < ActiveRecord::Base
   belongs_to :parent, class_name: 'Comment', foreign_key: 'parent_id'
   has_many :children, class_name: 'Comment', foreign_key: 'parent_id'
 
+  scope :sent, -> { where(type: 'sent') }
+
   validates :content, presence: true, length: { maximum: 400 }
 
   before_create { self.root = parent.root || parent if parent }
@@ -17,8 +19,6 @@ class Comment < ActiveRecord::Base
     self.root = parent.root || parent if parent
     self.content = normalize(content)
   end
-
-  default_scope { order(created_at: :desc) }
 
   class << self
     def unprocessed_by(user)
@@ -30,7 +30,8 @@ class Comment < ActiveRecord::Base
       where(arel_table.grouping(
         (reader.and(reader_not_trashed)).or(creator.and(creator_not_trashed))
         .and(not_deleted))
-      )
+      ).
+      order(created_at: :desc)
     end
 
     def trashed_by(user)
@@ -42,7 +43,8 @@ class Comment < ActiveRecord::Base
       where(arel_table.grouping(
         (reader.and(reader_trashed)).or(creator.and(creator_trashed))
         .and(not_deleted))
-      )
+      ).
+      order(created_at: :desc)
     end
 
     def unread_by(user)

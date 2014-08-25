@@ -27,9 +27,6 @@ Rails.application.routes.draw do
   get 'contact' => 'contacts#new', as: :contact
   get 'login' => 'sessions#new', as: :login
   get 'signup' => 'users#new', as: :signup
-  resources :feeds, only: :index do
-    get :picked, on: :collection
-  end
   resource :session, only: [ :create, :destroy ]
   resources :users do
     member do

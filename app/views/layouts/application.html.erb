@@ -12,11 +12,7 @@
     <% flash.each do |key, value| %>
       <%= content_tag(:div, value, class: "alert alert-#{key}") %>
     <% end %>
-    <% if params[:action].match(/\A(new|edit|confirm)\z/) %>
-      <%= render 'layouts/form' %>
-    <% else %>
-      <%= yield %>
-    <% end %>
+    <%= yield %>
     <%= render 'shared/footer' %>
   </div>
 </body>
