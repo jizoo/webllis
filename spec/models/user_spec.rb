@@ -159,6 +159,12 @@ RSpec.describe User do
     end
   end
 
+  describe 'Respond to' do
+    it { should respond_to(:password) }
+    it { should respond_to(:password_confirmation) }
+    it { should respond_to(:new_password) }
+  end
+
   describe '#password' do
     context '文字列を与えた場合' do
       it 'hashed_passwordは長さ60の文字列になること' do
