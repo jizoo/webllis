@@ -1,6 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe User do
+  describe 'テーブルの関係性' do
+    it { should have_many(:events).dependent(:destroy) }
+    it { should have_many(:posts).dependent(:destroy) }
+    it { should have_many(:relationships).dependent(:destroy) }
+    it { should have_many(:followed_users) }
+    it { should have_many(:reverse_relationships).class_name('Relationship').dependent(:destroy) }
+    it { should have_many(:followers) }
+    it { should have_many(:favorites).dependent(:destroy) }
+    it { should have_many(:favorite_posts) }
+    it { should have_many(:comments).dependent(:destroy) }
+    it { should have_many(:authentications).dependent(:destroy) }
+  end
+
   describe '値の正規化' do
     describe 'email' do
       it '前後の半角スペースを除去' do
@@ -134,6 +147,14 @@ RSpec.describe User do
       it 'password_confirmationと一致しないなら無効' do
         user = build(:user, password_confirmation: 'mismatch')
         expect(user).to be_invalid
+      end
+
+      context 'authenticationsが存在する場合' do
+        it 'バリデーションをスキップする'
+      end
+
+      context 'authenticationsが存在しない場合' do
+        it 'バリデーションを行う' 
       end
     end
   end
