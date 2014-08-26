@@ -49,6 +49,10 @@ group :test do
   gem 'factory_girl_rails'
   gem 'database_cleaner'
   gem 'capybara'
+  gem 'faker'
+  gem 'launchy'
+  gem 'selenium-webdriver'
+  gem 'shoulda-matchers', require: false
   gem 'coveralls', require: false
   gem 'simplecov', require: false
 end
