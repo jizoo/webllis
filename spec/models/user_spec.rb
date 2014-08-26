@@ -81,7 +81,7 @@ RSpec.describe User do
       end
 
       it "クオート「'」を含むなら有効" do
-        user = build(:user, email: "infotest@example.com")
+        user = build(:user, email: "info'test@example.com")
         expect(user).to be_valid
       end
 
