@@ -32,7 +32,8 @@ RSpec.describe User do
       end
 
       it '大文字を小文字に変換しemail_for_indexに格納すること' do
-        user = create(:user, email: 'TEST＠EXAMPLE.COM')
+        user = create(:user, email: 'TEST@EXAMPLE.COM')
+        expect(user.email).to eq('TEST@EXAMPLE.COM')
         expect(user.email_for_index).to eq('test@example.com')
       end
     end
@@ -56,7 +57,7 @@ RSpec.describe User do
   end
 
   describe 'バリデーション' do
-    before { create(:user) }
+    let!(:user) { create(:user) }
 
     it { should validate_presence_of(:email) }
     it { should validate_uniqueness_of(:email) }
@@ -150,11 +151,17 @@ RSpec.describe User do
       end
 
       context 'authenticationsが存在する場合' do
-        it 'バリデーションをスキップする'
-      end
+        it 'バリデーションが実行されないこと' do
+          user = User.new(name: 'jizoo', email: 'jizoo@example.com')
+          user.authentications.build(
+            user: user, provider: 'twitter', uid: 'uid',
+            nickname: user.name, image: 'http://example.com/jizoo.jpg'
+          )
+          expect(user.authentications).not_to be_empty
+          expect(user.password).to be_nil
 
-      context 'authenticationsが存在しない場合' do
-        it 'バリデーションを行う' 
+          expect(user).to be_valid
+        end
       end
     end
   end
@@ -163,6 +170,9 @@ RSpec.describe User do
     it { should respond_to(:password) }
     it { should respond_to(:password_confirmation) }
     it { should respond_to(:new_password) }
+    it { should respond_to(:active?)}
+    it { should respond_to(:following?)}
+    it { should respond_to(:favorite?)}
   end
 
   describe '#password' do
@@ -181,6 +191,10 @@ RSpec.describe User do
         expect(user.hashed_password).to be_nil
       end
     end
+  end
+
+  describe '#send_password_reset' do
+    it 'リセット用のメールが送信されること '
   end
 
   describe '#add_favorite' do
@@ -221,6 +235,55 @@ RSpec.describe User do
 
     it 'userとpostの関係が解除されること' do
       expect(user.favorite_posts).not_to be_include(post)
+    end
+  end
+
+  describe '#apply_oauth' do
+    let(:oauth) do
+      {
+        provider: 'twitter',
+        uid: 'uid',
+        info: {
+          nickname: 'jizoo',
+          image: 'http://example.com/jizoo.jpg'
+        }
+      }
+    end
+
+    context 'Userが作成されていない場合' do
+      let(:user) { User.new }
+      let!(:authentication) { user.apply_oauth(oauth) }
+
+      it '引数で設定した属性が返ること' do
+        expect(authentication.provider).to eq 'twitter'
+        expect(authentication.uid).to eq 'uid'
+        expect(authentication.nickname).to eq 'jizoo'
+        expect(authentication.image).to eq 'http://example.com/jizoo.jpg'
+      end
+
+      it 'Userのnameとicon_imageは引数のnicknameとimageを割り当てること' do
+        expect(user.name).to eq 'jizoo'
+        expect(user.icon_image).to eq 'http://example.com/jizoo.jpg'
+        expect(user).to be_new_record
+      end
+    end
+
+    context 'Userが作成されている場合' do
+      let!(:user) { create(:user, name: 'nakata', icon_image: 'http://example.com/nakata.jpg') }
+      let!(:authentication) { user.apply_oauth(oauth) }
+
+      it '引数で設定した属性が返ること' do
+        expect(authentication.provider).to eq 'twitter'
+        expect(authentication.uid).to eq 'uid'
+        expect(authentication.nickname).to eq 'jizoo'
+        expect(authentication.image).to eq 'http://example.com/jizoo.jpg'
+      end
+
+      it 'Userのnameとicon_imageは変化していないこと' do
+        expect(user.name).to eq 'nakata'
+        expect(user.icon_image).to eq 'http://example.com/nakata.jpg'
+        expect(user).to be_persisted
+      end
     end
   end
 end
