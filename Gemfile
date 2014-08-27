@@ -53,6 +53,7 @@ group :test do
   gem 'launchy'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', require: false
+  gem 'email_spec'
   gem 'coveralls', require: false
   gem 'simplecov', require: false
 end
