@@ -14,6 +14,7 @@ require 'spec_helper'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'shoulda/matchers'
+require 'email_spec'
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
@@ -27,6 +28,8 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.include LoginHelper::Feature, type: :feature
   config.include LoginHelper::Controller, type: :controller
+  config.include EmailSpec::Helpers
+  config.include EmailSpec::Matchers
 
   config.before(:suite) do
     FactoryGirl.reload
@@ -35,7 +38,7 @@ RSpec.configure do |config|
   config.after do
     Rails.application.config.webllis[:restrict_ip_addresses] = false
   end
-  
+
   config.before :each do
     if Capybara.current_driver == :selenium
       DatabaseCleaner.strategy = :truncation
