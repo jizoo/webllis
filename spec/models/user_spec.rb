@@ -194,7 +194,25 @@ RSpec.describe User do
   end
 
   describe '#send_password_reset' do
-    it 'リセット用のメールが送信されること '
+    let(:user) { create(:user) }
+
+    it 'send_password_resetが呼び出される度に、一意なトークンをpassword_reset_tokenに格納すること' do
+      user.send_password_reset
+      last_token = user.password_reset_token
+      user.send_password_reset
+      expect(user.password_reset_token).not_to eq(last_token)
+    end
+
+    it 'パスワードリセットを送信した時間を保存すること' do
+      user.send_password_reset
+      user.reload
+      expect(user.password_reset_sent_at).to be_present
+    end
+
+    it 'リセット用のメールをパスワードリセットを実行したユーザに送信すること ' do
+      user.send_password_reset
+      expect(open_last_email).to be_delivered_to user.email
+    end
   end
 
   describe '#add_favorite' do
