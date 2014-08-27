@@ -6,12 +6,12 @@ module NameHolder
   included do
     include StringNormalizer
 
-    before_validation do
-      self.name = normalize(name)
-    end
-
     validates :name, length: 3..50,
       uniqueness: { case_sensitive: false, allow_blank: true },
       format: { with: NAME_REGEXP, allow_blank: true }
+
+    before_validation do
+      self.name = normalize(name)
+    end
   end
 end

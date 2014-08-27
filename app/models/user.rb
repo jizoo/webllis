@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
   include EmailHolder
   include PasswordHolder
 
+  default_scope { order(created_at: :desc) }
+
   has_many :events, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :relationships, foreign_key: 'follower_id', dependent: :destroy
@@ -15,10 +17,8 @@ class User < ActiveRecord::Base
   has_many :comments, dependent: :destroy, foreign_key: :creator_id
   has_many :authentications, dependent: :destroy
 
-  default_scope { order(created_at: :desc) }
-
   def send_password_reset
-    self.password_reset_token = User.encrypt(User.new_remember_token)
+    self.password_reset_token = SecureRandom.urlsafe_base64
     self.password_reset_sent_at = Time.zone.now
     save!
     UserMailer.password_reset(self).deliver
@@ -53,13 +53,16 @@ class User < ActiveRecord::Base
   end
 
   def apply_oauth(oauth)
-    provider = oauth['provider']
-    uid = oauth['uid']
-    nickname = oauth['info']['nickname']
-    image_url = oauth['info']['image']
+    provider = oauth[:provider]
+    uid = oauth[:uid]
+    nickname = oauth[:info][:nickname]
+    image_url = oauth[:info][:image]
 
-    self.name = nickname if name.blank?
-    self.icon_image = image_url if new_record?
+    if new_record?
+      self.name = nickname
+      self.icon_image = image_url
+    end
+
     authentications.build(provider: provider, uid: uid) do |user|
       user.nickname = nickname
       user.image = image_url
