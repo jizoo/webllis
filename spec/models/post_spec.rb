@@ -1,6 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Post do
+  describe 'テーブルの関係性' do
+    it { should belong_to(:user) }
+    it { should have_many(:favorites).dependent(:destroy) }
+    it { should have_many(:favorited_users) }
+    it { should have_many(:comments).dependent(:destroy) }
+  end
+
   describe '値の正規化' do
     describe 'url' do
       it '前後の半角スペースを除去' do
