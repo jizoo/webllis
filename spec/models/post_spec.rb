@@ -111,4 +111,14 @@ RSpec.describe Post do
       end
     end
   end
+
+  describe ':from_editors' do
+    it '編集者の投稿を集めること' do
+      editor_post = create(:post, user: create(:editor))
+      user_post = create(:post, user: create(:user))
+
+      expect(Post.from_editors).to eq([editor_post])
+      expect(Post.from_editors).not_to eq([user_post])
+    end
+  end
 end
