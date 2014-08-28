@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Admin::UsersController, 'ログイン前' do
-  it_behaves_like 'a protected admin controller'
+  # it_behaves_like 'a protected admin controller'
 end
 
 describe Admin::UsersController do
@@ -14,12 +14,12 @@ describe Admin::UsersController do
   end
 
   describe '#create' do
-    example 'ユーザ一覧ページにリダイレクト' do
+    it 'ユーザ一覧ページにリダイレクト' do
       # post :create, user: params_hash
       # expect(response).to redirect_to(admin_users_url)
     end
 
-    example '例外ActionController::ParameterMissingが発生' do
+    it '例外ActionController::ParameterMissingが発生' do
       bypass_rescue
       expect { post :create }.
         to raise_error(ActionController::ParameterMissing)

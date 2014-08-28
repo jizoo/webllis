@@ -33,7 +33,7 @@ describe ApplicationController do
     end
   end
 
-  context 'InternalServerError を raise したとき' do
+  context 'InternalServerError を raise した場合' do
     before do
       routes.draw { get 'internal_server_error' => 'anonymous#internal_server_error' }
     end
@@ -45,7 +45,7 @@ describe ApplicationController do
     end
   end
 
-  context 'ParameterMissingError を raise したとき' do
+  context 'ParameterMissingError を raise した場合' do
     before do
       routes.draw { get 'parameter_missing_error' => 'anonymous#parameter_missing_error' }
     end
@@ -57,7 +57,7 @@ describe ApplicationController do
     end
   end
 
-  context 'BadRequestError を raise したとき' do
+  context 'BadRequestError を raise した場合' do
     before do
       routes.draw { get 'bad_request_error' => 'anonymous#bad_request_error' }
     end
@@ -69,7 +69,7 @@ describe ApplicationController do
     end
   end
 
-  context 'RecordNotFound を raise したとき' do
+  context 'RecordNotFound を raise した場合' do
     before do
       routes.draw { get 'not_found_error' => 'anonymous#not_found_error' }
     end
@@ -81,7 +81,7 @@ describe ApplicationController do
     end
   end
 
-  context 'RoutingError を raise したとき' do
+  context 'RoutingError を raise した場合' do
     before do
       routes.draw { get 'routing_error' => 'anonymous#routing_error' }
     end
@@ -93,7 +93,7 @@ describe ApplicationController do
     end
   end
 
-  context 'ForbiddenError を raise したとき' do
+  context 'ForbiddenError を raise した場合' do
     before do
       routes.draw { get 'forbidden_error' => 'anonymous#forbidden_error' }
     end
@@ -105,7 +105,7 @@ describe ApplicationController do
     end
   end
 
-  context 'IpAddressRejectedError を raise したとき' do
+  context 'IpAddressRejectedError を raise した場合' do
     before do
       routes.draw { get 'ip_address_rejected_error' => 'anonymous#ip_address_rejected_error' }
     end
