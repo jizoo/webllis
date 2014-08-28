@@ -1,6 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe Comment do
+  describe 'テーブルの関係性' do
+    it { should belong_to(:post) }
+    it { should belong_to(:creator).class_name('User') }
+    it { should belong_to(:reader).class_name('User') }
+    it { should belong_to(:root).class_name('Comment') }
+    it { should belong_to(:parent).class_name('Comment') }
+    it { should have_many(:children).class_name('Comment') }
+  end
+
   describe '値の正規化' do
     describe 'content' do
       it '前後の半角スペースを除去' do
