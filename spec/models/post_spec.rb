@@ -121,4 +121,19 @@ RSpec.describe Post do
       expect(Post.from_editors).not_to eq([user_post])
     end
   end
+
+  describe '.from_users_followed_by' do
+    it 'ユーザ（自分）とフォローしているユーザの投稿を集めること' do
+      user = create(:user)
+      followed_user = create(:user)
+      unfollowe_user = create(:user)
+      user_post = create(:post, user: user)
+      followed_user_post = create(:post, user: followed_user)
+      unfollowed_user_post = create(:post, user: unfollowe_user)
+      user.follow!(followed_user)
+
+      expect(Post.from_users_followed_by(user)).to eq([user_post, followed_user_post])
+      expect(Post.from_users_followed_by(user)).not_to eq([unfollowed_user_post])
+    end
+  end
 end
