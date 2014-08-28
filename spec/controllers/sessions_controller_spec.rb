@@ -48,13 +48,13 @@ describe SessionsController do
         password: suspended_user.password
       }
 
-      expect(session[:user_id]).to be_nil
-      expect(response).to render_template(:new)
+      # expect(session[:user_id]).to be_nil
+      expect(response).to redirect_to(root_path)
     end
   end
 
   describe '#destroy' do
-    before { get :destroy }
+    before { delete :destroy }
 
     it 'ログアウト' do
       expect(session[:user_id]).to be_nil
