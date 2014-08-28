@@ -42,6 +42,6 @@ feature 'ユーザによるログイン' do
     login(suspended_user)
 
     expect(page).to have_content 'ログイン'
-    expect(page).to have_content 'アカウントが停止されています。'
+    expect(page).to have_content 'アカウントが無効になりました。'
   end
 end
