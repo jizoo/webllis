@@ -21,7 +21,6 @@ feature '投稿の詳細' do
   end
 
   scenario '「お気に入りの解除」' do
-    login(user)
     visit post_path(other_post2)
 
     click_button 'お気に入りの解除'
