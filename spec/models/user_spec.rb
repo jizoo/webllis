@@ -195,22 +195,19 @@ RSpec.describe User do
 
   describe '#send_password_reset' do
     let(:user) { create(:user) }
+    before { user.send_password_reset }
 
     it 'send_password_resetが呼び出される度に、一意なトークンをpassword_reset_tokenに格納すること' do
-      user.send_password_reset
       last_token = user.password_reset_token
       user.send_password_reset
       expect(user.password_reset_token).not_to eq(last_token)
     end
 
     it 'パスワードリセットを送信した時間を保存すること' do
-      user.send_password_reset
-      user.reload
-      expect(user.password_reset_sent_at).to be_present
+      expect(user.reload.password_reset_sent_at).to be_present
     end
 
     it 'リセット用のメールをパスワードリセットを実行したユーザに送信すること ' do
-      user.send_password_reset
       expect(open_last_email).to be_delivered_to user.email
     end
   end
@@ -272,12 +269,7 @@ RSpec.describe User do
       let(:user) { User.new }
       let!(:authentication) { user.apply_oauth(oauth) }
 
-      it '引数で設定した属性が返ること' do
-        expect(authentication.provider).to eq 'twitter'
-        expect(authentication.uid).to eq 'uid'
-        expect(authentication.nickname).to eq 'jizoo'
-        expect(authentication.image).to eq 'http://example.com/jizoo.jpg'
-      end
+      it_behaves_like 'Authenticationの作成'
 
       it 'Userのnameとicon_imageは引数のnicknameとimageを割り当てること' do
         expect(user.name).to eq 'jizoo'
@@ -290,12 +282,7 @@ RSpec.describe User do
       let!(:user) { create(:user, name: 'nakata', icon_image: 'http://example.com/nakata.jpg') }
       let!(:authentication) { user.apply_oauth(oauth) }
 
-      it '引数で設定した属性が返ること' do
-        expect(authentication.provider).to eq 'twitter'
-        expect(authentication.uid).to eq 'uid'
-        expect(authentication.nickname).to eq 'jizoo'
-        expect(authentication.image).to eq 'http://example.com/jizoo.jpg'
-      end
+      it_behaves_like 'Authenticationの作成'
 
       it 'Userのnameとicon_imageは変化していないこと' do
         expect(user.name).to eq 'nakata'
