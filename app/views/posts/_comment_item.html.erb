@@ -5,7 +5,7 @@
     <p>
       <%= formatted_content(comment.content) %>
       <%= link_to '返信', new_post_comment_reply_path(post_id: @post, comment_id: comment) %>
-      <% if current_user == comment.creator %>
+      <% if current_user?(comment.creator) %>
         <%= link_to '削除', [ :post_comment, id: comment, post_id: @post ], method: :delete,
           data: { confirm: '本当に削除しますか？' }, title: comment.content %>
       <% end %>

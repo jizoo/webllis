@@ -20,10 +20,8 @@ class RepliesController < ApplicationController
   def create
     @reply = Comment.new(comment_params)
     @reply.creator = current_user
-    @reply.reader = @comment.creator
     @reply.post = @post
     @reply.parent = @comment
-    @reply.type = 'replied'
     if params[:commit] && @reply.save
       flash[:success] = 'コメントに返信しました。'
       redirect_to @post

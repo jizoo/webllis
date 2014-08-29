@@ -12,12 +12,15 @@ class Comment < ActiveRecord::Base
 
   validates :content, presence: true, length: { maximum: 400 }
 
-  before_validation do
-    self.root = parent.root || parent if parent
-    self.content = normalize(content)
-  end
+  before_validation { self.content = normalize(content) }
 
-  before_create { self.root = parent.root || parent if parent }
+  before_create do
+    if parent
+      self.reader = parent.creator
+      self.root = parent.root
+      self.type = 'replied'
+    end
+  end
 
   scope :sent, -> { where(type: 'sent') }
 
