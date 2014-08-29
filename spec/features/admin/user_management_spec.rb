@@ -9,7 +9,7 @@ feature '管理者によるユーザ管理' do
     login(administrator)
   end
 
-  scenario '管理者がユーザを追加する' do
+  pending '管理者がユーザを追加する' do
     first('div.container').click_link 'ユーザ管理'
     click_link '新規登録'
 
