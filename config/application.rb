@@ -21,9 +21,14 @@ module Webllis
     config.generators do |g|
       g.helper false
       g.assets false
-      g.test_framework :rspec
-      g.controller_specs false
-      g.view_specs false
+      g.test_framework :rspec,
+        fixutures: true,
+        view_specs: false,
+        helper_specs: true,
+        routing_specs: true,
+        controller_specs: true,
+        request_specs: false
+      g.fixuture_replacement :factory_girl, dir: 'spec/factories'
     end
   end
 end

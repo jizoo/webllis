@@ -5,13 +5,13 @@ describe FavoritesController do
   let(:other_post) { create(:post) }
 
   describe 'POST #create' do
-    context '未ログインユーザがアクセスした時' do
+    context '未ログインユーザがアクセスした場合' do
       before { xhr :post, :create, favorite: { post_id: other_post.id } }
 
       it_should_behave_like '認証が必要なページ'
     end
 
-    context 'ログインユーザがアクセスした時' do
+    context 'ログインユーザがアクセスした場合' do
       before { login(user) }
 
         it 'Favoriteレコードが1件増えること' do
@@ -28,7 +28,7 @@ describe FavoritesController do
   end
 
   describe 'DELETE #destroy' do
-    context '未ログインユーザがアクセスした時' do
+    context '未ログインユーザがアクセスした場合' do
       before do
         xhr :delete, :destroy, id: other_post.id
       end
@@ -36,7 +36,7 @@ describe FavoritesController do
       it_should_behave_like '認証が必要なページ'
     end
 
-    context 'ログインユーザがアクセスした時' do
+    context 'ログインユーザがアクセスした場合' do
       let(:favorite) { user.favorites.find_by(post_id: other_post.id) }
 
       before do

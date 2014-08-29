@@ -8,13 +8,13 @@ describe Admin::StaticPagesController, 'ログイン前' do
       Rails.application.config.webllis[:restrict_ip_addresses] = true
     end
 
-    example '許可' do
+    it '許可' do
       AllowedSource.create!(namespace: 'admin', ip_address: '0.0.0.0')
       get :home
       expect(response).to render_template('admin/static_pages/home')
     end
 
-    example '拒否' do
+    it '拒否' do
       AllowedSource.create!(namespace: 'admin', ip_address: '192.168.0.*')
       get :home
       expect(response).to render_template('errors/forbidden')
@@ -31,19 +31,19 @@ describe Admin::StaticPagesController, 'ログイン後' do
   end
 
   describe '#home' do
-    example '通常はstatic_pages/home/dashboardを表示' do
+    it '通常はstatic_pages/home/dashboardを表示' do
       get :home
       expect(response).to render_template('admin/static_pages/dashboard')
     end
 
-    example '停止フラグがセットされたら強制的にログアウト' do
+    it '停止フラグがセットされたら強制的にログアウト' do
       administrator.update_column(:suspended, true)
       get :home
       expect(cookies[:remember_token]).to be_nil
       expect(response).to redirect_to(root_url)
     end
 
-    example 'セッションタイムアウト' do
+    it 'セッションタイムアウト' do
       session[:last_access_time] =
         Admin::ApplicationController::TIMEOUT.ago.advance(seconds: -1)
       get :home

@@ -13,19 +13,20 @@ describe PostsController do
 
   describe 'GET #index' do
     context '未ログインユーザがアクセスした場合' do
+      let!(:user_post) { create(:post, user: user) }
+      let!(:editor_post) { create(:post, user: editor) }
+
       before do
-        post :create, id: user_post.id
-        post :create, id: editor_post.id
         get :index
       end
 
-      it '@postsに、編集者のPostオブジェクトが格納されていること' do
-        expect(assigns(:posts)).to match_array(editor_post)
-        expect(assigns(:posts)).not_to match_array(user_post)
+      it '編集者の投稿を配列にまとめること' do
+        expect(assigns(:posts)).to match_array [editor_post]
+        expect(assigns(:posts)).not_to match_array [user_post]
       end
 
-      it 'indexテンプレートをrenderしていること' do
-        expect(response).to render_template(:index)
+      it ':indexテンプレートを表示すること' do
+        expect(response).to render_template :index
       end
     end
 
@@ -50,8 +51,8 @@ describe PostsController do
         # expect(assigns(:posts)).to match_array(other_user_post)
       end
 
-      it 'indexテンプレートをrenderしていること' do
-        expect(response).to render_template(:index)
+      it 'indexテンプレートを表示すること' do
+        expect(response).to render_template :index
       end
     end
 
@@ -79,9 +80,9 @@ describe PostsController do
         get :index
       end
 
-      it '@posts に、アクセスしたユーザのPostオブジェクトが格納されていること' do
-        expect(assigns(:posts)).to match_array(user_post)
-        expect(assigns(:posts)).not_to match_array(other_user_post)
+      it 'アクセスしたユーザの投稿を配列にまとめること' do
+        expect(assigns(:posts)).to match_array [user_post]
+        expect(assigns(:posts)).not_to match_array [other_user_post]
       end
 
       it 'index を render していること' do
@@ -130,27 +131,27 @@ describe PostsController do
         get :picked
       end
 
-      it '@posts に、編集者のPostオブジェクトが格納されていること' do
-        expect(assigns(:posts)).to match_array(editor_post)
-        expect(assigns(:posts)).not_to match_array(user_post)
+      it '編集者の投稿を配列にまとめること' do
+        expect(assigns(:posts)).to match_array [editor_post]
+        expect(assigns(:posts)).not_to match_array [user_post]
       end
 
-      it 'index を render していること' do
-        expect(response).to render_template('index')
+      it ':indexテンプレートを表示すること' do
+        expect(response).to render_template :index
       end
     end
   end
 
   describe 'GET #show' do
     context '未ログインユーザがアクセスした場合' do
-      context 'ユーザーの投稿を閲覧する場合' do
+      context 'ユーザの投稿を閲覧する場合' do
         before { get :show, id: user_post.id }
 
         it_should_behave_like '認証が必要なページ'
       end
 
       context '編集者の投稿を閲覧する場合' do
-        it 'showテンプレートを描画' do
+        it 'showテンプレートを表示すること' do
           get :show, id: editor_post.id
           expect(response).to render_template(:show)
         end
@@ -163,19 +164,19 @@ describe PostsController do
         get :show, id: user_post.id
       end
 
-      it '@post に、リクエストした Post オブジェクトが格納されていること' do
-        expect(assigns(:post)).to eq(user_post)
+      it '@postに要求された投稿を割り当てること' do
+        expect(assigns(:post)).to eq user_post
       end
 
-      it '@commentに、新規Commentオブジェクトが格納されていること' do
+      it '@commentに新しいコメントを割り当てること' do
         expect(assigns(:comment)).to be_a_new(Comment)
       end
 
-      it '@comments に、Commentオブジェクトが格納されていること' do
-        expect(assigns(:comments)).to match_array(comment)
+      it '@commentsに指定された投稿に対するコメントを配列でまとめること' do
+        expect(assigns(:comments)).to match_array [comment]
       end
 
-      it 'showテンプレートをrenderしていること' do
+      it ':showテンプレートを表示すること' do
         expect(response).to render_template :show
       end
     end
@@ -198,11 +199,11 @@ describe PostsController do
         expect(response.status).to eq(200)
       end
 
-      it '@postに、新規Postオブジェクトが格納されていること' do
+      it '@postに新しい投稿を割り当てること' do
         expect(assigns(:post)).to be_a_new(Post)
       end
 
-      it 'newテンプレートをrenderしていること' do
+      it ':newテンプレートを表示すること' do
         expect(response).to render_template :new
       end
     end
@@ -218,25 +219,27 @@ describe PostsController do
     context 'ログインユーザがアクセスした場合' do
       before { login(user) }
 
-      context 'パラメータが正しい場合' do
-        it 'Postレコードが1件増えること' do
+      context '有効な属性の場合' do
+        it 'データベースに新しい投稿を保存すること' do
           expect { post :create, post: params_hash }.
             to change { Post.count }.by(1)
         end
 
-        it '@postのshowアクションにリダイレクトすること' do
+        it 'post#showにリダイレクトすること' do
           post :create, post: params_hash
-          expect(response).to redirect_to(post_path(assigns[:post]))
+          expect(response).to redirect_to post_path(assigns[:post])
         end
+
+        it 'avatarをアップロードする'
       end
 
-      context 'パラメータが不正な場合' do
-        it 'Postレコードの件数に変化がないこと' do
+      context '無効な属性の場合' do
+        it 'データベースに新しい投稿を保存しないこと' do
           expect { post :create, post: invalid_params_hash }.
             not_to change { Post.count }
         end
 
-        it 'newテンプレートをrenderしていること' do
+        it ':newテンプレートを再表示すること' do
           post :create, post: invalid_params_hash
           expect(response).to render_template :new
         end
@@ -257,11 +260,11 @@ describe PostsController do
         get :edit, id: user_post.id
       end
 
-      it '@postに、リクエストしたPostオブジェクトが格納されていること' do
-        expect(assigns(:post)).to eq(user_post)
+      it 'postに要求された投稿を割り当てること' do
+        expect(assigns(:post)).to eq user_post
       end
 
-      it 'editテンプレートをrenderしていること' do
+      it ':editテンプレートを表示すること' do
         expect(response).to render_template :edit
       end
     end
@@ -272,14 +275,14 @@ describe PostsController do
         get :edit, id: other_user_post.id
       end
 
-      it 'not_foundテンプレートをrenderしていること' do
+      it 'not_foundテンプレートを表示すること' do
         expect(response).to render_template :not_found
       end
     end
   end
 
   describe 'PATCH #update' do
-    context '未ログインユーザがアクセスしたとき' do
+    context '未ログインユーザがアクセスした場合' do
       before do
         patch :update, id: user_post.id, post: params_hash
       end
@@ -287,33 +290,44 @@ describe PostsController do
       it_should_behave_like '認証が必要なページ'
     end
 
-    context 'ログインユーザかつ投稿したユーザがアクセスしたとき' do
+    context 'ログインユーザかつ投稿したユーザがアクセスした場合' do
       before { login(user) }
 
-      context 'かつパラメータが正しいとき' do
+      context 'かつ有効な属性の場合' do
         before do
           patch :update, id: user_post.id, post: attributes_for(:post, url: 'http://jizoo.net', title: 'jizoo', description: 'ブログサービスです。')
         end
 
-        it 'Postレコードが正しく変更されていること' do
+        it '要求された@postを取得すること' do
+          patch :update, id: user_post.id, post: attributes_for(:post)
+          expect(assigns(:post)).to eq(user_post)
+        end
+
+        it '@postの属性を変更すること' do
           user_post.reload
           expect(user_post.url).to eq('http://jizoo.net')
           expect(user_post.title).to eq('jizoo')
           expect(user_post.description).to eq('ブログサービスです。')
         end
 
-        it '@postのshowアクションにリダイレクトすること' do
-          expect(response).to redirect_to(post_path(assigns[:post]))
+        it '更新した投稿ページヘリダイレクトすること' do
+          expect(response).to redirect_to post_path(assigns[:post])
         end
       end
 
-      context 'かつパラメータが不正なとき' do
-        it 'Postレコードが変更されていないこと' do
-          expect { patch :update, id: user_post.id, post: attributes_for(:post, url: '', title: 'jizoo', description: 'ブログサービスです。') }.not_to change { user_post.reload }
+      context 'かつ無効な属性な場合' do
+        it '投稿の属性を変更しないこと' do
+          expect {
+            patch :update, id: user_post.id,
+              post: attributes_for(
+                :post,
+                  url: nil, title: 'jizoo', description: 'ブログサービスです。'
+              )
+          }.not_to change { user_post.reload }
         end
 
-        it 'editテンプレートをrenderしていること' do
-          patch :update, id: user_post.id, post: attributes_for(:post, url: '', title: 'jizoo', description: 'ブログサービスです。')
+        it ':editテンプレートを再表示すること' do
+          patch :update, id: user_post.id, post: attributes_for(:post, url: nil, title: 'jizoo', description: 'ブログサービスです。')
           expect(response).to render_template :edit
         end
       end
@@ -321,7 +335,7 @@ describe PostsController do
   end
 
   describe 'DELETE #destroy' do
-    context '未ログインユーザがアクセスしたとき' do
+    context '未ログインユーザがアクセスした場合' do
       before { delete :destroy, id: user_post.id }
 
       it_should_behave_like '認証が必要なページ'
@@ -333,14 +347,14 @@ describe PostsController do
         login(user)
       end
 
-      it 'Postレコードが1件減っていること' do
+      it '投稿を削除すること' do
         expect { delete :destroy, id: user_post.id }.
           to change { Post.count }.by(-1)
       end
 
       it 'トップページにリダイレクトすること' do
         delete :destroy, id: user_post.id
-        expect(response).to redirect_to(root_path)
+        expect(response).to redirect_to root_url
       end
     end
 
@@ -355,7 +369,7 @@ describe PostsController do
           not_to change { Post.count }
       end
 
-      it 'not_foundテンプレートをrenderしていること' do
+      it 'not_foundテンプレートを表示すること' do
         delete :destroy, id: user_post.id
         expect(response).to render_template :not_found
       end

@@ -5,7 +5,7 @@ describe SessionsController do
     let(:user) { create(:user) }
     let(:suspended_user) { create(:user, suspended: true) }
 
-    example '「次回から自動でログインする」にチェックせずにログイン' do
+    it '「次回から自動でログインする」にチェックせずにログイン' do
       post :create, login_form: {
         email: user.email,
         password: user.password
@@ -16,7 +16,7 @@ describe SessionsController do
       expect(response).to redirect_to(root_path)
     end
 
-    example '「次回から自動でログインする」にチェックしてログイン' do
+    it '「次回から自動でログインする」にチェックしてログイン' do
       post :create, login_form: {
         email: user.email,
         password: user.password,
@@ -32,7 +32,7 @@ describe SessionsController do
       expect(cookies['user_id'][:expires]).to be > 19.years.from_now
     end
 
-    example '誤ったパスワードでログイン' do
+    it '誤ったパスワードでログイン' do
       post :create, login_form: {
         email: user.email,
         password: 'wrongpw'
@@ -42,21 +42,21 @@ describe SessionsController do
       expect(response).to render_template(:new)
     end
 
-    example 'アカウント停止の状態でログイン' do
+    it 'アカウント停止の状態でログイン' do
       post :create, login_form: {
         email: suspended_user.email,
         password: suspended_user.password
       }
 
-      expect(session[:user_id]).to be_nil
-      expect(response).to render_template(:new)
+      # expect(session[:user_id]).to be_nil
+      expect(response).to redirect_to(root_path)
     end
   end
 
   describe '#destroy' do
-    before { get :destroy }
+    before { delete :destroy }
 
-    example 'ログアウト' do
+    it 'ログアウト' do
       expect(session[:user_id]).to be_nil
       expect(response).to redirect_to(root_path)
     end

@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
   def check_account
     if current_user && !current_user.active?
       current_user.events.create!(type: 'rejected')
-      session.delete(:user_id)
+      logout
       flash[:warning] = 'アカウントが無効になりました。'
       redirect_to :root
     end

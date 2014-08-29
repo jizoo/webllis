@@ -6,13 +6,13 @@ describe RepliesController do
   let(:comment) { create(:comment) }
 
   describe 'GET #new' do
-    context '未ログインユーザがアクセスしたとき' do
+    context '未ログインユーザがアクセスした場合' do
       before { get :new, post_id: user_post.id, comment_id: comment.id }
 
       it_should_behave_like '認証が必要なページ'
     end
 
-    context 'ログインユーザがアクセスしたとき' do
+    context 'ログインユーザがアクセスした場合' do
       before do
         login(user)
         get :new, post_id: user_post.id, comment_id: comment.id
