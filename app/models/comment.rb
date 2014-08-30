@@ -23,30 +23,27 @@ class Comment < ActiveRecord::Base
   end
 
   scope :sent, -> { where(type: 'sent') }
+  scope :reader, ->(user) { arel_table[:reader_id].eq(user.id) }
+  scope :creator, ->(user) { arel_table[:creator_id].eq(user.id) }
+  scope :trashed_by_reader, -> { arel_table[:reader_trashed].eq(true) }
+  scope :trashed_by_creator, -> { arel_table[:creator_trashed].eq(true) }
+  scope :not_trashed_by_reader, -> { arel_table[:reader_trashed].eq(false) }
+  scope :not_trashed_by_creator, -> { arel_table[:creator_trashed].eq(false) }
+  scope :not_deleted_by_reader, -> { arel_table[:deleted].eq(false) }
 
   class << self
-    def unprocessed_by(user)
-      reader = arel_table[:reader_id].eq(user.id)
-      creator = arel_table[:creator_id].eq(user.id)
-      reader_not_trashed = arel_table[:reader_trashed].eq(false)
-      creator_not_trashed = arel_table[:creator_trashed].eq(false)
-      not_deleted = arel_table[:deleted].eq(false)
-      where(arel_table.grouping(
-        (reader.and(reader_not_trashed)).or(creator.and(creator_not_trashed))
-        .and(not_deleted))
+    def unprocessed_by_creator_or_reader(user)
+      where(
+        (not_deleted_by_reader.and(not_trashed_by_reader).and(reader(user))).
+        or(not_trashed_by_creator.and(creator(user)))
       ).
       order(created_at: :desc)
     end
 
-    def trashed_by(user)
-      reader = arel_table[:reader_id].eq(user.id)
-      creator = arel_table[:creator_id].eq(user.id)
-      reader_trashed = arel_table[:reader_trashed].eq(true)
-      creator_trashed = arel_table[:creator_trashed].eq(true)
-      not_deleted = arel_table[:deleted].eq(false)
-      where(arel_table.grouping(
-        (reader.and(reader_trashed)).or(creator.and(creator_trashed))
-        .and(not_deleted))
+    def trashed_by_creator_or_reader(user)
+      where(
+        (not_deleted_by_reader.and(trashed_by_reader).and(reader(user))).
+        or(trashed_by_creator.and(creator(user)))
       ).
       order(created_at: :desc)
     end
