@@ -5,13 +5,13 @@ class CommentsController < ApplicationController
   before_action :set_title, only: [ :index, :trashed ]
 
   def index
-    @comments = Comment.unprocessed_by(current_user).page(params[:page])
+    @comments = Comment.unprocessed_by_creator_or_reader(current_user).page(params[:page])
     @comments.update_all(read: true)
   end
 
   # GET
   def trashed
-    @comments = Comment.trashed_by(current_user).page(params[:page])
+    @comments = Comment.trashed_by_creator_or_reader(current_user).page(params[:page])
     render action: 'index'
   end
 
@@ -74,14 +74,6 @@ class CommentsController < ApplicationController
   end
 
   private
-
-  def fetch_comment
-    @comment = Comment.find(params[:id])
-  end
-
-  def fetch_post
-    @post = Post.find(params[:post_id]) if params[:post_id].present?
-  end
 
   def set_title
     @title = case params[:action]

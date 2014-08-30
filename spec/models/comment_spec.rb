@@ -40,4 +40,142 @@ RSpec.describe Comment do
     it { should validate_presence_of(:content) }
     it { should ensure_length_of(:content).is_within(0..400) }
   end
+
+  describe '.unprocessed_by_creator_or_reader' do
+    let(:user1) { create(:user) }
+    let(:user2) { create(:user) }
+
+    context '作成者がユーザの場合' do
+      it 'コメントを集めること' do
+        comment = create(:comment, creator: user1)
+        expect(Comment.unprocessed_by_creator_or_reader(user1)).to eq([comment])
+      end
+
+      it '返信を集めること' do
+        reply = create(:reply, creator: user1)
+        expect(Comment.unprocessed_by_creator_or_reader(user1)).to eq([reply])
+      end
+    end
+
+    context '作成者が他のユーザの場合' do
+      it 'コメントを集めないこと' do
+        comment = create(:comment, creator: user2)
+        expect(Comment.unprocessed_by_creator_or_reader(user1)).not_to eq([comment])
+      end
+
+      it '返信を集めないこと' do
+        reply = create(:reply, creator: user2)
+        expect(Comment.unprocessed_by_creator_or_reader(user1)).not_to eq([reply])
+      end
+    end
+
+    context '読者がユーザの場合' do
+      it 'コメントを集めること' do
+        comment = create(:comment, reader: user1)
+        expect(Comment.unprocessed_by_creator_or_reader(user1)).to eq([comment])
+      end
+
+      it '返信を集めること' do
+        reply = create(:reply, creator: user1)
+        expect(Comment.unprocessed_by_creator_or_reader(user1)).to eq([reply])
+      end
+    end
+
+    context '読者が他のユーザの場合' do
+      it 'コメントを集めないこと' do
+        comment = create(:comment, reader: user2)
+        expect(Comment.unprocessed_by_creator_or_reader(user1)).not_to eq([comment])
+      end
+
+      it '返信を集めないこと' do
+        reply = create(:reply, reader: user2)
+        expect(Comment.unprocessed_by_creator_or_reader(user1)).not_to eq([reply])
+      end
+    end
+  end
+
+  describe '.trashed_by_creator_or_reader' do
+    let(:user1) { create(:user) }
+    let(:user2) { create(:user) }
+
+    context '作成者がユーザの場合' do
+      context 'かつ作成者がコメントを捨てた場合' do
+        it 'コメントを集めること' do
+          comment = create(:comment, creator: user1, creator_trashed: true)
+          expect(Comment.trashed_by_creator_or_reader(user1)).to eq([comment])
+        end
+
+        it '返信を集めること' do
+          reply = create(:reply, creator: user1, creator_trashed: true)
+          expect(Comment.trashed_by_creator_or_reader(user1)).to eq([reply])
+        end
+      end
+
+      context 'かつ読者がコメントを捨てた場合' do
+        it 'コメントを集めないこと' do
+          comment = create(:comment, creator: user1, reader_trashed: true)
+          expect(Comment.trashed_by_creator_or_reader(user1)).not_to eq([comment])
+        end
+
+        it '返信を集めないこと' do
+          reply = create(:reply, creator: user1, reader_trashed: true)
+          expect(Comment.trashed_by_creator_or_reader(user1)).not_to eq([reply])
+        end
+      end
+    end
+
+    context '作成者が他のユーザの場合' do
+      it 'コメントを集めないこと' do
+        comment = create(:comment, creator: user2)
+        expect(Comment.trashed_by_creator_or_reader(user1)).not_to eq([comment])
+      end
+
+      it '返信を集めないこと' do
+        reply = create(:reply, creator: user2)
+        expect(Comment.trashed_by_creator_or_reader(user1)).not_to eq([reply])
+      end
+    end
+
+    context '読者がユーザの場合' do
+      context 'かつ作成者がコメントを捨てた場合' do
+        it 'コメントを集めないこと' do
+          comment = create(:comment, reader: user1, creator_trashed: true)
+          expect(Comment.trashed_by_creator_or_reader(user1)).not_to eq([comment])
+        end
+
+        it '返信を集めないこと' do
+          reply = create(:reply, reader: user1, creator_trashed: true)
+          expect(Comment.trashed_by_creator_or_reader(user1)).not_to eq([reply])
+        end
+      end
+
+      context 'かつ読者がコメントを捨てた場合' do
+        it 'コメントを集めること' do
+          comment = create(:comment, reader: user1, reader_trashed: true)
+          expect(Comment.trashed_by_creator_or_reader(user1)).to eq([comment])
+        end
+
+        xit '返信を集めること' do
+          reply = create(:reply, reader: user1, reader_trashed: true)
+          expect(Comment.trashed_by_creator_or_reader(user1)).to eq([reply])
+        end
+      end
+    end
+
+    context '読者が他のユーザの場合' do
+      it 'コメントを集めないこと' do
+        comment = create(:comment, reader: user2)
+        expect(Comment.trashed_by_creator_or_reader(user1)).not_to eq([comment])
+      end
+
+      it '返信を集めないこと' do
+        reply = create(:reply, reader: user2)
+        expect(Comment.trashed_by_creator_or_reader(user1)).not_to eq([reply])
+      end
+    end
+  end
+
+  describe '.unread_by' do
+
+  end
 end

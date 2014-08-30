@@ -105,4 +105,13 @@ class ApplicationController < ActionController::Base
     gravatar_id = Digest::MD5::hexdigest(user.email.downcase)
     "https://secure.gravatar.com/avatar/#{gravatar_id}?s=50"
   end
+
+  def fetch_post
+    @post = Post.find(params[:post_id]) if params[:post_id].present?
+  end
+
+  def fetch_comment
+    id = params[:id] || params[:comment_id]
+    @comment = Comment.find(id)
+  end
 end
