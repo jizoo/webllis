@@ -24,6 +24,7 @@ gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'foreman'
 gem 'puma'
+gem 'newrelic_rpm'
 
 group :development do
   gem 'rails-erd'
