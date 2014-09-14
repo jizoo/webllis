@@ -22,6 +22,9 @@ gem 'mini_magick'
 gem 'acts-as-taggable-on'
 gem 'omniauth'
 gem 'omniauth-twitter'
+gem 'foreman'
+gem 'puma'
+gem 'newrelic_rpm'
 
 group :development do
   gem 'rails-erd'
@@ -56,4 +59,8 @@ group :test do
   gem 'email_spec'
   gem 'coveralls', require: false
   gem 'simplecov', require: false
+end
+
+group :production do
+  gem 'rails_12factor'
 end
