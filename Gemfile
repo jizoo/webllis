@@ -22,6 +22,8 @@ gem 'mini_magick'
 gem 'acts-as-taggable-on'
 gem 'omniauth'
 gem 'omniauth-twitter'
+gem 'foreman'
+gem 'puma'
 
 group :development do
   gem 'rails-erd'

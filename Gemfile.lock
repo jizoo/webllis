@@ -89,6 +89,9 @@ GEM
     debugger-linecache (1.2.0)
     diff-lcs (1.2.5)
     docile (1.1.5)
+    dotenv (0.11.1)
+      dotenv-deployment (~> 0.0.2)
+    dotenv-deployment (0.0.2)
     em-websocket (0.5.1)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.6.0)
@@ -110,6 +113,9 @@ GEM
     ffi (1.9.3)
     foreigner (1.6.1)
       activerecord (>= 3.0.0)
+    foreman (0.74.0)
+      dotenv (~> 0.11.1)
+      thor (~> 0.19.1)
     formatador (0.2.5)
     guard (2.6.1)
       formatador (>= 0.2.4)
@@ -187,6 +193,8 @@ GEM
       pry (~> 0.10)
     pry-rails (0.3.2)
       pry (>= 0.9.10)
+    puma (2.9.0)
+      rack (>= 1.1, < 2.0)
     quiet_assets (1.0.3)
       railties (>= 3.1, < 5.0)
     rack (1.5.2)
@@ -335,6 +343,7 @@ DEPENDENCIES
   factory_girl_rails
   faker
   foreigner
+  foreman
   guard-livereload
   guard-rspec
   hirb
@@ -351,6 +360,7 @@ DEPENDENCIES
   omniauth-twitter
   pry-byebug
   pry-rails
+  puma
   quiet_assets
   rails (= 4.1.4)
   rails-erd
