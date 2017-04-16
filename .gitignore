@@ -36,3 +36,6 @@
 
 # Ignore a coverage reports.
 /coverage
+
+# Ignore  secrets config
+/config/secrets.yml
